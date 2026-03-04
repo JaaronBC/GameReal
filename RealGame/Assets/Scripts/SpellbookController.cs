@@ -20,4 +20,21 @@ public class SpellbookController : MonoBehaviour
             }
         }
     }
+    public bool AddLetter(GameObject itemPrefab)
+    {
+        //look for empty slot
+        foreach(Transform slotTransform in inventoryPanel.transform)
+        {
+            Slot slot = slotTransform.GetComponent<Slot>();
+            if (slot != null && slot.currentLetter ==null)
+            {
+                GameObject newLetter =Instantiate(itemPrefab, slotTransform);
+                newLetter.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
+                slot.currentLetter = newLetter;
+                return true;
+            }
+        }
+        Debug.Log("Inventory is Full");
+        return false;
+    }
 }

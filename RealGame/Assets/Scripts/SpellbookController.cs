@@ -6,15 +6,15 @@ public class SpellbookController : MonoBehaviour
     public GameObject inventoryPanel;
     public GameObject slotPrefab;
     public int slotCount;
-    public GameObject[] itemPrefabs;
+    public GameObject[] letterPrefabs;
     void Start()
     {
         for(int i = 0; i < slotCount; i++)
         {
             Slot slot = Instantiate(slotPrefab, inventoryPanel.transform).GetComponent<Slot>();
-            if(i < itemPrefabs.Length)
+            if(i < letterPrefabs.Length)
             {
-                GameObject letter = Instantiate(itemPrefabs[i], slot.transform);
+                GameObject letter = Instantiate(letterPrefabs[i], slot.transform);
                 letter.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
                 slot.currentLetter = letter;
             }

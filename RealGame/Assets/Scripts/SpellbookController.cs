@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class SpellbookController : MonoBehaviour
 {
@@ -20,21 +21,53 @@ public class SpellbookController : MonoBehaviour
             }
         }
     }
-    public bool AddLetter(GameObject itemPrefab)
+    
+public bool AddLetter(GameObject letterPrefab)
+{
+    Letter letterScript = letterPrefab.GetComponent<Letter>();
+
+    if (letterScript == null)
     {
-        //look for empty slot
-        foreach(Transform slotTransform in inventoryPanel.transform)
-        {
-            Slot slot = slotTransform.GetComponent<Slot>();
-            if (slot != null && slot.currentLetter ==null)
-            {
-                GameObject newLetter =Instantiate(itemPrefab, slotTransform);
-                newLetter.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
-                slot.currentLetter = newLetter;
-                return true;
-            }
-        }
-        Debug.Log("Inventory is Full");
+        Debug.LogError("Letter prefab is missing Letter script.");
         return false;
+    }
+
+    char letter = letterScript.letterValue;
+
+    // Convert Alphabet A-Z a numerical value of 0-25
+    int slotIndex = letter - 'A';
+
+    if (slotIndex < 0 || slotIndex >= inventoryPanel.transform.childCount)
+    {
+        Debug.LogError("Invalid slot index for letter: " + letter);
+        return false;
+    }
+    
+    Transform slotTransform = inventoryPanel.transform.GetChild(slotIndex);
+
+    Slot slot = slotTransform.GetComponent<Slot>();
+
+    if (slot != null && slot.currentLetter == null)
+    {
+        GameObject newLetter = Instantiate(letterPrefab, slotTransform);
+
+        newLetter.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
+
+        Image slotImage = slotTransform.GetComponent<Image>();
+        Image letterImage = newLetter.GetComponent<Image>();
+
+        if (slotImage != null && letterImage != null)
+        {
+            slotImage.sprite = letterImage.sprite;
+            slotImage.color = Color.white;
+        }
+
+        slot.currentLetter = newLetter;
+
+        return true;
+    }
+
+    Debug.Log("Slot already occupied or invalid.");
+    return false;
     }
 }

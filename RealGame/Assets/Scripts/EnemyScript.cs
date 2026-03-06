@@ -1,60 +1,133 @@
+using UnityEditor.Rendering;
+using UnityEditor.ShaderGraph;
 using UnityEngine;
 
 public class EnemyScript : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    //object components
     SpriteRenderer spriteRenderer;
     Animator animator;
-    private int timer = 0;
-    private int dir_x = 1;
-    private int dir_y = 1;
-    private float speed = 2.0f;
-    private float direction = 0.0f;
     private Rigidbody2D rb;
+    private CircleCollider2D playerDetectionRadius;
+
+    //movement variables
+    private int timer = 0;
+    float currentSpeed = 0.0f;
+    float speed = 1.0f;
+    float chaseSpeed = 1.25f;
+    Vector3 direction = new Vector2(0.0f, 0.0f);
+
+    //state machine
+    private bool still = false;
+    private string state = "normal";
+    private float[] direction_field = 
+        { 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f};
+
+    //normal
+    private int normalStillProbability = 40;
+    private int[] normalTimeRange = { 180, 360 };
+
+    //player chase
+    Transform target;
+    private int[] chaseTimeRange = { 90, 180 };
+
+
+
     void Start()
     {
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         rb = GetComponent<Rigidbody2D>();
+        target = GameObject.Find("Player").transform;
+
     }
 
     // Update is called once per frame
     void Update()
-    {
-        if (timer == 0)
-        {
-            timer = Random.Range(180, 300);
-            Move();
-            Direction();
+    {   
+        switch (state) {
+            case "normal":
+                if (timer == 0)
+                {
+                    timer = Random.Range(normalTimeRange[0], normalTimeRange[1]);
+                    MoveNormal();
+                }
+                break;
+            case "chase":
+                if (timer == 0 && target)
+                {
+                    timer = Random.Range(chaseTimeRange[0], chaseTimeRange[1]);
+                    MoveToPlayer();
+                }
+                break;
         }
+
+        //movement
+        rb.linearVelocity = new Vector2(direction.x, direction.y) * currentSpeed;
+        //set sprite index to f
+
+
+        //main timer reset
         if (timer > 0) timer--;
-
     }
 
-    public void Move()
+    public void MoveNormal()
     {
-        dir_x = Random.Range(-1, 2);
-        dir_y = Random.Range(-1, 2);
-        direction = Mathf.Atan2(dir_y, dir_x);
-        rb.linearVelocity = new Vector2(Mathf.Cos(direction) * speed, Mathf.Sin(direction) * speed);
+        currentSpeed = speed;
+        if (Random.Range(1, 101) > normalStillProbability)
+        {
+            direction = new Vector2(Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 1.0f));
+        }
+        else
+        {
+            currentSpeed = 0.0f;
+        }
+        DirectionToSpriteXY();
     }
 
-    public void Direction()
+    public void MoveToPlayer()
+    {
+        currentSpeed = chaseSpeed;
+        direction = target.position - transform.position;
+        DirectionToSpriteXY();
+        print(direction);
+        DirectionToSpriteXY();
+    }
+
+    void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag == "Player" && state == "normal")
+        {
+            state = "chase";
+            timer = 0;
+        }
+        print("state");
+        print("enter");
+    }
+    void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag == "Player" && state == "chase")
+        {
+            state = "normal";
+            timer = Random.Range(normalTimeRange[0], normalTimeRange[1]);
+        }
+        print("exit");
+    }
+
+    public void DirectionToSpriteXY() //change to dir_x and dir_y
     {
         //flip
-        if (dir_x < 0)
+        if (direction.x < 0)
         {
             spriteRenderer.flipX = true;
-            animator.SetFloat("dir_x", dir_x);
         }
-        else if (dir_x > 0)
+        else if (direction.x > 0)
         {
             spriteRenderer.flipX = false;
         }
         //sprite animation
-        animator.SetFloat("dir_x", (float)dir_x);
-        animator.SetFloat("dir_y", (float)dir_y);
-        print(dir_y);
+        animator.SetFloat("dir_x", Mathf.Sign(direction.x));
+        animator.SetFloat("dir_y", Mathf.Sign(direction.y));
     }
 
 }

@@ -13,15 +13,12 @@ public class EnemyScript : MonoBehaviour
     //movement variables
     private int timer = 0;
     float currentSpeed = 0.0f;
-    float speed = 1.0f;
-    float chaseSpeed = 1.25f;
+    float speed = 0.8f;
+    float chaseSpeed = 1f;
     Vector3 direction = new Vector2(0.0f, 0.0f);
 
     //state machine
-    private bool still = false;
     private string state = "normal";
-    private float[] direction_field = 
-        { 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f};
 
     //normal
     private int normalStillProbability = 40;
@@ -29,6 +26,7 @@ public class EnemyScript : MonoBehaviour
 
     //player chase
     Transform target;
+    public float chaseRadius = 3.5f;
     private int[] chaseTimeRange = { 90, 180 };
 
 
@@ -52,10 +50,12 @@ public class EnemyScript : MonoBehaviour
                     timer = Random.Range(normalTimeRange[0], normalTimeRange[1]);
                     MoveNormal();
                 }
+                if (DetectPlayer()) state = "chase";
                 break;
             case "chase":
                 if (timer == 0 && target)
                 {
+                    if (!DetectPlayer()) state = "normal";
                     timer = Random.Range(chaseTimeRange[0], chaseTimeRange[1]);
                     MoveToPlayer();
                 }
@@ -65,6 +65,7 @@ public class EnemyScript : MonoBehaviour
         //movement
         rb.linearVelocity = new Vector2(direction.x, direction.y) * currentSpeed;
         //set sprite index to f
+
 
 
         //main timer reset
@@ -82,26 +83,35 @@ public class EnemyScript : MonoBehaviour
         {
             currentSpeed = 0.0f;
         }
-        DirectionToSpriteXY();
+        DirectionToSprite();
     }
-
     public void MoveToPlayer()
     {
         currentSpeed = chaseSpeed;
         direction = target.position - transform.position;
-        DirectionToSpriteXY();
+        DirectionToSprite();
         print(direction);
-        DirectionToSpriteXY();
+        DirectionToSprite();
     }
 
-    void OnTriggerEnter2D(Collider2D collision)
+    public bool DetectPlayer()
     {
+        print("detecting player");
+        Collider2D collider = Physics2D.OverlapCircle(transform.position,
+            chaseRadius, LayerMask.GetMask("Player"));
+        RaycastHit2D tileRay = Physics2D.Linecast(transform.position, target.position,
+            LayerMask.GetMask("Tiles"));
+        if (collider != null && tileRay == false) return true;
+        return false;
+    }
+    /**
+    void OnTriggerEnter2D(Collider2D collision)
+    { 
         if (collision.gameObject.tag == "Player" && state == "normal")
         {
             state = "chase";
             timer = 0;
         }
-        print("state");
         print("enter");
     }
     void OnTriggerExit2D(Collider2D collision)
@@ -113,8 +123,9 @@ public class EnemyScript : MonoBehaviour
         }
         print("exit");
     }
+    **/
 
-    public void DirectionToSpriteXY() //change to dir_x and dir_y
+    public void DirectionToSprite()
     {
         //flip
         if (direction.x < 0)

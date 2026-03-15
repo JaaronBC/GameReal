@@ -10,6 +10,12 @@ public class PlayerLetterCollector : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
+    /*
+    On collision with an object, checks the tag and if 
+    Letter tag, destroys component and calls the addLetter method
+    in SpellbookController script which adds letter to its corosponding
+    Slot
+    */
         if (collision.CompareTag("Letter"))
         {
             Debug.Log("Collided with: " + collision.name);

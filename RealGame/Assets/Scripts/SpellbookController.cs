@@ -10,6 +10,7 @@ public class SpellbookController : MonoBehaviour
     public GameObject[] letterPrefabs;
     void Start()
     {
+        //Creates letter slots on game start equal to the slot count
         for(int i = 0; i < slotCount; i++)
         {
             Slot slot = Instantiate(slotPrefab, inventoryPanel.transform).GetComponent<Slot>();
@@ -44,24 +45,26 @@ public bool AddLetter(GameObject letterPrefab)
     }
     
     Transform slotTransform = inventoryPanel.transform.GetChild(slotIndex);
-
+    //Gets the script component Slot from slotTransform prefab and sets it to the "slot" variable
     Slot slot = slotTransform.GetComponent<Slot>();
 
     if (slot != null && slot.currentLetter == null)
     {
+        //Creates copy of letter and sets it to newLetter
         GameObject newLetter = Instantiate(letterPrefab, slotTransform);
-
         newLetter.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
-
+        //Retrieves image components from slot and and letter prefabs and sets them to variables
         Image slotImage = slotTransform.GetComponent<Image>();
         Image letterImage = newLetter.GetComponent<Image>();
 
         if (slotImage != null && letterImage != null)
         {
+            //Makes slot image component sprite the slot image component of letter image component
+            //Sets color of the slots image component to white
             slotImage.sprite = letterImage.sprite;
             slotImage.color = Color.white;
         }
-
+        //Sets the currentLetter of the slot to newLetter prefab
         slot.currentLetter = newLetter;
 
         return true;

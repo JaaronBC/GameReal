@@ -12,7 +12,7 @@ public class PlayerLetterCollector : MonoBehaviour
     {
     /*
     On collision with an object, checks the tag and if 
-    Letter tag, destroys component and calls the addLetter method
+    Letter tag, destroys object and calls the addLetter method
     in SpellbookController script which adds letter to its corosponding
     Slot
     */

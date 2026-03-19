@@ -1,6 +1,7 @@
 using UnityEditor.Rendering;
 using UnityEditor.ShaderGraph;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class EnemyScript : MonoBehaviour
 {
@@ -13,8 +14,8 @@ public class EnemyScript : MonoBehaviour
     //movement variables
     private int timer = 0;
     float currentSpeed = 0.0f;
-    float speed = 0.8f;
-    float chaseSpeed = 1f;
+    float speed = 2f;
+    float chaseSpeed = 3f;
     Vector3 direction = new Vector2(0.0f, 0.0f);
 
     //state machine
@@ -27,8 +28,10 @@ public class EnemyScript : MonoBehaviour
     //player chase
     Transform target;
     public float chaseRadius = 3.5f;
-    private int[] chaseTimeRange = { 90, 180 };
+    private int[] chaseTimeRange = { 60, 120 };
 
+    //battle transition
+    private string battleSceneName = "BattleScene";
 
 
     void Start()
@@ -37,7 +40,6 @@ public class EnemyScript : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
         rb = GetComponent<Rigidbody2D>();
         target = GameObject.Find("Player").transform;
-
     }
 
     // Update is called once per frame
@@ -64,9 +66,6 @@ public class EnemyScript : MonoBehaviour
 
         //movement
         rb.linearVelocity = new Vector2(direction.x, direction.y) * currentSpeed;
-        //set sprite index to f
-
-
 
         //main timer reset
         if (timer > 0) timer--;
@@ -85,45 +84,43 @@ public class EnemyScript : MonoBehaviour
         }
         DirectionToSprite();
     }
+
     public void MoveToPlayer()
     {
         currentSpeed = chaseSpeed;
-        direction = target.position - transform.position;
-        DirectionToSprite();
-        print(direction);
+        direction = (target.position - transform.position).normalized;
         DirectionToSprite();
     }
 
     public bool DetectPlayer()
     {
-        print("detecting player");
         Collider2D collider = Physics2D.OverlapCircle(transform.position,
             chaseRadius, LayerMask.GetMask("Player"));
         RaycastHit2D tileRay = Physics2D.Linecast(transform.position, target.position,
             LayerMask.GetMask("Tiles"));
+
         if (collider != null && tileRay == false) return true;
         return false;
     }
-    /**
-    void OnTriggerEnter2D(Collider2D collision)
-    { 
-        if (collision.gameObject.tag == "Player" && state == "normal")
-        {
-            state = "chase";
-            timer = 0;
-        }
-        print("enter");
-    }
-    void OnTriggerExit2D(Collider2D collision)
+
+    public void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.tag == "Player" && state == "chase")
+        //collision is player
+        if (collision.gameObject.CompareTag("Player"))
         {
-            state = "normal";
-            timer = Random.Range(normalTimeRange[0], normalTimeRange[1]);
+            print("player battle detected");
+            BattleScreenTransition(battleSceneName);
         }
-        print("exit");
     }
-    **/
+
+    public void BattleScreenTransition(string sceneName)
+    {
+        SceneController sc = FindObjectOfType<SceneController>();
+        if (sc != null)
+        {
+            sc.LoadScene(sceneName);
+        }
+    }
 
     public void DirectionToSprite()
     {
@@ -137,8 +134,10 @@ public class EnemyScript : MonoBehaviour
             spriteRenderer.flipX = false;
         }
         //sprite animation
-        animator.SetFloat("dir_x", Mathf.Sign(direction.x));
-        animator.SetFloat("dir_y", Mathf.Sign(direction.y));
+        animator.SetFloat("dir_x", (direction.x));
+        animator.SetFloat("dir_y", (direction.y));
+        if (currentSpeed > 0) animator.SetBool("move", true);
+        else animator.SetBool("move", false);
     }
 
 }

@@ -1,15 +1,23 @@
 using UnityEngine;
 
+
+
 public class PlayerLetterCollector : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    private SpellbookController spellbookController;
+    public SpellbookController spellbookController;
     void Start()
     {
-        spellbookController = FindObjectOfType<SpellbookController>();
+        //spellbookController = FindObjectOfType<SpellbookController>();
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
+    /*
+    On collision with an object, checks the tag and if 
+    Letter tag, destroys object and calls the addLetter method
+    in SpellbookController script which adds letter to its corosponding
+    Slot
+    */
         if (collision.CompareTag("Letter"))
         {
             Debug.Log("Collided with: " + collision.name);

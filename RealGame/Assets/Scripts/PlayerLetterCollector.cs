@@ -5,10 +5,10 @@ using UnityEngine;
 public class PlayerLetterCollector : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    private SpellbookController spellbookController;
+    public SpellbookController spellbookController;
     void Start()
     {
-        spellbookController = FindObjectOfType<SpellbookController>();
+        //spellbookController = FindObjectOfType<SpellbookController>();
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {

@@ -3,6 +3,7 @@ using UnityEngine.UI;
 
 public class SpellbookController : MonoBehaviour
 {
+    public PlayerState playerState;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     public GameObject inventoryPanel;
     public GameObject slotPrefab;
@@ -66,6 +67,7 @@ public bool AddLetter(GameObject letterPrefab)
         }
         //Sets the currentLetter of the slot to newLetter prefab
         slot.currentLetter = newLetter;
+        playerState.usableLetters[slotIndex] = letter;
 
         return true;
     }

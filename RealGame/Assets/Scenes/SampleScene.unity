@@ -5344,7 +5344,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: '::'
   maxHP: 0
   CurrentHP: 0
-  usableLetters: 
+  usableLetters: 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
 --- !u!1001 &1387778654
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6413,6 +6413,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7f6a4a718099416d8b9d7423ba2ddd4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
+  playerState: {fileID: 1293916360}
   inventoryPanel: {fileID: 374507708}
   slotPrefab: {fileID: 8738946618182595877, guid: c8b5dff73fb0844e1881a704d9a5a7b3, type: 3}
   slotCount: 26
@@ -6943,6 +6944,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2203502370257593485, guid: dfce6b46e3bc347558338a3c8d83ddce, type: 3}
+      propertyPath: spellbookController
+      value: 
+      objectReference: {fileID: 1855584216}
     - target: {fileID: 7227144283191965764, guid: dfce6b46e3bc347558338a3c8d83ddce, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

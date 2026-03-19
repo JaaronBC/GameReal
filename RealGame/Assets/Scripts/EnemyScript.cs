@@ -1,60 +1,143 @@
+using UnityEditor.Rendering;
+using UnityEditor.ShaderGraph;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class EnemyScript : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    //object components
     SpriteRenderer spriteRenderer;
     Animator animator;
-    private int timer = 0;
-    private int dir_x = 1;
-    private int dir_y = 1;
-    private float speed = 2.0f;
-    private float direction = 0.0f;
     private Rigidbody2D rb;
+    private CircleCollider2D playerDetectionRadius;
+
+    //movement variables
+    private int timer = 0;
+    float currentSpeed = 0.0f;
+    float speed = 2f;
+    float chaseSpeed = 3f;
+    Vector3 direction = new Vector2(0.0f, 0.0f);
+
+    //state machine
+    private string state = "normal";
+
+    //normal
+    private int normalStillProbability = 40;
+    private int[] normalTimeRange = { 180, 360 };
+
+    //player chase
+    Transform target;
+    public float chaseRadius = 3.5f;
+    private int[] chaseTimeRange = { 60, 120 };
+
+    //battle transition
+    private string battleSceneName = "BattleScene";
+
+
     void Start()
     {
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         rb = GetComponent<Rigidbody2D>();
+        target = GameObject.Find("Player").transform;
     }
 
     // Update is called once per frame
     void Update()
-    {
-        if (timer == 0)
-        {
-            timer = Random.Range(180, 300);
-            Move();
-            Direction();
+    {   
+        switch (state) {
+            case "normal":
+                if (timer == 0)
+                {
+                    timer = Random.Range(normalTimeRange[0], normalTimeRange[1]);
+                    MoveNormal();
+                }
+                if (DetectPlayer()) state = "chase";
+                break;
+            case "chase":
+                if (timer == 0 && target)
+                {
+                    if (!DetectPlayer()) state = "normal";
+                    timer = Random.Range(chaseTimeRange[0], chaseTimeRange[1]);
+                    MoveToPlayer();
+                }
+                break;
         }
+
+        //movement
+        rb.linearVelocity = new Vector2(direction.x, direction.y) * currentSpeed;
+
+        //main timer reset
         if (timer > 0) timer--;
-
     }
 
-    public void Move()
+    public void MoveNormal()
     {
-        dir_x = Random.Range(-1, 2);
-        dir_y = Random.Range(-1, 2);
-        direction = Mathf.Atan2(dir_y, dir_x);
-        rb.linearVelocity = new Vector2(Mathf.Cos(direction) * speed, Mathf.Sin(direction) * speed);
+        currentSpeed = speed;
+        if (Random.Range(1, 101) > normalStillProbability)
+        {
+            direction = new Vector2(Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 1.0f));
+        }
+        else
+        {
+            currentSpeed = 0.0f;
+        }
+        DirectionToSprite();
     }
 
-    public void Direction()
+    public void MoveToPlayer()
+    {
+        currentSpeed = chaseSpeed;
+        direction = (target.position - transform.position).normalized;
+        DirectionToSprite();
+    }
+
+    public bool DetectPlayer()
+    {
+        Collider2D collider = Physics2D.OverlapCircle(transform.position,
+            chaseRadius, LayerMask.GetMask("Player"));
+        RaycastHit2D tileRay = Physics2D.Linecast(transform.position, target.position,
+            LayerMask.GetMask("Tiles"));
+
+        if (collider != null && tileRay == false) return true;
+        return false;
+    }
+
+    public void OnTriggerEnter2D(Collider2D collision)
+    {
+        //collision is player
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            print("player battle detected");
+            BattleScreenTransition(battleSceneName);
+        }
+    }
+
+    public void BattleScreenTransition(string sceneName)
+    {
+        SceneController sc = FindObjectOfType<SceneController>();
+        if (sc != null)
+        {
+            sc.LoadScene(sceneName);
+        }
+    }
+
+    public void DirectionToSprite()
     {
         //flip
-        if (dir_x < 0)
+        if (direction.x < 0)
         {
             spriteRenderer.flipX = true;
-            animator.SetFloat("dir_x", dir_x);
         }
-        else if (dir_x > 0)
+        else if (direction.x > 0)
         {
             spriteRenderer.flipX = false;
         }
         //sprite animation
-        animator.SetFloat("dir_x", (float)dir_x);
-        animator.SetFloat("dir_y", (float)dir_y);
-        print(dir_y);
+        animator.SetFloat("dir_x", (direction.x));
+        animator.SetFloat("dir_y", (direction.y));
+        if (currentSpeed > 0) animator.SetBool("move", true);
+        else animator.SetBool("move", false);
     }
 
 }

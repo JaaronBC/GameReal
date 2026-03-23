@@ -68,6 +68,7 @@ public bool AddLetter(GameObject letterPrefab)
         //Sets the currentLetter of the slot to newLetter prefab
         slot.currentLetter = newLetter;
         playerState.usableLetters[slotIndex] = letter;
+        playerState.letterSprites[slotIndex] = slotImage.sprite;
 
         return true;
     }

@@ -6,6 +6,7 @@ public class PlayerState : MonoBehaviour
     public int CurrentHP;
 
     public char[] usableLetters;
+    public Sprite[] letterSprites;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {

@@ -1,7 +1,6 @@
 using UnityEngine;
 
 
-
 public class GridController : MonoBehaviour
 {
     [SerializeField] private int width, height;

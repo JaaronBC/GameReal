@@ -33,9 +33,9 @@ public class PlayerMovement : MonoBehaviour
         animator.SetFloat("LastInputY", moveInput.y);
         }  
     
-      moveInput = context.ReadValue<Vector2>();
-      animator.SetFloat("InputX", moveInput.x);
-      animator.SetFloat("InputY", moveInput.y);
+        moveInput = context.ReadValue<Vector2>();
+        animator.SetFloat("InputX", moveInput.x);
+        animator.SetFloat("InputY", moveInput.y);
     if (moveInput.x < 0)
         {
         spriteRenderer.flipX = true;

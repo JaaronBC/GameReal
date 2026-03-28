@@ -22,7 +22,7 @@ public class EnemyScript : MonoBehaviour
     private string state = "normal";
 
     //normal
-    private int normalStillProbability = 40;
+    private int normalStillProbability = 50;
     private int[] normalTimeRange = { 180, 360 };
 
     //player chase

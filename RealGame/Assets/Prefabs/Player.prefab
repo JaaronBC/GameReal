@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 2686596573500431665}
   - component: {fileID: 2203502370257593485}
   - component: {fileID: 5255136391540677965}
+  - component: {fileID: 1891448053136318928}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -264,6 +265,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14bf10964034b40db9a5c30a9a2ba89f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
+  spellbookController: {fileID: 0}
 --- !u!58 &5255136391540677965
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -300,3 +302,18 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: -0.12297726}
   m_Radius: 0.5
+--- !u!114 &1891448053136318928
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7620887840857654650}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eddda0f9b553044dea137a4e62b425ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  maxHP: 0
+  CurrentHP: 0
+  usableLetters: 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000

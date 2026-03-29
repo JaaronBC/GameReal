@@ -8,6 +8,7 @@ public class GnomeSlimeBeamAttack : MonoBehaviour
     int damage = 2;
     int range = 0;
     float speed = 3f;
+    bool playerHitDestroy = true;
 
     //components
     private Rigidbody2D rb;
@@ -28,6 +29,19 @@ public class GnomeSlimeBeamAttack : MonoBehaviour
         if (timer <= 0.0f)
         {
             Destroy(this.gameObject);
+        }
+    }
+
+    //player collision
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            //damage player
+            Vector2 direction = (collision.transform.position - transform.position).normalized;
+            collision.gameObject.GetComponent<PlayerState>().TakeDamage(damage, direction);
+            //destroy self
+            if (playerHitDestroy) Destroy(this.gameObject);
         }
     }
 }

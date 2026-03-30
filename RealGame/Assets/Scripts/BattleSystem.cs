@@ -1,6 +1,5 @@
 using UnityEngine;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 
 public enum jaaronBattleState { START, PLAYERTURN, ENEMYTURN, END }
 public class BattleSystem : MonoBehaviour

@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
 using TMPro; //text mesh pro
+using System.Collections.Generic;
 
 
 public enum BattleState
@@ -31,6 +32,16 @@ public class BattleScript : MonoBehaviour
     public BattleState state;
     //objects
     public TextMeshProUGUI selfTextComponent;
+    //Coordinates for player spawn
+    public float playerX, playerY;
+    //Coordinates for enemy spawn range
+    public int enemyGridMinX, enemyGridMaxX;
+
+    public int enemyGridMinY, enemyGridMaxY; 
+    //prefab for player object
+    public GameObject playerPrefab;
+    //array of enemy prefabs to be spawned
+    public GameObject[] enemies;
 
 
 
@@ -81,11 +92,27 @@ public class BattleScript : MonoBehaviour
 
     void setUpBattle()
     {
+        var currentPlayer = Instantiate(playerPrefab, new Vector3 (playerX, playerY), Quaternion.identity);
+        currentPlayer.name = "PlayerObject";
+        int randomX = -1;
+        HashSet<int> usedXPositions = new HashSet<int>();
+        int[] takenColumn = new int[enemies.Length];
+        for (int i = 0; i < enemies.Length; i++)
+        {   
+            do
+            {
+            randomX = Random.Range(enemyGridMinX, enemyGridMaxX);
+            }
+            while (usedXPositions.Contains(randomX));
+        
+            int randomY = Random.Range(enemyGridMinY, enemyGridMaxY);
+            usedXPositions.Add(randomX);
+            var currentEnemy = Instantiate(enemies[i], new Vector3 (randomX, randomY), Quaternion.identity);
+            currentEnemy.name = $"Enemy {i+1}";
+        }
         timer = startTime; 
 
     }
-
-
 
 
 }

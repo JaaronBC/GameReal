@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 
-public enum BattleState { START, PLAYERTURN, ENEMYTURN, END }
+public enum jaaronBattleState { START, PLAYERTURN, ENEMYTURN, END }
 public class BattleSystem : MonoBehaviour
 {
     public int playerX, playerY;
@@ -12,13 +12,13 @@ public class BattleSystem : MonoBehaviour
     public int enemyGridMinY, enemyGridMaxY; 
     public GameObject playerPrefab;
     public GameObject[] enemies;
-    public BattleState state;
+    public jaaronBattleState state;
 
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        state = BattleState.START;
+        state = jaaronBattleState.START;
         SetupBattle();
     }
 
@@ -45,7 +45,7 @@ public class BattleSystem : MonoBehaviour
             currentEnemy.name = $"Enemy {i+1}";
         }
     //Sets the state to Player Turn state
-    state = BattleState.PLAYERTURN;
+    state = jaaronBattleState.PLAYERTURN;
     PlayerTurn();
     }
     void PlayerTurn()

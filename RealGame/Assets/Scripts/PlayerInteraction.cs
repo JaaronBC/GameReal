@@ -3,14 +3,25 @@ using UnityEngine;
 public class PlayerInteraction : MonoBehaviour
 {
     public KeyCode interactKey = KeyCode.E;
-
+    public DialogueManager dialogueManager;
     private Interactable currentInteractable;
 
     void Update()
     {
-        if (Input.GetKeyDown(interactKey) && currentInteractable != null)
+        if (Input.GetKeyDown(interactKey))
         {
-            currentInteractable.Interact();
+            Debug.Log("E pressed");
+
+            if (dialogueManager != null && dialogueManager.dialogueBox.activeSelf)
+            {
+                dialogueManager.HandleInput();
+                return;
+            }
+
+            if (currentInteractable != null)
+            {
+                currentInteractable.Interact();
+            }
         }
     }
 

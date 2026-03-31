@@ -16,7 +16,7 @@ public class Interactable : MonoBehaviour
     }
     // runs when the player presses E
     // note: player interaction script calls this function
-    public void Interact()
+    public virtual void Interact()
     {
         Debug.Log("Interacted with " + gameObject.name);
     }

@@ -1,11 +1,14 @@
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.Rendering;
+using UnityEngine.UIElements;
 
 public class PlayerState : MonoBehaviour
 {
     public int maxHP;
     public int CurrentHP;
+    private string gameOverScene = "GameOver";
+    private float deathTimer = 1.0f;
 
     public FlashScript flash;
     private Rigidbody2D rb;
@@ -15,11 +18,13 @@ public class PlayerState : MonoBehaviour
 
     private SpriteRenderer spriteRenderer;
     private PlayerMovement playerMovement;
+    private Animator animator;
     Color color;
     Color baseColor;
 
     public char[] usableLetters;
     public Sprite[] letterSprites;
+    public PlayerMovement movementScript;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -27,6 +32,7 @@ public class PlayerState : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         playerMovement = GetComponent<PlayerMovement>();
+        animator = GetComponent<Animator>();
         color = spriteRenderer.color;
         baseColor = color;
     }
@@ -45,6 +51,12 @@ public class PlayerState : MonoBehaviour
                 spriteRenderer.color = baseColor;
             }
         }
+
+        //health gitter
+        if (CurrentHP == 0)
+        {
+            transform.position += new Vector3(Random.Range(-0.05f, 0.05f), Random.Range(-0.05f, 0.05f), 0);
+        }
     }
 
     //take damage
@@ -60,8 +72,32 @@ public class PlayerState : MonoBehaviour
         flash.Flash();
         involnerable = involnerableTime;
 
+        //death
+        if (CurrentHP <= 0)
+        {
+            Death();
+            return;
+        }
+
         //knockback from direction
         playerMovement.movementForce = (direction * knockbackForce);
+    }
+
+    //death
+    private void Death()
+    {
+        involnerable = 1.0f;
+        movementScript.enabled = false;
+        animator.SetBool("death", true);
+        Invoke(nameof(DeathTransition), deathTimer);
+    }
+    private void DeathTransition()
+    {
+        SceneController sc = FindObjectOfType<SceneController>();
+        if (sc != null)
+        {
+            sc.LoadScene(gameOverScene);
+        }
     }
 
 }

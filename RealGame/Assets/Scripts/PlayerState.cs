@@ -8,7 +8,7 @@ public class PlayerState : MonoBehaviour
     public int maxHP;
     public int CurrentHP;
     private string gameOverScene = "GameOver";
-    private float deathTimer = 2.0f;
+    private float deathTimer = 1.0f;
 
     public FlashScript flash;
     private Rigidbody2D rb;
@@ -24,6 +24,7 @@ public class PlayerState : MonoBehaviour
 
     public char[] usableLetters;
     public Sprite[] letterSprites;
+    public PlayerMovement movementScript;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -86,6 +87,7 @@ public class PlayerState : MonoBehaviour
     private void Death()
     {
         involnerable = 1.0f;
+        movementScript.enabled = false;
         animator.SetBool("death", true);
         Invoke(nameof(DeathTransition), deathTimer);
     }

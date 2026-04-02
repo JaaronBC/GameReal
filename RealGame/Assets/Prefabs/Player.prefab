@@ -232,6 +232,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6b01bdd056614ff782f2206d649f098, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
+  freezeTime: 0
   movementForce: {x: 0, y: 0}
 --- !u!95 &2686596573500431665
 Animator:
@@ -347,6 +348,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  movementScript: {fileID: 3285433953536994103}
 --- !u!114 &-7054216551972210368
 MonoBehaviour:
   m_ObjectHideFlags: 0

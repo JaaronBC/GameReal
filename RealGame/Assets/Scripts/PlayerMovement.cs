@@ -18,7 +18,13 @@ public class PlayerMovement : MonoBehaviour
     private SpriteRenderer spriteRenderer;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
-    {
+    {   
+        //enable player movement script at start of scene
+        PlayerMovement playerMovement = GetComponent<PlayerMovement>();
+        if (playerMovement != null)
+        {
+            playerMovement.enabled = true;
+        }
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
@@ -27,6 +33,7 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (!enabled) return;
         rb.linearVelocity = (moveInput * moveSpeed);
         rb.linearVelocity += movementForce;
         movementForce = Vector2.Lerp(movementForce, Vector2.zero, movementForceAcceleration * Time.deltaTime);
@@ -38,8 +45,17 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    void OnDisable()
+    {
+        moveInput = Vector2.zero;
+        rb.linearVelocity = Vector2.zero;
+        movementForce = Vector2.zero;
+        animator.SetBool("isWalking", false);
+    }
+
     public void Move(InputAction.CallbackContext context)
     {
+        if (!enabled) return;
         animator.SetBool("isWalking", true);
         if (context.canceled)
         {

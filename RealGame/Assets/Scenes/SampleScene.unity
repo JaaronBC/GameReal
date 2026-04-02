@@ -5057,6 +5057,10 @@ PrefabInstance:
       propertyPath: spellbookController
       value: 
       objectReference: {fileID: 1855584216}
+    - target: {fileID: 3285433953536994103, guid: dfce6b46e3bc347558338a3c8d83ddce, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7227144283191965764, guid: dfce6b46e3bc347558338a3c8d83ddce, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.80502

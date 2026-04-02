@@ -5225,6 +5225,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: '::'
   battleScript: {fileID: 1257174530}
   isActive: 0
+  damage: 10
 --- !u!1 &1301066147
 GameObject:
   m_ObjectHideFlags: 0

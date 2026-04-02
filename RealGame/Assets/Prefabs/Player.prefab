@@ -316,8 +316,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eddda0f9b553044dea137a4e62b425ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  maxHP: 0
-  CurrentHP: 0
+  maxHP: 20
+  CurrentHP: 4
   flash: {fileID: 0}
   usableLetters: 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
   letterSprites:

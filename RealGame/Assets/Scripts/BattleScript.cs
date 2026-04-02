@@ -1,4 +1,3 @@
-using System.Diagnostics.CodeAnalysis;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -124,6 +123,9 @@ public class BattleScript : MonoBehaviour
         } else {
             playerCasting.isActive = false;
             playerMovement.enabled = true;
+            playerCasting.spellsCast = 0;
+            playerCasting.spellWord = "";
+            playerCasting.spellBuilder.Clear();
         } 
        
         state = newState;

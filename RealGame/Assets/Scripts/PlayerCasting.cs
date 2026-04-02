@@ -10,6 +10,7 @@ public class PlayerCasting : MonoBehaviour
     public bool isActive = false;
 
     int debugCounter = 0;
+    public int damage;
     public void BeginTurn()
     {
         isActive = true;
@@ -51,6 +52,41 @@ public class PlayerCasting : MonoBehaviour
         }
     }
 
+    void Attack()
+    {
+        if (currentTarget == null)
+        {
+            Debug.LogWarning("No target selected!");
+            return;
+        }
+            EnemyState enemyState = currentTarget.GetComponent<EnemyState>();
+    if (enemyState != null)
+    {
+        enemyState.currentHP -= damage; // Subtract HP
+        Debug.Log($"Attacked {currentTarget.name} for {damage} damage! Remaining HP: {enemyState.currentHP}");
+
+        
+        if (enemyState.currentHP < 0)
+            enemyState.currentHP = 0;
+
+        if (enemyState.currentHP <= 0)
+        {
+            battleScript.activeEnemies.Remove(currentTarget);
+            Debug.Log($"{currentTarget.name} defeated!");
+            Destroy(currentTarget); // or trigger death animation
+            currentTarget = null;
+            if (battleScript.activeEnemies.Count > 0)
+            {
+                currentTargetIndex = 0;
+                currentTarget = battleScript.activeEnemies[currentTargetIndex];
+                HighlightTarget(currentTarget);
+            }
+        }
+    }
+        
+
+    }
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -61,9 +97,17 @@ public class PlayerCasting : MonoBehaviour
     void Update()
     {
         if (!isActive) return;
+        //Cycle through targets using left shift key
         if (Input.GetKeyDown(KeyCode.LeftShift))
         {
-        CycleTarget();
+            CycleTarget();
         }
+        //Attack current target using space key
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            Attack();   
+        }
+
     }
+
 }

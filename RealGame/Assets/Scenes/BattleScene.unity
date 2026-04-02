@@ -5226,7 +5226,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   battleScript: {fileID: 1257174530}
+  spellBuildText: {fileID: 1902509407}
   isActive: 0
+  spellBuilder: []
+  spellWord: 
   wordDatabase: {fileID: 1257174533}
   spellsCast: 0
   boltPrefab: {fileID: 2024269593988633140, guid: 347bb0a050289463482be45da21519ac, type: 3}

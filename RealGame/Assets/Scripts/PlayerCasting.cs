@@ -161,50 +161,6 @@ public class PlayerCasting : MonoBehaviour
             spellsCast++;
         }
     }
-/* Area attack might need later
-void AreaAttack(float damage, string element)
-{
-    Debug.Log($"Attacking with {element} area attack for {damage} damage!");
-    if (currentTarget == null)
-    {
-        Debug.LogWarning("No target selected!");
-        return;
-    }
-
-    var enemies = battleScript.activeEnemies;
-    //SpawnProjectile(ballPrefab, currentTarget, element);
-
-    for (int i = enemies.Count - 1; i >= 0; i--)
-    {
-        GameObject enemy = enemies[i];
-
-        if (enemy == null) continue;
-
-        EnemyState enemyState = enemy.GetComponent<EnemyState>();
-        if (enemyState != null)
-        {
-            enemyState.Damaged(damage);
-
-            Debug.Log($"Attacked {enemy.name} for {damage} damage! Remaining HP: {enemyState.currentHP}");
-
-        }
-    }
-
-    if (enemies.Count > 0)
-    {
-        if (currentTargetIndex >= enemies.Count)
-            currentTargetIndex = 0;
-
-        currentTarget = enemies[currentTargetIndex];
-        HighlightTarget(currentTarget);
-    }
-    else
-    {
-        currentTarget = null;
-        Debug.Log("All enemies defeated!");
-    }
-}
-*/
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -226,12 +182,7 @@ void AreaAttack(float damage, string element)
         {
             CycleTarget();
         }
-        //Start accepting keyboard input for spells
-        //When the player presses a letter key append to to spellWord
-        //Once player presses space push into spellBuilder and clear spellWord
-        //If a shape word from shapeWords is inserted into spellBuilder, 
-        //call CraftSpell to determine spell type and apply effects
-        //then clear spellBuilder for next spell
+
         if (Input.anyKeyDown)
         {
             foreach (char c in Input.inputString)

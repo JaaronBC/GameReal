@@ -17,7 +17,6 @@ public class PlayerState : MonoBehaviour
     private float knockbackForce = 8f;
 
     private SpriteRenderer spriteRenderer;
-    private PlayerMovement playerMovement;
     private Animator animator;
     Color color;
     Color baseColor;
@@ -31,7 +30,6 @@ public class PlayerState : MonoBehaviour
         flash = GetComponent<FlashScript>();
         rb = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
-        playerMovement = GetComponent<PlayerMovement>();
         animator = GetComponent<Animator>();
         color = spriteRenderer.color;
         baseColor = color;
@@ -80,7 +78,7 @@ public class PlayerState : MonoBehaviour
         }
 
         //knockback from direction
-        playerMovement.movementForce = (direction * knockbackForce);
+        movementScript.movementForce = (direction * knockbackForce);
     }
 
     //death

@@ -12,6 +12,11 @@ public class PlayerMovement : MonoBehaviour
     private float involnerable = 0.0f;
     private float involnerableTime = 2.0f;
 
+    private float jump = 0.0f;
+    private float z = 0.0f;
+    public GameObject playerSpriteObject;
+    private playerSprite playerSpriteComponent;
+
     public Vector2 movementForce = new Vector2(0.0f, 0.0f);
     private float movementForceAcceleration = 4f;
 
@@ -28,6 +33,7 @@ public class PlayerMovement : MonoBehaviour
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+        playerSpriteComponent = playerSpriteObject.GetComponent<playerSprite>();
     }
 
     // Update is called once per frame
@@ -42,6 +48,12 @@ public class PlayerMovement : MonoBehaviour
         if (involnerable > 0)
         {
             involnerable -= Time.deltaTime;
+        }
+
+        //jump
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            playerSpriteComponent.Jump(10.0f);
         }
     }
 
@@ -75,6 +87,11 @@ public class PlayerMovement : MonoBehaviour
         {
             spriteRenderer.flipX = false;
         }
+    }
+
+    public void jumpLanding()
+    {
+        return;
     }
 
 }

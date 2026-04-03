@@ -5,6 +5,7 @@ public class PlayerCasting : MonoBehaviour
 {
     [SerializeField] BattleScript battleScript;
     [SerializeField] private TextMeshProUGUI spellBuildText;
+    Dictionary<string, System.Action<float, string>> shapeActions;
     //Targeting variables
     int currentTargetIndex = 0;
     GameObject currentTarget;
@@ -65,7 +66,7 @@ public class PlayerCasting : MonoBehaviour
         renderer.color = Color.red;
     }
 
-    void SpawnProjectile(GameObject prefab, GameObject target, string element)
+    void SpawnProjectile(GameObject prefab, GameObject target, string element, float damage, string shape)
     {
         // Instantiate projectile at player's coordinates (replace with your cast point if needed)
         GameObject proj = Instantiate(prefab, new Vector3(4.5f, 3f, 0f), Quaternion.identity);
@@ -113,6 +114,9 @@ public class PlayerCasting : MonoBehaviour
     if (projectile != null && target != null)
     {
         projectile.target = target.transform;
+        projectile.targetObject = target;
+        projectile.damage = damage;
+        projectile.shape = shape;
     }
 }
 
@@ -150,50 +154,14 @@ public class PlayerCasting : MonoBehaviour
         baseMultiplier -= 0.2f * spellsCast; // Each spell cast reduces base multiplier by 10%
         float damage = baseDamage * baseMultiplier * metaMultiplier;
         //Switch case for shape to determine attack type
-        switch (shape)
-        {            
-            case "bolt":
-
-                SpawnProjectile(boltPrefab, currentTarget, element);
-                Attack(damage, element);
-                break;
-            case "ball":
-                SpawnProjectile(ballPrefab, currentTarget, element);
-                AreaAttack(damage, element);
-                break;
-        }   
-    }
-
-    void Attack(float damage, string element)
-    {
-    Debug.Log($"Attacking with {element} {damage} damage! Target: {currentTarget.name}");
-    //For single target attack, apply damage to current target
-        if (currentTarget == null)
+       
+        if (shape != null && shapeActions.ContainsKey(shape))
         {
-            Debug.LogWarning("No target selected!");
-            return;
-        }
-        //SpawnProjectile(boltPrefab, currentTarget, element);
-        
-        EnemyState enemyState = currentTarget.GetComponent<EnemyState>();
-        if (enemyState != null)
-        {
-            enemyState.Damaged(damage);
-
-            if (enemyState.currentHP <= 0)
-            {
-                currentTarget = null;
-
-                if (battleScript.activeEnemies.Count > 0)
-                {
-                    currentTargetIndex = 0;
-                    currentTarget = battleScript.activeEnemies[currentTargetIndex];
-                    HighlightTarget(currentTarget);
-                }
-            }
+            shapeActions[shape].Invoke(damage, element);
+            spellsCast++;
         }
     }
-
+/* Area attack might need later
 void AreaAttack(float damage, string element)
 {
     Debug.Log($"Attacking with {element} area attack for {damage} damage!");
@@ -236,11 +204,16 @@ void AreaAttack(float damage, string element)
         Debug.Log("All enemies defeated!");
     }
 }
+*/
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        shapeActions = new Dictionary<string, System.Action<float, string>>()
+        {
+            { "bolt", CastBolt },
+            { "ball", CastBall },
+        };
     }
 
     // Update is called once per frame
@@ -284,5 +257,13 @@ void AreaAttack(float damage, string element)
                 }
             }
         }
+    }
+    void CastBolt(float damage, string element)
+    {
+        SpawnProjectile(boltPrefab, currentTarget, element, damage, "bolt");
+    }
+    void CastBall(float damage, string element)
+    {
+        SpawnProjectile(ballPrefab, currentTarget, element, damage, "ball");
     }
 }

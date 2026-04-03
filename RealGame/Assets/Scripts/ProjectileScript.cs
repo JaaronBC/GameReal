@@ -1,3 +1,4 @@
+using System.Runtime.Serialization;
 using UnityEngine;
 
 public class ProjectileScript : MonoBehaviour
@@ -22,7 +23,7 @@ public class ProjectileScript : MonoBehaviour
 
         if (Vector3.Distance(transform.position, target.position) < 0.1f)
         {
-            //Insert hit effect later
+            //Call attack function here
             Destroy(gameObject);
         }
     }

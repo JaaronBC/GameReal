@@ -5,21 +5,21 @@ public class PlayerCasting : MonoBehaviour
 {
     [SerializeField] BattleScript battleScript;
     [SerializeField] private TextMeshProUGUI spellBuildText;
-
+    //Targeting variables
     int currentTargetIndex = 0;
     GameObject currentTarget;
 
     public bool isActive = false;
 
     int debugCounter = 0;
-
+    //Spell crafting variables
     public List<string> spellBuilder = new List<string>();
     public string spellWord = "";
     [SerializeField] WordDatabase wordDatabase;
     public int spellsCast = 0;
+    //Prefabs for shape words
     [SerializeField] GameObject boltPrefab;
     [SerializeField] GameObject ballPrefab;
-    private Transform castPoint;
     
     
     public void BeginTurn()
@@ -47,21 +47,22 @@ public class PlayerCasting : MonoBehaviour
 
     void HighlightTarget(GameObject target)
     {
-        //Debug.Log("Current Target: " + target.name + " at index " + currentTargetIndex);
-        //Color target red to indicate it's the current target
         var renderer = target.GetComponent<SpriteRenderer>();
-        if (renderer == null)
+
+        if (renderer != null)
         {
+            // Reset all enemies to white
             foreach (var enemy in battleScript.activeEnemies)
             {
                 var enemyRenderer = enemy.GetComponent<SpriteRenderer>();
-                if (enemyRenderer != null)    
+                if (enemyRenderer != null)
                 {
                     enemyRenderer.color = Color.white;
                 }
             }
-            renderer.color = Color.red;
         }
+        // Highlight current target
+        renderer.color = Color.red;
     }
 
     void SpawnProjectile(GameObject prefab, GameObject target, string element)
@@ -104,7 +105,7 @@ public class PlayerCasting : MonoBehaviour
         }
 
         projRenderer.color = colorToUse;
-        projRenderer.sortingOrder = 10; // ensures it appears in front of other sprites
+        projRenderer.sortingOrder = 10; 
     }
 
     // Assign target for projectile movement
@@ -146,15 +147,18 @@ public class PlayerCasting : MonoBehaviour
         {
             baseMultiplier -= 0.2f; // No element reduces base damage by 20%
         }
-        baseMultiplier -= 0.1f * spellsCast; // Each spell cast reduces base multiplier by 10%
+        baseMultiplier -= 0.2f * spellsCast; // Each spell cast reduces base multiplier by 10%
         float damage = baseDamage * baseMultiplier * metaMultiplier;
         //Switch case for shape to determine attack type
         switch (shape)
         {            
             case "bolt":
+
+                SpawnProjectile(boltPrefab, currentTarget, element);
                 Attack(damage, element);
                 break;
             case "ball":
+                SpawnProjectile(ballPrefab, currentTarget, element);
                 AreaAttack(damage, element);
                 break;
         }   
@@ -169,24 +173,17 @@ public class PlayerCasting : MonoBehaviour
             Debug.LogWarning("No target selected!");
             return;
         }
-        SpawnProjectile(boltPrefab, currentTarget, element);
+        //SpawnProjectile(boltPrefab, currentTarget, element);
         
         EnemyState enemyState = currentTarget.GetComponent<EnemyState>();
         if (enemyState != null)
         {
-            enemyState.currentHP -= damage; // Subtract HP
-            Debug.Log($"Attacked {currentTarget.name} for {damage} damage! Remaining HP: {enemyState.currentHP}");
-
-        
-            if (enemyState.currentHP < 0)
-            enemyState.currentHP = 0;
+            enemyState.Damaged(damage);
 
             if (enemyState.currentHP <= 0)
             {
-                battleScript.activeEnemies.Remove(currentTarget);
-                Debug.Log($"{currentTarget.name} defeated!");
-                Destroy(currentTarget); // or trigger death animation
                 currentTarget = null;
+
                 if (battleScript.activeEnemies.Count > 0)
                 {
                     currentTargetIndex = 0;
@@ -196,6 +193,7 @@ public class PlayerCasting : MonoBehaviour
             }
         }
     }
+
 void AreaAttack(float damage, string element)
 {
     Debug.Log($"Attacking with {element} area attack for {damage} damage!");
@@ -206,7 +204,7 @@ void AreaAttack(float damage, string element)
     }
 
     var enemies = battleScript.activeEnemies;
-    SpawnProjectile(ballPrefab, currentTarget, element);
+    //SpawnProjectile(ballPrefab, currentTarget, element);
 
     for (int i = enemies.Count - 1; i >= 0; i--)
     {
@@ -217,21 +215,10 @@ void AreaAttack(float damage, string element)
         EnemyState enemyState = enemy.GetComponent<EnemyState>();
         if (enemyState != null)
         {
-            enemyState.currentHP -= damage;
+            enemyState.Damaged(damage);
 
             Debug.Log($"Attacked {enemy.name} for {damage} damage! Remaining HP: {enemyState.currentHP}");
 
-            if (enemyState.currentHP < 0)
-                enemyState.currentHP = 0;
-
-            if (enemyState.currentHP <= 0)
-            {
-                Debug.Log($"{enemy.name} defeated!");
-
-                enemies.RemoveAt(i);
-
-                Destroy(enemy);
-            }
         }
     }
 

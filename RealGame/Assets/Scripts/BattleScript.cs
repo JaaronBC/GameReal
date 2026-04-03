@@ -153,6 +153,12 @@ public class BattleScript : MonoBehaviour
             var currentEnemy = Instantiate(enemies[i], new Vector3 (randomX, randomY), Quaternion.identity);
             currentEnemy.name = $"Enemy {i+1}";
 
+            EnemyState enemyState = currentEnemy.GetComponent<EnemyState>();
+            if (enemyState != null)
+            {
+                enemyState.battleScript = this;
+            }
+
             activeEnemies.Add(currentEnemy);
         }
         timer = startTime; 

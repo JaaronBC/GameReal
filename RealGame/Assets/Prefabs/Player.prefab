@@ -232,8 +232,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6b01bdd056614ff782f2206d649f098, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  freezeTime: 0
   movementForce: {x: 0, y: 0}
+  z: 0
+  shadowObj: {fileID: 2638111281568620962, guid: ce6a61c108e090f45bf2d6d3cb6ba6dc, type: 3}
+  spriteObj: {fileID: 2638111281568620962, guid: 69d542074240b19499f3d379fe97cfd3, type: 3}
 --- !u!95 &2686596573500431665
 Animator:
   serializedVersion: 7
@@ -318,7 +320,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   maxHP: 20
-  CurrentHP: 4
+  CurrentHP: 20
   flash: {fileID: 0}
   usableLetters: 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
   letterSprites:

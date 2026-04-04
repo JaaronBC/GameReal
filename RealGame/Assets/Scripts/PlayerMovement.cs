@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
+using UnityEngine.U2D;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -16,6 +17,18 @@ public class PlayerMovement : MonoBehaviour
     private float movementForceAcceleration = 4f;
 
     private SpriteRenderer spriteRenderer;
+
+    //jump variables
+    public float z = 0.0f;
+    private float yspd = 0.0f;
+    private float grv = 13f;
+    private float jumpHeight = 6f;
+
+    public GameObject shadowObj;
+    public GameObject spriteObj;
+    private GameObject currentSpriteObj;
+    private GameObject shadowSpriteObj;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {   
@@ -33,8 +46,11 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!enabled) return;
-        rb.linearVelocity = (moveInput * moveSpeed);
+        if (!enabled)
+        {
+            return;
+        }
+            rb.linearVelocity = (moveInput * moveSpeed);
         rb.linearVelocity += movementForce;
         movementForce = Vector2.Lerp(movementForce, Vector2.zero, movementForceAcceleration * Time.deltaTime);
 
@@ -43,10 +59,62 @@ public class PlayerMovement : MonoBehaviour
         {
             involnerable -= Time.deltaTime;
         }
+
+        //jump
+        if (Input.GetKeyDown(KeyCode.Space) && z <= 0.0)
+        {
+            jump();
+        }
+        if (spriteObj != null)
+        {
+            //in air
+            yspd -= grv * Time.deltaTime;
+            z += yspd * Time.deltaTime;
+            //landed
+            if (z <= 0.0f)
+            {
+                jumpReset();
+            }
+            //transform jump object
+            else
+            {
+                //same position with z offset
+                currentSpriteObj.transform.position = new Vector3(transform.position.x, 
+                    transform.position.y + z, transform.position.z);
+            }
+        } 
+
+    }
+
+    void jump()
+    {
+        currentSpriteObj = Instantiate(spriteObj, transform.position, Quaternion.identity);
+        shadowSpriteObj = Instantiate(shadowObj, transform.position, Quaternion.identity);
+        currentSpriteObj.transform.SetParent(this.transform);
+        shadowSpriteObj.transform.SetParent(this.transform);
+        SpriteRenderer sr = currentSpriteObj.GetComponent<SpriteRenderer>();
+        Animator a = currentSpriteObj.GetComponent<Animator>();
+        sr.flipX = spriteRenderer.flipX;
+        a.SetFloat("LastInputX", moveInput.x);
+        a.SetFloat("LastInputY", moveInput.y);
+
+        yspd = jumpHeight;
+        spriteRenderer.color = new Color(1f, 1f, 1f, 0f);
+    }
+
+    void jumpReset()
+    {
+        spriteRenderer.color = new Color(1f, 1f, 1f, 1f);
+        z = 0.0f;
+        yspd = 0.0f;
+        if (currentSpriteObj != null) Destroy(currentSpriteObj);
+        if (shadowSpriteObj != null) Destroy(shadowSpriteObj);
+
     }
 
     void OnDisable()
     {
+        jumpReset();
         moveInput = Vector2.zero;
         rb.linearVelocity = Vector2.zero;
         movementForce = Vector2.zero;

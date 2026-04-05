@@ -126,6 +126,11 @@ public class BattleScript : MonoBehaviour
             playerCasting.spellsCast = 0;
             playerCasting.spellWord = "";
             playerCasting.spellBuilder.Clear();
+            playerCasting.currentLetters.ForEach(letter => Destroy(letter));
+            playerCasting.currentLetters.Clear();
+            playerCasting.backspaceCounter = 0;
+            playerCasting.wordToColor.Clear();
+            playerCasting.elementalNotFound = true;
         } 
        
         state = newState;

@@ -112,4 +112,19 @@ public class WordDatabase : MonoBehaviour
         "twilight", "midnight", "abyss", "void", "dusk", "crepuscular", "tenebrous", "sable", "pitch", "ebony",
         "charcoal", "murky", "somber", "dusky", "gloaming", "shadowy"
     };
+
+    public HashSet<string> validWords;
+    void Awake()
+    {
+        validWords = new HashSet<string>();
+
+        if (shapeWords != null)
+            validWords.UnionWith(shapeWords);
+
+        if (elementWords != null)
+            validWords.UnionWith(elementWords);
+
+        if (metaWords != null)
+            validWords.UnionWith(metaWords);
+    }
 }

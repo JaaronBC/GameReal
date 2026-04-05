@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
-using TMPro; 
+using TMPro;
 public class PlayerCasting : MonoBehaviour
 {
     [SerializeField] BattleScript battleScript;
@@ -16,8 +16,22 @@ public class PlayerCasting : MonoBehaviour
     //Spell crafting variables
     public List<string> spellBuilder = new List<string>();
     public string spellWord = "";
+    //Visuals for spell crafting
+    [SerializeField] GameObject letterPrefab;
+    [SerializeField] GameObject[] letterPrefabs;
+    Dictionary<char, GameObject> letterMap;
+    [SerializeField] Transform currentWordContainer;
+    [SerializeField] Transform pastWordsContainer;
+    public List<GameObject> currentLetters = new List<GameObject>();
+    public float letterBuildX, letterBuildY;
+    public List<GameObject> wordToColor = new List<GameObject>();
+    public bool elementalNotFound = true;
+
+    //Word Database 
     [SerializeField] WordDatabase wordDatabase;
+
     public int spellsCast = 0;
+    public float backspaceCounter = 0;
     //Prefabs for shape words
     [SerializeField] GameObject boltPrefab;
     [SerializeField] GameObject ballPrefab;
@@ -95,10 +109,10 @@ public class PlayerCasting : MonoBehaviour
                     colorToUse = Color.blue;
                     break;
                 case "light":
-                    colorToUse = Color.white;
+                    colorToUse = new Color(1f, 1f, 0.5f, 1f); // light yellow
                     break;
                 case "dark":
-                    colorToUse = Color.black;
+                    colorToUse = new Color(0.5f, 0f, 0.5f, 1f); // dark purple
                     break;
                 default:
                     colorToUse = Color.white;
@@ -197,6 +211,8 @@ public class PlayerCasting : MonoBehaviour
         }
 
         baseMultiplier -= 0.2f * spellsCast; // Each spell cast reduces base multiplier by 10%
+        baseMultiplier -= 0.1f * backspaceCounter; // Each backspace reduces base multiplier by 10%
+        if (baseMultiplier < 0.1f) baseMultiplier = 0.1f; // Minimum damage multiplier of 10%
         float damage = baseDamage * baseMultiplier * metaMultiplier;
         //Switch case for shape to determine attack type
        
@@ -210,6 +226,7 @@ public class PlayerCasting : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        //Initialize shape action dictionary with corresponding methods for each shape
         shapeActions = new Dictionary<string, System.Action<float, string>>()
         {
             { "bolt", CastBolt },
@@ -220,6 +237,15 @@ public class PlayerCasting : MonoBehaviour
             {"ray", CastBeam},
             {"slash", CastSlash}
         };
+        //Initialize letter prefab mapping for spell crafting visuals
+        letterMap = new Dictionary<char, GameObject>();
+        for (int i = 0; i < 26; i++)
+        {
+            char c = (char)('a' + i);
+            letterMap[c] = letterPrefabs[i];
+        }
+        //Dbug log validWord hashset
+        Debug.Log("Valid Words: " + string.Join(", ", wordDatabase.validWords));
     }
 
     // Update is called once per frame
@@ -232,6 +258,25 @@ public class PlayerCasting : MonoBehaviour
         {
             CycleTarget();
         }
+        if (Input.GetKeyDown(KeyCode.Backspace))
+        {
+            if (!string.IsNullOrEmpty(spellWord))
+            {
+                // Remove last character from string
+                backspaceCounter += 1;
+                Debug.Log("Backspace pressed " + backspaceCounter + " times");
+                spellWord = spellWord.Substring(0, spellWord.Length - 1);
+                // Remove last letter object
+                if (currentLetters.Count > 0)
+                {
+                    GameObject lastLetter = currentLetters[currentLetters.Count - 1];
+                    currentLetters.RemoveAt(currentLetters.Count - 1);
+                    wordToColor.RemoveAt(wordToColor.Count - 1);
+                    Destroy(lastLetter);
+                    UpdateLetterPositions();
+                }
+            }
+        }
 
         if (Input.anyKeyDown)
         {
@@ -240,17 +285,24 @@ public class PlayerCasting : MonoBehaviour
                 if (char.IsLetter(c))
                 {
                     spellWord += c;
+                    SpawnLetter(c);
                     //Debug.Log("Current Spell Word: " + spellWord);
                 }
                 else if (c == ' ')
                 {
                     if (!string.IsNullOrEmpty(spellWord))
                     {
+                        ColorWord();
                         spellBuilder.Add(spellWord);
                         if (wordDatabase.shapeWords.Contains(spellWord))
                         {
                             CraftSpell();
                             spellBuilder.Clear();
+                            currentLetters.ForEach(letter => Destroy(letter));
+                            currentLetters.Clear();
+                            wordToColor.Clear();
+                            backspaceCounter = 0;
+                            elementalNotFound = true;
                         }
                         Debug.Log("Spell Added: " + spellWord);
                         spellWord = "";
@@ -258,6 +310,95 @@ public class PlayerCasting : MonoBehaviour
                 }
             }
         }
+    }
+    void SpawnLetter(char c)
+    {
+        c = char.ToLower(c);
+
+        if (!letterMap.ContainsKey(c)) return;
+
+        GameObject letterObj = Instantiate(letterMap[c], currentWordContainer);
+
+        currentLetters.Add(letterObj);
+        wordToColor.Add(letterObj);
+
+        UpdateLetterPositions();
+    }
+    void UpdateLetterPositions()
+    {
+        float spacing = 1f;
+        float totalWidth = (currentLetters.Count - 1) * spacing;
+
+        for (int i = 0; i < currentLetters.Count; i++)
+        {
+            float x = i * spacing - totalWidth / 2f;
+            currentLetters[i].transform.localPosition = new Vector3(letterBuildX+x, letterBuildY, 0);
+        }
+    }
+    void ColorWord()
+    {
+        //Color all letters in wordToColor 
+        //Element words match their element color, meta words are pink, shape words remain white
+        //Words that are not recognized are colored black
+
+        Color colorToUse = Color.white; 
+        if (wordDatabase.shapeWords.Contains(spellWord))
+        {
+            colorToUse = Color.white;
+        }
+        else if (wordDatabase.elementWords.Contains(spellWord) && elementalNotFound)
+        {
+            if (wordDatabase.fireWords.Contains(spellWord))
+            {
+                colorToUse = new Color(1f, 0.5f, 0f, 1f); // bright orange
+            }
+            else if (wordDatabase.waterWords.Contains(spellWord))
+            {
+                colorToUse = Color.blue;
+            }
+            else if (wordDatabase.earthWords.Contains(spellWord))
+            {
+                colorToUse = new Color(0.5f, 0.25f, 0f, 1f); // brown
+            }
+            else if (wordDatabase.airWords.Contains(spellWord))
+            {
+                colorToUse = Color.cyan;
+            }
+            else if (wordDatabase.shockWords.Contains(spellWord))
+            {
+                colorToUse = Color.yellow;
+            }
+            else if (wordDatabase.iceWords.Contains(spellWord))
+            {
+                colorToUse = Color.cyan;
+            }
+            else if (wordDatabase.lightWords.Contains(spellWord))
+            {
+                colorToUse = new Color(1f, 1f, 0.5f, 1f); // light yellow
+            }
+            else if (wordDatabase.darkWords.Contains(spellWord))
+            {
+                colorToUse = new Color(0.5f, 0f, 0.5f, 1f); // dark purple
+            } else
+            {
+                colorToUse = Color.black;
+            }
+            elementalNotFound = false;
+        }
+        else if (wordDatabase.metaWords.Contains(spellWord))
+        {
+            colorToUse = Color.magenta;
+        } else
+        {
+            colorToUse = Color.black;
+        }
+        foreach (GameObject letterObj in wordToColor)        {
+            SpriteRenderer renderer = letterObj.GetComponent<SpriteRenderer>();
+            if (renderer != null)            {
+                renderer.color = colorToUse;    
+            }
+        }
+        wordToColor.Clear();
     }
 
 

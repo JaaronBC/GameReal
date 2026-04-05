@@ -232,7 +232,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6b01bdd056614ff782f2206d649f098, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  freezeTime: 0
   movementForce: {x: 0, y: 0}
 --- !u!95 &2686596573500431665
 Animator:
@@ -263,7 +262,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7620887840857654650}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 14bf10964034b40db9a5c30a9a2ba89f, type: 3}
   m_Name: 
@@ -322,32 +321,32 @@ MonoBehaviour:
   flash: {fileID: 0}
   usableLetters: 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
   letterSprites:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: -425995913362149430, guid: 842e9dd8c2a2849e48e99eca1f8cba15, type: 3}
+  - {fileID: 1693515368, guid: 842e9dd8c2a2849e48e99eca1f8cba15, type: 3}
+  - {fileID: 106603532, guid: 842e9dd8c2a2849e48e99eca1f8cba15, type: 3}
+  - {fileID: -762792798, guid: 842e9dd8c2a2849e48e99eca1f8cba15, type: 3}
+  - {fileID: -769645160, guid: 842e9dd8c2a2849e48e99eca1f8cba15, type: 3}
+  - {fileID: -1602780167, guid: 842e9dd8c2a2849e48e99eca1f8cba15, type: 3}
+  - {fileID: 634216234, guid: 842e9dd8c2a2849e48e99eca1f8cba15, type: 3}
+  - {fileID: 1741835217, guid: 842e9dd8c2a2849e48e99eca1f8cba15, type: 3}
+  - {fileID: -1190931661, guid: 842e9dd8c2a2849e48e99eca1f8cba15, type: 3}
+  - {fileID: 124365851, guid: 842e9dd8c2a2849e48e99eca1f8cba15, type: 3}
+  - {fileID: -786639553, guid: 842e9dd8c2a2849e48e99eca1f8cba15, type: 3}
+  - {fileID: 1046987332, guid: 842e9dd8c2a2849e48e99eca1f8cba15, type: 3}
+  - {fileID: -584914290, guid: 842e9dd8c2a2849e48e99eca1f8cba15, type: 3}
+  - {fileID: -1902559743, guid: 842e9dd8c2a2849e48e99eca1f8cba15, type: 3}
+  - {fileID: -874239722, guid: 842e9dd8c2a2849e48e99eca1f8cba15, type: 3}
+  - {fileID: 1838576204, guid: 842e9dd8c2a2849e48e99eca1f8cba15, type: 3}
+  - {fileID: 2079570396, guid: 842e9dd8c2a2849e48e99eca1f8cba15, type: 3}
+  - {fileID: -308919331, guid: 842e9dd8c2a2849e48e99eca1f8cba15, type: 3}
+  - {fileID: -1665458954, guid: 842e9dd8c2a2849e48e99eca1f8cba15, type: 3}
+  - {fileID: -1918842739, guid: 842e9dd8c2a2849e48e99eca1f8cba15, type: 3}
+  - {fileID: 791079305, guid: 842e9dd8c2a2849e48e99eca1f8cba15, type: 3}
+  - {fileID: -2099611247, guid: 842e9dd8c2a2849e48e99eca1f8cba15, type: 3}
+  - {fileID: -1035586512, guid: 842e9dd8c2a2849e48e99eca1f8cba15, type: 3}
+  - {fileID: 2124779879, guid: 842e9dd8c2a2849e48e99eca1f8cba15, type: 3}
+  - {fileID: 2123860703, guid: 842e9dd8c2a2849e48e99eca1f8cba15, type: 3}
+  - {fileID: 788211293, guid: 842e9dd8c2a2849e48e99eca1f8cba15, type: 3}
   movementScript: {fileID: 3285433953536994103}
 --- !u!114 &-7054216551972210368
 MonoBehaviour:

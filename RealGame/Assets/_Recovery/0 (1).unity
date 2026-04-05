@@ -5234,9 +5234,6 @@ MonoBehaviour:
   spellsCast: 0
   boltPrefab: {fileID: 2024269593988633140, guid: 347bb0a050289463482be45da21519ac, type: 3}
   ballPrefab: {fileID: 1597591308622146982, guid: 8f9cb1661d32e4ffbbdca3c04059c395, type: 3}
-  missilePrefab: {fileID: 2732010235040160828, guid: f8ef2c8048c2f442f90c06df35e80b36, type: 3}
-  beamPrefab: {fileID: 1740744284733183969, guid: 97b85dfbaff204516b019daf5c31c865, type: 3}
-  slashPrefab: {fileID: 22358258966051480, guid: 747a475c43a1844eebc808eff22c5c8b, type: 3}
 --- !u!114 &1257174533
 MonoBehaviour:
   m_ObjectHideFlags: 0

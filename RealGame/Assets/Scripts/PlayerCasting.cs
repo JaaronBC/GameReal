@@ -21,7 +21,9 @@ public class PlayerCasting : MonoBehaviour
     //Prefabs for shape words
     [SerializeField] GameObject boltPrefab;
     [SerializeField] GameObject ballPrefab;
-    
+    [SerializeField] GameObject missilePrefab;
+    [SerializeField] GameObject beamPrefab;
+    [SerializeField] GameObject slashPrefab;
     
     public void BeginTurn()
     {
@@ -68,16 +70,14 @@ public class PlayerCasting : MonoBehaviour
 
     void SpawnProjectile(GameObject prefab, GameObject target, string element, float damage, string shape)
     {
-        // Instantiate projectile at player's coordinates (replace with your cast point if needed)
         GameObject proj = Instantiate(prefab, new Vector3(4.5f, 3f, 0f), Quaternion.identity);
 
-        // Get SpriteRenderer; handles nested children as well
         SpriteRenderer projRenderer = proj.GetComponentInChildren<SpriteRenderer>();
         if (projRenderer != null)
         {
             Color colorToUse = Color.white; // default
 
-            switch (element?.ToLower()) // ensure lowercase comparison and null safe
+            switch (element?.ToLower()) 
             {
                 case "fire":
                     colorToUse = new Color(1f, 0.5f, 0f, 1f); // bright orange
@@ -113,10 +113,14 @@ public class PlayerCasting : MonoBehaviour
     ProjectileScript projectile = proj.GetComponent<ProjectileScript>();
     if (projectile != null && target != null)
     {
+        if (element == null) element = "none"; // Handle case where no element is assigned
+
+        //Data passed to projectile for damage calculation and hit effects
         projectile.target = target.transform;
         projectile.targetObject = target;
         projectile.damage = damage;
         projectile.shape = shape;
+        projectile.element = element;
     }
 }
 
@@ -124,6 +128,7 @@ public class PlayerCasting : MonoBehaviour
     {
         Debug.Log("Crafting spell with components: " + string.Join(", ", spellBuilder));
         if (spellBuilder.Count == 0) return;
+        HashSet<string> usedMetaWords = new HashSet<string>();
         float baseMultiplier = 1;
         float metaMultiplier = 1;
         float baseDamage = 10;
@@ -144,13 +149,53 @@ public class PlayerCasting : MonoBehaviour
             }
             else if (wordDatabase.metaWords.Contains(word))
             {
-                metaMultiplier += 0.2f; // Each meta word increases multiplier by 20%
+                if (!usedMetaWords.Contains(word))
+                {
+                    metaMultiplier += 0.2f; // Each meta word increases multiplier by 20%
+                    usedMetaWords.Add(word);
+                }
             }
         }
-        if (element == null)
+
+        //check all elemental hashmaps for word and if found, make it into element type 
+        if (wordDatabase.fireWords.Contains(element))
         {
-            baseMultiplier -= 0.2f; // No element reduces base damage by 20%
+            element = "fire";
         }
+        else if (wordDatabase.waterWords.Contains(element))
+        {
+            element = "water";
+        }
+        else if (wordDatabase.earthWords.Contains(element))
+        {
+            element = "earth";
+        }
+        else if (wordDatabase.airWords.Contains(element))
+        {
+            element = "air";
+        }
+        else if (wordDatabase.shockWords.Contains(element))
+        {
+            element = "shock";
+        }
+        else if (wordDatabase.iceWords.Contains(element))
+        {
+            element = "ice";
+        }
+        else if (wordDatabase.lightWords.Contains(element))
+        {
+            element = "light";
+        }
+        else if (wordDatabase.darkWords.Contains(element))
+        {
+            element = "dark";
+        } 
+        else
+        {
+            element = null; // If element word isn't recognized, treat as no element
+            baseMultiplier -= 0.2f; // Unrecognized element reduces base damage by 20%
+        }
+
         baseMultiplier -= 0.2f * spellsCast; // Each spell cast reduces base multiplier by 10%
         float damage = baseDamage * baseMultiplier * metaMultiplier;
         //Switch case for shape to determine attack type
@@ -169,6 +214,11 @@ public class PlayerCasting : MonoBehaviour
         {
             { "bolt", CastBolt },
             { "ball", CastBall },
+            { "missile", CastMissile },
+            { "beam", CastBeam },
+            {"laser", CastBeam},
+            {"ray", CastBeam},
+            {"slash", CastSlash}
         };
     }
 
@@ -209,12 +259,67 @@ public class PlayerCasting : MonoBehaviour
             }
         }
     }
+
+
+    //Spell shape methods
+
+    //Bolt-Single Target, hits once
     void CastBolt(float damage, string element)
     {
         SpawnProjectile(boltPrefab, currentTarget, element, damage, "bolt");
     }
+    //Ball-Single Target, hits once
     void CastBall(float damage, string element)
     {
         SpawnProjectile(ballPrefab, currentTarget, element, damage, "ball");
+    }
+    //Missile-Multi Target, hits 3 times with reduced damage
+    void CastMissile(float damage, string element)
+    {
+        StartCoroutine(SpawnMissilesCoroutine(damage, element));
+    }
+
+    private System.Collections.IEnumerator SpawnMissilesCoroutine(float damage, string element)
+    {
+        int missileCount = 3;
+        float delay = 0.2f; 
+
+        for (int i = 0; i < missileCount; i++)
+        {
+            SpawnProjectile(missilePrefab, currentTarget, element, damage / missileCount, "missile");
+            yield return new WaitForSeconds(delay);
+        }
+    }
+    //Beam-Single Target, hits multiple times with reduced damage
+    void CastBeam(float damage, string element)
+    {
+        StartCoroutine(SpawnBeamCoroutine(damage, element));
+    }
+    private System.Collections.IEnumerator SpawnBeamCoroutine(float damage, string element)
+    {
+        int beamCount = 20;
+        float delay = 0.05f; 
+
+        for (int i = 0; i < beamCount; i++)
+        {
+            SpawnProjectile(beamPrefab, currentTarget, element, damage / beamCount, "beam");
+            yield return new WaitForSeconds(delay);
+        }
+    }
+    //Slash-Multi Target, hits 2 times with reduced damage
+    void CastSlash(float damage, string element)
+    {
+        StartCoroutine(SpawnSlashCoroutine(damage, element));
+    }
+    private System.Collections.IEnumerator SpawnSlashCoroutine(float damage, string element)
+    {
+        int slashCount = 2;
+        float delay = 0.1f; 
+
+        for (int i = 0; i < slashCount; i++)
+        {
+            SpawnProjectile(slashPrefab, currentTarget, element, damage / slashCount, "slash");
+            yield return new WaitForSeconds(delay);
+        }
     }
 }

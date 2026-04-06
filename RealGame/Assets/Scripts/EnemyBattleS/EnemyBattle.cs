@@ -24,6 +24,7 @@ public abstract class EnemyBattle : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
         animator = GetComponent<Animator>();
         battleScript = GetComponent<BattleScript>();
+        print(battleScript);
     }
 
     // Update is called once per frame

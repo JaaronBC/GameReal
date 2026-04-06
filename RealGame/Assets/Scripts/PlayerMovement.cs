@@ -5,7 +5,10 @@ using UnityEngine.U2D;
 
 public class PlayerMovement : MonoBehaviour
 {
+    private float speed = 4f;
     private float moveSpeed = 4F;
+    private float airSpeed = 3.5f;
+
     private Rigidbody2D rb;
     private Vector2 moveInput;
     private Animator animator;
@@ -17,23 +20,26 @@ public class PlayerMovement : MonoBehaviour
     private float movementForceAcceleration = 4f;
 
     private SpriteRenderer spriteRenderer;
+    private PlayerState playerState;
 
     //jump variables
     public float z = 0.0f;
     private float yspd = 0.0f;
-    private float grv = 13f;
+    private float grv = 15f;
     private float jumpHeight = 6f;
 
     public GameObject shadowObj;
     public GameObject spriteObj;
     private GameObject currentSpriteObj;
     private GameObject shadowSpriteObj;
-
+    private SpriteRenderer sr;
+    
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {   
         //enable player movement script at start of scene
         PlayerMovement playerMovement = GetComponent<PlayerMovement>();
+        playerState = GetComponent<PlayerState>();
         if (playerMovement != null)
         {
             playerMovement.enabled = true;
@@ -50,7 +56,8 @@ public class PlayerMovement : MonoBehaviour
         {
             return;
         }
-            rb.linearVelocity = (moveInput * moveSpeed);
+        
+        rb.linearVelocity = (moveInput * speed);
         rb.linearVelocity += movementForce;
         movementForce = Vector2.Lerp(movementForce, Vector2.zero, movementForceAcceleration * Time.deltaTime);
 
@@ -63,6 +70,7 @@ public class PlayerMovement : MonoBehaviour
         //jump
         if (Input.GetKeyDown(KeyCode.Space) && z <= 0.0)
         {
+            print(speed);
             jump();
         }
         if (spriteObj != null)
@@ -81,8 +89,14 @@ public class PlayerMovement : MonoBehaviour
                 //same position with z offset
                 currentSpriteObj.transform.position = new Vector3(transform.position.x, 
                     transform.position.y + z, transform.position.z);
+                if (playerState.involnerable > 0.0f) sr.color = new Color(1f, 1f, 1f, Random.Range(0.25f, 0.75f));
+                spriteRenderer.color = new Color(1f, 1f, 1f, 0f);
             }
         } 
+
+        //air and jump speed
+        if (z > 0.0f) speed = airSpeed;
+        else speed = moveSpeed;
 
     }
 
@@ -92,7 +106,7 @@ public class PlayerMovement : MonoBehaviour
         shadowSpriteObj = Instantiate(shadowObj, transform.position, Quaternion.identity);
         currentSpriteObj.transform.SetParent(this.transform);
         shadowSpriteObj.transform.SetParent(this.transform);
-        SpriteRenderer sr = currentSpriteObj.GetComponent<SpriteRenderer>();
+        sr = currentSpriteObj.GetComponent<SpriteRenderer>();
         Animator a = currentSpriteObj.GetComponent<Animator>();
         sr.flipX = spriteRenderer.flipX;
         a.SetFloat("LastInputX", moveInput.x);

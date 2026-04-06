@@ -18,7 +18,7 @@ GameObject:
   - component: {fileID: 5255136391540677965}
   - component: {fileID: 1891448053136318928}
   - component: {fileID: -7054216551972210368}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -305,8 +305,8 @@ CircleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: -0.12297726}
-  m_Radius: 0.5
+  m_Offset: {x: 0, y: -0.1}
+  m_Radius: 0.4
 --- !u!114 &1891448053136318928
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -321,7 +321,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: '::'
   maxHP: 20
   CurrentHP: 20
+  z: 0
   flash: {fileID: 0}
+  involnerable: 0
   usableLetters: 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
   letterSprites:
   - {fileID: 0}

@@ -232,8 +232,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3980cad6daec74b78b105a800f6a5fd6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyState
+  battleScript: {fileID: 0}
   maxHP: 20
   currentHP: 20
+  savedDamage: 0
 --- !u!1001 &3038714007203989457
 PrefabInstance:
   m_ObjectHideFlags: 0

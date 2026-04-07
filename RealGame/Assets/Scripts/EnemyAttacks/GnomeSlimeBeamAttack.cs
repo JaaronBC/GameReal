@@ -7,23 +7,22 @@ public class GnomeSlimeBeamAttack : MonoBehaviour
 {
     //stats
     float timer = 5.0f;
-    float z = 0.5f;
+    protected float z = 0.5f;
     int damage = 2;
     float speed = 3f;
     bool playerHitDestroy = true;
 
     //components
     private Rigidbody2D rb;
-    private BattleScript battleScript;
+    public BattleScript battleScript;
 
-    void Start()
+    protected virtual void Start()
     {
         battleScript = FindObjectOfType<BattleScript>();
-        print(battleScript);
     }
 
     // Update is called once per frame
-    void Update()
+    protected virtual void Update()
     {
         //move down
         transform.Translate(Vector3.down * (speed * Time.deltaTime), Space.World);

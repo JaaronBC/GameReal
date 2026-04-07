@@ -70,7 +70,6 @@ public class PlayerMovement : MonoBehaviour
         //jump
         if (Input.GetKeyDown(KeyCode.Space) && z <= 0.0)
         {
-            print(speed);
             jump();
         }
         if (spriteObj != null)

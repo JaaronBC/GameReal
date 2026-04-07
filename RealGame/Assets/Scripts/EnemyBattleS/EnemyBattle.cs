@@ -3,7 +3,6 @@ using UnityEngine;
 public abstract class EnemyBattle : MonoBehaviour
 {
     //stats
-    public int hp = 20;
     public float[] cooldownRange = { 1f, 1.5f };
     public float timer = 0f;
     public bool active = false;
@@ -24,7 +23,6 @@ public abstract class EnemyBattle : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
         animator = GetComponent<Animator>();
         battleScript = GetComponent<BattleScript>();
-        print(battleScript);
     }
 
     // Update is called once per frame
@@ -40,7 +38,7 @@ public abstract class EnemyBattle : MonoBehaviour
             if (active == true) deactivate();
         }
         //animatior
-        animator.SetBool("attacking", active);
+        if (animator != null) animator.SetBool("attacking", active);
         //attack timer 
         if (active)
         {
@@ -72,7 +70,7 @@ public abstract class EnemyBattle : MonoBehaviour
     public virtual void deactivate()
     {
         active = false;
-        animator.SetBool("attacking", active);
+        if (animator != null) animator.SetBool("attacking", active);
         timer = Random.Range(cooldownRange[0], cooldownRange[1]);
     }
 }

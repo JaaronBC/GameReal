@@ -13,6 +13,7 @@ public class EnemyScript : MonoBehaviour
     private CircleCollider2D playerDetectionRadius;
 
     //movement variables
+    public float z = 0.5f;
     private int timer = 0;
     float currentSpeed = 0.0f;
     float speed = 2f;
@@ -191,7 +192,13 @@ public class EnemyScript : MonoBehaviour
             BattleDataHolder.playerPosition = GameObject.Find("Player").transform.position;
             BattleDataHolder.hasReturnPosition = true;
             BattleDataHolder.enemiesToSpawn = enemies.ToArray();
-            BattleScreenTransition(battleSceneName);
+            //BattleScreenTransition(battleSceneName);
+            PlayerMovement playerMovement = collision.gameObject.GetComponent<PlayerMovement>();
+            if (playerMovement != null)
+            {
+                if (playerMovement.z < z)
+                    BattleScreenTransition(battleSceneName);
+            }
         }
     }
 

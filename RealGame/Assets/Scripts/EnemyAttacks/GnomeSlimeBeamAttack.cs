@@ -1,21 +1,25 @@
 using System.Threading;
 using UnityEngine;
 
+
+
 public class GnomeSlimeBeamAttack : MonoBehaviour
 {
     //stats
     float timer = 5.0f;
+    float z = 0.5f;
     int damage = 2;
-    int range = 0;
     float speed = 3f;
     bool playerHitDestroy = true;
 
     //components
     private Rigidbody2D rb;
+    private BattleScript battleScript;
 
     void Start()
     {
-        
+        battleScript = FindObjectOfType<BattleScript>();
+        print(battleScript);
     }
 
     // Update is called once per frame
@@ -30,6 +34,12 @@ public class GnomeSlimeBeamAttack : MonoBehaviour
         {
             Destroy(this.gameObject);
         }
+
+        //die if not in enemy turn
+        if (battleScript != null) if (battleScript.state != BattleState.EnemyTurn)
+        {
+            Destroy(this.gameObject);
+        }
     }
 
     //player collision
@@ -37,11 +47,13 @@ public class GnomeSlimeBeamAttack : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
+            //destroy on collision
+            bool col = false;
             //damage player
             Vector2 direction = (collision.transform.position - transform.position).normalized;
-            collision.gameObject.GetComponent<PlayerState>().TakeDamage(damage, direction);
+            col = collision.gameObject.GetComponent<PlayerState>().TakeDamage(damage, direction, z);
             //destroy self
-            if (playerHitDestroy) Destroy(this.gameObject);
+            if (playerHitDestroy && col) Destroy(this.gameObject);
         }
     }
 }

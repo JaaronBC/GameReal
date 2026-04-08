@@ -27,7 +27,7 @@ public class BattleScript : MonoBehaviour
     private float switchTime = 1f;
     //enemy turn variables
     private float[] baseTimeChange = { 4f, 5f };
-    float addedTime = 0f;
+    float addedTime = 10.0f;
     //turn order
     public BattleState state;
     //objects

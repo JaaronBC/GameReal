@@ -9,10 +9,11 @@ public class PlayerState : MonoBehaviour
     public int CurrentHP;
     private string gameOverScene = "GameOver";
     private float deathTimer = 1.0f;
+    public float z = 0.0f;
 
     public FlashScript flash;
     private Rigidbody2D rb;
-    private float involnerable = 0.0f;
+    public float involnerable = 0.0f;
     private float involnerableTime = 1.0f;
     private float knockbackForce = 8f;
 
@@ -41,28 +42,33 @@ public class PlayerState : MonoBehaviour
     void Update()
     {
 
-        if (involnerable > 0.0)
+        if (involnerable > 0.0 && z <= 0.0f)
         {
             color.a = Random.Range(0.25f, 0.75f);
             spriteRenderer.color = color;
-            involnerable -= Time.deltaTime;
             if (involnerable <= 0.0)
             {
                 spriteRenderer.color = baseColor;
             }
         }
+        if (involnerable > 0.0) involnerable -= Time.deltaTime;
 
         //health gitter
         if (CurrentHP == 0)
         {
             transform.position += new Vector3(Random.Range(-0.05f, 0.05f), Random.Range(-0.05f, 0.05f), 0);
         }
+
+        //z
+        z = playerMovement.z;
     }
 
     //take damage
-    public void TakeDamage(int damage, Vector2 direction)
+    public bool TakeDamage(int damage, Vector2 direction, float zAttack)
     {
-        if (involnerable > 0.0f) return;
+        print(z + "   " + zAttack );
+        if (involnerable > 0.0f) return true;
+        if (z > zAttack) return false;
 
         CurrentHP -= damage;
         CurrentHP = Mathf.Max(CurrentHP, 0);
@@ -76,11 +82,12 @@ public class PlayerState : MonoBehaviour
         if (CurrentHP <= 0)
         {
             Death();
-            return;
+            return true;
         }
 
         //knockback from direction
         playerMovement.movementForce = (direction * knockbackForce);
+        return true;
     }
 
     //death

@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 1654800173060977400}
   m_Layer: 0
   m_Name: EnemyGnomeSlime
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -131,6 +131,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   chaseRadius: 3
+  battlePrefab: {fileID: 1984905327066608720, guid: 0972e51b09acc424ca1b09f094c43d42, type: 3}
 --- !u!50 &1330200608452688425
 Rigidbody2D:
   serializedVersion: 5

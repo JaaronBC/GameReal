@@ -5,7 +5,6 @@ using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
 using TMPro; //text mesh pro
 using System.Collections.Generic;
-using System.Diagnostics;
 
 
 public enum BattleState
@@ -58,6 +57,10 @@ public class BattleScript : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        if (BattleDataHolder.enemiesToSpawn != null)
+        {
+            enemies = BattleDataHolder.enemiesToSpawn;
+        }
         state = BattleState.Start;
         setUpBattle();
         playerObject = GameObject.Find("PlayerObject");
@@ -139,6 +142,7 @@ public class BattleScript : MonoBehaviour
 
     void setUpBattle()
     {
+        Debug.Log("Setup Battle");
         var currentPlayer = Instantiate(playerPrefab, new Vector3 (playerX, playerY), Quaternion.identity);
         currentPlayer.name = "PlayerObject";
         playerMovement = currentPlayer.GetComponent<PlayerMovement>();

@@ -2,6 +2,7 @@ using UnityEditor.Rendering;
 using UnityEditor.ShaderGraph;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.Collections.Generic;
 
 public class EnemyScript : MonoBehaviour
 {
@@ -32,6 +33,9 @@ public class EnemyScript : MonoBehaviour
 
     //battle transition
     private string battleSceneName = "BattleScene";
+    public GameObject battlePrefab;
+    private bool isTransitioning = false;
+
 
 
     void Start()
@@ -105,10 +109,37 @@ public class EnemyScript : MonoBehaviour
 
     public void OnTriggerEnter2D(Collider2D collision)
     {
-        //collision is player
+        if (isTransitioning) return;
         if (collision.gameObject.CompareTag("Player"))
         {
+            isTransitioning = true;
             print("player battle detected");
+
+            Collider2D[] found = Physics2D.OverlapCircleAll(collision.transform.position, 5f);
+
+            HashSet<EnemyScript> countedEnemies = new HashSet<EnemyScript>();
+
+            List<GameObject> enemies = new List<GameObject>();
+
+            foreach (var col in found)
+            {
+                if (col.CompareTag("Enemy"))
+                {
+                    EnemyScript enemy = col.GetComponent<EnemyScript>();
+
+                    if (enemy != null && enemy.battlePrefab != null)
+                    {
+                        if (!countedEnemies.Contains(enemy))
+                        {
+                            countedEnemies.Add(enemy);
+                            Debug.Log("Adding enemy to battle: " + enemy.name);
+                            enemies.Add(enemy.battlePrefab);
+                        }
+                    }
+                }
+            }
+
+            BattleDataHolder.enemiesToSpawn = enemies.ToArray();
             BattleScreenTransition(battleSceneName);
         }
     }

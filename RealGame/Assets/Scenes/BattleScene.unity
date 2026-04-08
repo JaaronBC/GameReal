@@ -5187,10 +5187,7 @@ MonoBehaviour:
   enemyGridMinY: 6
   enemyGridMaxY: 7
   playerPrefab: {fileID: 7620887840857654650, guid: dfce6b46e3bc347558338a3c8d83ddce, type: 3}
-  enemies:
-  - {fileID: 1984905327066608720, guid: 0972e51b09acc424ca1b09f094c43d42, type: 3}
-  - {fileID: 1984905327066608720, guid: 0972e51b09acc424ca1b09f094c43d42, type: 3}
-  - {fileID: 1984905327066608720, guid: 0972e51b09acc424ca1b09f094c43d42, type: 3}
+  enemies: []
   activeEnemies: []
   playerMovement: {fileID: 3285433953536994103, guid: dfce6b46e3bc347558338a3c8d83ddce, type: 3}
   playerCasting: {fileID: 1257174532}
@@ -5260,10 +5257,14 @@ MonoBehaviour:
   - {fileID: 5015532313363477541, guid: 05ba963654d6043e0abb7de13e2c289f, type: 3}
   currentWordContainer: {fileID: 0}
   pastWordsContainer: {fileID: 0}
+  currentLetters: []
   letterBuildX: 4.5
   letterBuildY: 4.5
+  wordToColor: []
+  elementalNotFound: 1
   wordDatabase: {fileID: 1257174533}
   spellsCast: 0
+  backspaceCounter: 0
   boltPrefab: {fileID: 2024269593988633140, guid: 347bb0a050289463482be45da21519ac, type: 3}
   ballPrefab: {fileID: 1597591308622146982, guid: 8f9cb1661d32e4ffbbdca3c04059c395, type: 3}
   missilePrefab: {fileID: 2732010235040160828, guid: f8ef2c8048c2f442f90c06df35e80b36, type: 3}

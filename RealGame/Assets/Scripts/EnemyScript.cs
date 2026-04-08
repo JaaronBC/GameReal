@@ -36,6 +36,8 @@ public class EnemyScript : MonoBehaviour
     public GameObject battlePrefab;
     private bool isTransitioning = false;
 
+    public string enemyID; // Unique identifier for the enemy, can be set in the inspector
+
 
 
     void Start()
@@ -44,6 +46,30 @@ public class EnemyScript : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
         rb = GetComponent<Rigidbody2D>();
         target = GameObject.Find("Player").transform;
+        if (!BattleDataHolder.enemyDatabase.ContainsKey(enemyID))
+        {
+            EnemySaveData data = new EnemySaveData
+            {
+                id = enemyID,
+                position = transform.position,
+                defeated = false,
+                returnablePosition = false
+            };
+            BattleDataHolder.enemyDatabase.Add(enemyID, data);
+            Debug.Log("Logged Enemy: " + enemyID);
+        }
+        else
+        {
+            // If already exists, check if defeated
+            if (BattleDataHolder.enemyDatabase[enemyID].defeated)
+            {
+                Destroy(gameObject);
+            }
+        }
+        if (BattleDataHolder.enemyDatabase.ContainsKey(enemyID) && BattleDataHolder.enemyDatabase[enemyID].returnablePosition)
+        {
+            transform.position = BattleDataHolder.enemyDatabase[enemyID].position;
+        }
     }
 
     // Update is called once per frame
@@ -110,10 +136,32 @@ public class EnemyScript : MonoBehaviour
     public void OnTriggerEnter2D(Collider2D collision)
     {
         if (isTransitioning) return;
+        EnemyScript[] allEnemies = FindObjectsOfType<EnemyScript>();
+
         if (collision.gameObject.CompareTag("Player"))
         {
             isTransitioning = true;
             print("player battle detected");
+
+            foreach (EnemyScript enemy in allEnemies)
+            {
+                if (BattleDataHolder.enemyDatabase.ContainsKey(enemy.enemyID))
+                {
+                //Set returnablePosition to true and update position in EnemySaveData for each enemy in the scene
+                BattleDataHolder.enemyDatabase[enemy.enemyID].returnablePosition = true;
+                BattleDataHolder.enemyDatabase[enemy.enemyID].position = enemy.transform.position;
+                }
+                else
+                {
+                    BattleDataHolder.enemyDatabase[enemy.enemyID] = new EnemySaveData
+                    {
+                    id = enemy.enemyID,
+                    position = enemy.transform.position,
+                    defeated = false,
+                    returnablePosition = false
+                    };
+                }
+            }
 
             Collider2D[] found = Physics2D.OverlapCircleAll(collision.transform.position, 5f);
 
@@ -134,11 +182,14 @@ public class EnemyScript : MonoBehaviour
                             countedEnemies.Add(enemy);
                             Debug.Log("Adding enemy to battle: " + enemy.name);
                             enemies.Add(enemy.battlePrefab);
+                            BattleDataHolder.activeEnemyIDs.Add(enemy.enemyID);
                         }
                     }
                 }
             }
-
+            BattleDataHolder.returnSceneName = SceneManager.GetActiveScene().name;
+            BattleDataHolder.playerPosition = GameObject.Find("Player").transform.position;
+            BattleDataHolder.hasReturnPosition = true;
             BattleDataHolder.enemiesToSpawn = enemies.ToArray();
             BattleScreenTransition(battleSceneName);
         }

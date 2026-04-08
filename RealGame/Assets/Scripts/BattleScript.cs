@@ -124,7 +124,7 @@ public class BattleScript : MonoBehaviour
                     if (activeEnemies.Count == 0) 
                     {
                         SwitchState(BattleState.BattleEnd);
-                        timer = 3f;
+                        timer = 1f;
                     }
                     else 
                     {

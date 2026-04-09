@@ -11,24 +11,37 @@ public class GnomeSlimeBeamAttack : MonoBehaviour
     int damage = 2;
     float speed = 3f;
     bool playerHitDestroy = true;
+    public string state = "normal";
 
     //components
     private Rigidbody2D rb;
     public BattleScript battleScript;
 
+    //"angle" state variant
+    public float angle = 0.0f;
+    float angleSpeed = 2.0f;
+
     protected virtual void Start()
     {
         battleScript = FindObjectOfType<BattleScript>();
+        angle = Random.Range(-160f, -30f);
     }
 
     // Update is called once per frame
     protected virtual void Update()
     {
         //move down
-        transform.Translate(Vector3.down * (speed * Time.deltaTime), Space.World);
+        if (state == "normal") {
+            transform.Translate(Vector3.down * (speed * Time.deltaTime), Space.World);
+        } else if (state == "angle")
+        {
+            Vector2 direction = new Vector2(Mathf.Cos(angle * Mathf.Deg2Rad),
+                Mathf.Sin(angle * Mathf.Deg2Rad)).normalized;
+            transform.Translate(direction * (angleSpeed * Time.deltaTime), Space.World);
+        }
 
-        //timer and death
-        timer -= Time.deltaTime;
+            //timer and death
+            timer -= Time.deltaTime;
         if (timer <= 0.0f)
         {
             Destroy(this.gameObject);

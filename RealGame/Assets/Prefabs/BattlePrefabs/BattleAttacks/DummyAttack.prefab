@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 3531989846071742629}
   - component: {fileID: 2348075809494390107}
   - component: {fileID: 197504496765891585}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: DummyAttack
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -82,7 +82,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_MaskInteraction: 0
   m_Sprite: {fileID: 6647330129486264531, guid: 3ac6c3ac4e5d7c94a8576dda14f432dc, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

@@ -7,10 +7,9 @@ public class DummyAttack : GnomeSlimeBeamAttack
     public int count = 10;
     private int countMax = 10;
 
-    public float angle;
     private float angleOffset = 20.0f;
     private float offset = 0.5f;
-    private GameObject player;
+    public GameObject player;
 
     private void Awake()
     {
@@ -28,19 +27,19 @@ public class DummyAttack : GnomeSlimeBeamAttack
         {
             Destroy(this.gameObject);
         }
-    }
 
-    //
-    public void OnAnimationComplete()
-    {
         player = GameObject.Find("Player");
-        print(player);
         if (player)
         {
             float direction = Mathf.Atan2(player.transform.position.y - transform.position.y,
                 player.transform.position.x - transform.position.x) * Mathf.Rad2Deg;
             angle = direction + UnityEngine.Random.Range(-angleOffset, angleOffset);
         }
+    }
+
+    //
+    public void OnAnimationComplete()
+    {
 
         if (count > 0)
         {
@@ -50,7 +49,7 @@ public class DummyAttack : GnomeSlimeBeamAttack
             GameObject newSelf = Instantiate(this.gameObject, spawnPosition, Quaternion.identity);
             DummyAttack newScript = newSelf.GetComponent<DummyAttack>();
             newScript.count = count - 1;
-            newScript.angle = angle;
+            newScript.angle = angle + UnityEngine.Random.Range(-25f, 25f);
         }
 
         print(count);

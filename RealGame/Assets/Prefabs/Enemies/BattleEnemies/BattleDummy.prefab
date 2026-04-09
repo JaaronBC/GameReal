@@ -211,3 +211,4 @@ MonoBehaviour:
   battleScript: {fileID: 0}
   flash: {fileID: 0}
   attackObject: {fileID: 2446677959458874758, guid: 985002d751b76ed449438478c2fb65c4, type: 3}
+  attackObject2: {fileID: 4196338464414878270, guid: d2166f4e0d4d5e34faf760637db924f3, type: 3}

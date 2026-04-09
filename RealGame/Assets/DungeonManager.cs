@@ -3,8 +3,8 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 
 public class DungeonManager : MonoBehaviour {
-    [Header("Tilemaps")]
-    public Tilemap markerTilemap;
+    [Header("Floor Layouts")]
+    public GameObject[] floorLayoutPrefabs; // Assign your layout prefabs in order
 
     [Header("Prefabs")]
     public GameObject barrelPrefab;
@@ -21,12 +21,13 @@ public class DungeonManager : MonoBehaviour {
     public int currentFloor = 1;
     public int maxFloors = 5;
 
-    [Header("Optional")]
+    [Header("References")]
     public Transform spawnedObjectsParent;
     public Transform player;
-    public Transform playerSpawnPoint;
 
     private List<GameObject> spawnedObjects = new List<GameObject>();
+    private GameObject currentLayoutInstance;
+    private Tilemap currentMarkerTilemap;
 
     void Start() {
         GenerateFloor();
@@ -34,11 +35,11 @@ public class DungeonManager : MonoBehaviour {
 
     public void GenerateFloor() {
         ClearSpawnedObjects();
+        LoadFloorLayout();
 
         List<Vector3Int> markerPositions = GetMarkerPositions();
-
         if (markerPositions.Count == 0) {
-            Debug.LogWarning("No marker tiles found on MarkerTilemap.");
+            Debug.LogWarning("No marker tiles found.");
             return;
         }
 
@@ -46,79 +47,84 @@ public class DungeonManager : MonoBehaviour {
 
         int barrelCount = Random.Range(minBarrels, maxBarrels + 1);
         int chestCount = Random.Range(minChests, maxChests + 1);
-
         int index = 0;
 
-        for (int i = 0; i < barrelCount && index < markerPositions.Count; i++, index++) {
+        for (int i = 0; i < barrelCount && index < markerPositions.Count; i++, index++)
             SpawnObjectAtCell(barrelPrefab, markerPositions[index]);
-        }
 
-        for (int i = 0; i < chestCount && index < markerPositions.Count; i++, index++) {
+        for (int i = 0; i < chestCount && index < markerPositions.Count; i++, index++)
             SpawnObjectAtCell(chestPrefab, markerPositions[index]);
-        }
 
         if (currentFloor < maxFloors) {
-            if (index < markerPositions.Count) {
+            if (index < markerPositions.Count)
                 SpawnObjectAtCell(holePrefab, markerPositions[index]);
-            } else {
-                Debug.LogWarning("Not enough marker positions left to place the hole.");
-            }
+            else
+                Debug.LogWarning("Not enough marker positions for the hole.");
+        } else {
+            Debug.Log("Final floor reached!");
         }
 
-        if (player != null && playerSpawnPoint != null) {
-            player.position = playerSpawnPoint.position;
+        // Spawn player at the marker tilemap's center
+        if (player != null) {
+            Vector3 center = currentMarkerTilemap.localBounds.center;
+            center.z = 0;
+            player.position = center;
         }
 
         Debug.Log("Generated floor " + currentFloor);
     }
 
-    List<Vector3Int> GetMarkerPositions() {
-        List<Vector3Int> positions = new List<Vector3Int>();
+    void LoadFloorLayout() {
+        // Destroy old layout
+        if (currentLayoutInstance != null)
+            Destroy(currentLayoutInstance);
 
-        BoundsInt bounds = markerTilemap.cellBounds;
+        // Pick layout — cycle through available prefabs
+        int layoutIndex = (currentFloor - 1) % floorLayoutPrefabs.Length;
+        GameObject prefab = floorLayoutPrefabs[layoutIndex];
 
-        foreach (Vector3Int pos in bounds.allPositionsWithin) {
-            if (markerTilemap.HasTile(pos)) {
-                positions.Add(pos);
+        currentLayoutInstance = Instantiate(prefab, new Vector3(0,0,1), Quaternion.identity);
+
+        // Find the marker tilemap inside the new layout
+        Tilemap[] tilemaps = currentLayoutInstance.GetComponentsInChildren<Tilemap>();
+        foreach (Tilemap tm in tilemaps) {
+            if (tm.gameObject.name.Contains("Marker")) {
+                currentMarkerTilemap = tm;
+                break;
             }
         }
 
+        if (currentMarkerTilemap == null)
+            Debug.LogError("No Marker tilemap found in floor layout prefab!");
+    }
+
+    List<Vector3Int> GetMarkerPositions() {
+        List<Vector3Int> positions = new List<Vector3Int>();
+        BoundsInt bounds = currentMarkerTilemap.cellBounds;
+        foreach (Vector3Int pos in bounds.allPositionsWithin) {
+            if (currentMarkerTilemap.HasTile(pos))
+                positions.Add(pos);
+        }
         return positions;
     }
 
     void SpawnObjectAtCell(GameObject prefab, Vector3Int cellPosition) {
-        if (prefab == null) {
-            Debug.LogWarning("Tried to spawn a null prefab.");
-            return;
-        }
-
-        Vector3 worldPosition = markerTilemap.GetCellCenterWorld(cellPosition);
+        if (prefab == null) return;
+        Vector3 worldPosition = currentMarkerTilemap.GetCellCenterWorld(cellPosition);
         worldPosition.z = -1;
-
-        GameObject spawned = Instantiate(
-            prefab,
-            worldPosition,
-            Quaternion.identity,
-            spawnedObjectsParent
-        );
-
+        GameObject spawned = Instantiate(prefab, worldPosition, Quaternion.identity, spawnedObjectsParent);
         spawnedObjects.Add(spawned);
     }
 
     void ClearSpawnedObjects() {
-        for (int i = 0; i < spawnedObjects.Count; i++) {
-            if (spawnedObjects[i] != null) {
-                Destroy(spawnedObjects[i]);
-            }
-        }
-
+        foreach (GameObject obj in spawnedObjects)
+            if (obj != null) Destroy(obj);
         spawnedObjects.Clear();
     }
 
     void ShuffleList(List<Vector3Int> list) {
         for (int i = 0; i < list.Count; i++) {
             int randomIndex = Random.Range(i, list.Count);
-
             Vector3Int temp = list[i];
             list[i] = list[randomIndex];
             list[randomIndex] = temp;

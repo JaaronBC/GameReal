@@ -105,6 +105,9 @@ public class PlayerCasting : MonoBehaviour
                 case "shock":
                     colorToUse = Color.yellow;
                     break;
+                case "air":
+                    colorToUse = Color.gray;
+                    break;
                 case "water":
                     colorToUse = Color.blue;
                     break;
@@ -362,7 +365,7 @@ public class PlayerCasting : MonoBehaviour
             }
             else if (wordDatabase.airWords.Contains(spellWord))
             {
-                colorToUse = Color.cyan;
+                colorToUse = Color.gray;
             }
             else if (wordDatabase.shockWords.Contains(spellWord))
             {

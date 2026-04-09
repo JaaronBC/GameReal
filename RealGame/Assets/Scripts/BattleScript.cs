@@ -5,7 +5,6 @@ using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
 using TMPro; //text mesh pro
 using System.Collections.Generic;
-using System.Diagnostics;
 
 
 public enum BattleState
@@ -14,7 +13,8 @@ public enum BattleState
     PlayerTurn,
     EnemyTurn,
     EnemySwitch,
-    PlayerSwitch
+    PlayerSwitch,
+    BattleEnd
 }
 
 public class BattleScript : MonoBehaviour
@@ -58,6 +58,22 @@ public class BattleScript : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        if (BattleDataHolder.enemiesToSpawn != null)
+        {
+            enemies = BattleDataHolder.enemiesToSpawn;
+        }
+        //For each enemyID in BattleDataHolder.activeEnemyIDs, set the corresponding EnemySaveData's defeated value to true
+        HashSet<string> countedEnemies = new HashSet<string>();
+        foreach (string enemyID in BattleDataHolder.activeEnemyIDs)
+        {
+            if (BattleDataHolder.enemyDatabase.ContainsKey(enemyID))
+            {
+                EnemySaveData enemy = BattleDataHolder.enemyDatabase[enemyID];
+                if (!enemy.defeated && !countedEnemies.Contains(enemyID))
+                {                    enemy.defeated = true; 
+                }
+            }
+        }
         state = BattleState.Start;
         setUpBattle();
         playerObject = GameObject.Find("PlayerObject");
@@ -105,8 +121,19 @@ public class BattleScript : MonoBehaviour
                     timer = 1f;
                     break;
                 case BattleState.PlayerSwitch:
+                    if (activeEnemies.Count == 0) 
+                    {
+                        SwitchState(BattleState.BattleEnd);
+                        timer = 1f;
+                    }
+                    else 
+                    {
                     SwitchState(BattleState.EnemyTurn);
                     timer = Random.Range(baseTimeChange[0], baseTimeChange[1]) + addedTime;
+                    }
+                    break;
+                case BattleState.BattleEnd:
+                    BattleEnd();
                     break;
             }
         }
@@ -139,6 +166,7 @@ public class BattleScript : MonoBehaviour
 
     void setUpBattle()
     {
+        Debug.Log("Setup Battle");
         var currentPlayer = Instantiate(playerPrefab, new Vector3 (playerX, playerY), Quaternion.identity);
         currentPlayer.name = "PlayerObject";
         playerMovement = currentPlayer.GetComponent<PlayerMovement>();
@@ -168,6 +196,12 @@ public class BattleScript : MonoBehaviour
         }
         timer = startTime; 
 
+    }
+    void BattleEnd()
+    {
+        Debug.Log("Battle Ended!");
+        //Transition to previous scene
+        SceneManager.LoadScene(BattleDataHolder.returnSceneName);
     }
 
 

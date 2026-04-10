@@ -196,7 +196,7 @@ public class EnemyScript : MonoBehaviour
             PlayerMovement playerMovement = collision.gameObject.GetComponent<PlayerMovement>();
             if (playerMovement != null)
             {
-                if (playerMovement.z < z)
+                if (playerMovement.z <= z)
                     BattleScreenTransition(battleSceneName);
             }
         }

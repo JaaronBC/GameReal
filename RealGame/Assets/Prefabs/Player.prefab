@@ -321,7 +321,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   maxHP: 20
-  CurrentHP: 2
+  CurrentHP: 20
   z: 0
   flash: {fileID: 0}
   involnerable: 0

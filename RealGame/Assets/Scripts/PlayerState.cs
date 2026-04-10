@@ -66,13 +66,11 @@ public class PlayerState : MonoBehaviour
     //take damage
     public bool TakeDamage(int damage, Vector2 direction, float zAttack)
     {
-        print(z + "   " + zAttack );
         if (involnerable > 0.0f) return true;
         if (z > zAttack) return false;
 
         CurrentHP -= damage;
         CurrentHP = Mathf.Max(CurrentHP, 0);
-        print(CurrentHP);
 
         //flash, involnerability
         flash.Flash();

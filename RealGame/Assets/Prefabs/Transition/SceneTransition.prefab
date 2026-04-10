@@ -44,5 +44,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3312e9dfae1fa9846bde255e77927b1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  startTransition: {fileID: 0}
-  endTransition: {fileID: 0}
+  startTransition: {fileID: 6456174502390736592, guid: 0e00546b1e8e75b4090813c6d267800a, type: 3}
+  endTransition: {fileID: 2711061147818518431, guid: cae9ef1b256079a4c97a79f179eba9b8, type: 3}

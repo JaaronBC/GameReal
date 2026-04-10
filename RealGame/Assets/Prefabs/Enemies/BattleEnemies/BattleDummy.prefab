@@ -185,8 +185,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyState
   battleScript: {fileID: 0}
-  maxHP: 20
-  currentHP: 20
+  maxHP: 40
+  currentHP: 40
   savedDamage: 0
 --- !u!114 &6438113737886387119
 MonoBehaviour:

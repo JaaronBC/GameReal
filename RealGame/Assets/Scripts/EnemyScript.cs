@@ -39,6 +39,8 @@ public class EnemyScript : MonoBehaviour
 
     public string enemyID; // Unique identifier for the enemy, can be set in the inspector
 
+    public bool isMovingEnemy;
+
 
 
     void Start()
@@ -104,6 +106,8 @@ public class EnemyScript : MonoBehaviour
 
     public void MoveNormal()
     {
+        if (!isMovingEnemy) return;
+
         currentSpeed = speed;
         if (Random.Range(1, 101) > normalStillProbability)
         {
@@ -118,6 +122,7 @@ public class EnemyScript : MonoBehaviour
 
     public void MoveToPlayer()
     {
+        if (!isMovingEnemy) return;
         currentSpeed = chaseSpeed;
         direction = (target.position - transform.position).normalized;
         DirectionToSprite();
@@ -192,13 +197,13 @@ public class EnemyScript : MonoBehaviour
             BattleDataHolder.playerPosition = GameObject.Find("Player").transform.position;
             BattleDataHolder.hasReturnPosition = true;
             BattleDataHolder.enemiesToSpawn = enemies.ToArray();
-            //BattleScreenTransition(battleSceneName);
             PlayerMovement playerMovement = collision.gameObject.GetComponent<PlayerMovement>();
             if (playerMovement != null)
             {
                 if (playerMovement.z <= z)
                     BattleScreenTransition(battleSceneName);
             }
+            BattleScreenTransition(battleSceneName);
         }
     }
 

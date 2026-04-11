@@ -11,11 +11,15 @@ public class DialogueManager : MonoBehaviour
     public float typingSpeed = 0.03f;
 
     private Coroutine typingCoroutine;
-    private string currentLine;
+    private string[] currentLines;
+    private int currentLineIndex = 0;
     private bool isTyping = false;
 
-    public void ShowDialogue(string text)
+    public void ShowDialogue(string[] lines)
     {
+        if (lines == null || lines.Length == 0)
+            return;
+
         dialogueBox.SetActive(true);
 
         playerMovement = FindFirstObjectByType<PlayerMovement>();
@@ -24,22 +28,23 @@ public class DialogueManager : MonoBehaviour
             playerMovement.canMove = false;
         }
 
-        currentLine = text;
+        currentLines = lines;
+        currentLineIndex = 0;
 
         if (typingCoroutine != null)
         {
             StopCoroutine(typingCoroutine);
         }
 
-        typingCoroutine = StartCoroutine(TypeText());
+        typingCoroutine = StartCoroutine(TypeText(currentLines[currentLineIndex]));
     }
 
-    IEnumerator TypeText()
+    IEnumerator TypeText(string line)
     {
         isTyping = true;
         dialogueText.text = "";
 
-        foreach (char letter in currentLine)
+        foreach (char letter in line)
         {
             dialogueText.text += letter;
             yield return new WaitForSeconds(typingSpeed);
@@ -55,15 +60,22 @@ public class DialogueManager : MonoBehaviour
 
         if (isTyping)
         {
-            // finish instantly
             StopCoroutine(typingCoroutine);
-            dialogueText.text = currentLine;
+            dialogueText.text = currentLines[currentLineIndex];
             isTyping = false;
         }
         else
         {
-            // close dialogue
-            HideDialogue();
+            currentLineIndex++;
+
+            if (currentLines != null && currentLineIndex < currentLines.Length)
+            {
+                typingCoroutine = StartCoroutine(TypeText(currentLines[currentLineIndex]));
+            }
+            else
+            {
+                HideDialogue();
+            }
         }
     }
 
@@ -77,6 +89,8 @@ public class DialogueManager : MonoBehaviour
         isTyping = false;
         dialogueBox.SetActive(false);
         dialogueText.text = "";
+        currentLines = null;
+        currentLineIndex = 0;
 
         if (playerMovement != null)
         {

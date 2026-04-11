@@ -3,7 +3,7 @@ using UnityEngine;
 public class NPCDialogue : Interactable
 {
     [TextArea(3, 6)]
-    public string dialogueLine;
+    public string[] dialogueLines;
 
     public override void Interact()
     {
@@ -11,7 +11,7 @@ public class NPCDialogue : Interactable
 
         if (player != null && player.dialogueManager != null)
         {
-            player.dialogueManager.ShowDialogue(dialogueLine);
+            player.dialogueManager.ShowDialogue(dialogueLines);
         }
     }
 }

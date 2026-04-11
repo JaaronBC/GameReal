@@ -52,6 +52,8 @@ public class BattleScript : MonoBehaviour
     //reference to player object to move during player turn
     //will be set in start function after player prefab is instantiated
     GameObject playerObject;
+    //Health Bar
+    public PlayerHealthBar playerHealthBar;
 
 
 
@@ -169,6 +171,11 @@ public class BattleScript : MonoBehaviour
         Debug.Log("Setup Battle");
         var currentPlayer = Instantiate(playerPrefab, new Vector3 (playerX, playerY), Quaternion.identity);
         currentPlayer.name = "PlayerObject";
+        // Set player health bar reference
+        PlayerState playerState = currentPlayer.GetComponent<PlayerState>();
+        if (playerState != null)        {
+            playerHealthBar.unit = playerState;
+        }
         playerMovement = currentPlayer.GetComponent<PlayerMovement>();
         int randomX = -1;
         bool toggleRow = false;

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 public class PlayerCasting : MonoBehaviour
 {
     [SerializeField] BattleScript battleScript;
@@ -71,15 +72,25 @@ public class PlayerCasting : MonoBehaviour
             // Reset all enemies to white
             foreach (var enemy in battleScript.activeEnemies)
             {
-                var enemyRenderer = enemy.GetComponent<SpriteRenderer>();
-                if (enemyRenderer != null)
-                {
-                    enemyRenderer.color = Color.white;
-                }
+                Transform targetUI = enemy.transform.Find("EnemyHealthBar/Target");
+                if (targetUI != null)                
+                 {
+                     Image img = targetUI.GetComponent<Image>();
+                     if (img != null)                     {
+                         img.color = Color.white;    
+                     }
+                 }
             }
         }
-        // Highlight current target
-        renderer.color = Color.red;
+        Transform selectedTargetUI = target.transform.Find("EnemyHealthBar/Target");
+        if (selectedTargetUI != null)
+        {
+            Image img = selectedTargetUI.GetComponent<Image>();
+            if (img != null)
+            {
+                img.color = Color.red;
+            }
+        }
     }
 
     void SpawnProjectile(GameObject prefab, GameObject target, string element, float damage, string shape)

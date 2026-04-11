@@ -171,6 +171,7 @@ public class BattleScript : MonoBehaviour
         currentPlayer.name = "PlayerObject";
         playerMovement = currentPlayer.GetComponent<PlayerMovement>();
         int randomX = -1;
+        bool toggleRow = false;
         HashSet<int> usedXPositions = new HashSet<int>();
         int[] takenColumn = new int[enemies.Length];
         for (int i = 0; i < enemies.Length; i++)
@@ -181,7 +182,8 @@ public class BattleScript : MonoBehaviour
             }
             while (usedXPositions.Contains(randomX));
         
-            int randomY = Random.Range(enemyGridMinY, enemyGridMaxY);
+            int randomY = toggleRow ? enemyGridMinY : enemyGridMaxY;
+            toggleRow = !toggleRow;
             usedXPositions.Add(randomX);
             var currentEnemy = Instantiate(enemies[i], new Vector3 (randomX, randomY), Quaternion.identity);
             currentEnemy.name = $"Enemy {i+1}";

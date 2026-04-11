@@ -149,7 +149,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDamping: 0
   m_AngularDamping: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 0
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -185,6 +185,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3980cad6daec74b78b105a800f6a5fd6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyState
+  healthText: {fileID: 426728981185638756}
   battleScript: {fileID: 0}
   maxHP: 40
   currentHP: 40
@@ -221,6 +222,26 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 5730880849273338726}
     m_Modifications:
+    - target: {fileID: 189446120633463352, guid: 6fb884d237ba64e1c90524e1691660b4, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 189446120633463352, guid: 6fb884d237ba64e1c90524e1691660b4, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 189446120633463352, guid: 6fb884d237ba64e1c90524e1691660b4, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 13.79
+      objectReference: {fileID: 0}
+    - target: {fileID: 189446120633463352, guid: 6fb884d237ba64e1c90524e1691660b4, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -21
+      objectReference: {fileID: 0}
+    - target: {fileID: 1157995419009313314, guid: 6fb884d237ba64e1c90524e1691660b4, type: 3}
+      propertyPath: m_PresetInfoIsWorld
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2349014121023193973, guid: 6fb884d237ba64e1c90524e1691660b4, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -247,11 +268,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2349014121023193973, guid: 6fb884d237ba64e1c90524e1691660b4, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 100
+      value: 150
       objectReference: {fileID: 0}
     - target: {fileID: 2349014121023193973, guid: 6fb884d237ba64e1c90524e1691660b4, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 100
+      value: 150
       objectReference: {fileID: 0}
     - target: {fileID: 2349014121023193973, guid: 6fb884d237ba64e1c90524e1691660b4, type: 3}
       propertyPath: m_LocalPosition.x
@@ -283,11 +304,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2349014121023193973, guid: 6fb884d237ba64e1c90524e1691660b4, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 0.537
       objectReference: {fileID: 0}
     - target: {fileID: 2349014121023193973, guid: 6fb884d237ba64e1c90524e1691660b4, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.6
+      value: 0.74
       objectReference: {fileID: 0}
     - target: {fileID: 2349014121023193973, guid: 6fb884d237ba64e1c90524e1691660b4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -313,6 +334,22 @@ PrefabInstance:
       propertyPath: unit
       value: 
       objectReference: {fileID: 1341639225058128760}
+    - target: {fileID: 6468809167799599874, guid: 6fb884d237ba64e1c90524e1691660b4, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 3.66
+      objectReference: {fileID: 0}
+    - target: {fileID: 6468809167799599874, guid: 6fb884d237ba64e1c90524e1691660b4, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 89.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 6468809167799599874, guid: 6fb884d237ba64e1c90524e1691660b4, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -44.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6468809167799599874, guid: 6fb884d237ba64e1c90524e1691660b4, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -1
+      objectReference: {fileID: 0}
     - target: {fileID: 7867797483251507632, guid: 6fb884d237ba64e1c90524e1691660b4, type: 3}
       propertyPath: m_Name
       value: EnemyHealthBar
@@ -322,6 +359,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6fb884d237ba64e1c90524e1691660b4, type: 3}
+--- !u!114 &426728981185638756 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3318536941472853319, guid: 6fb884d237ba64e1c90524e1691660b4, type: 3}
+  m_PrefabInstance: {fileID: 3162024447166061603}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
 --- !u!224 &826581638683680598 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 2349014121023193973, guid: 6fb884d237ba64e1c90524e1691660b4, type: 3}

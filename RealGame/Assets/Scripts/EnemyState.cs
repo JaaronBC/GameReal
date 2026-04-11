@@ -1,9 +1,11 @@
 using UnityEngine;
 using System;
 using System.Collections.Generic;
+using TMPro;
 
 public class EnemyState : MonoBehaviour
 {
+    public TextMeshProUGUI healthText;
     public BattleScript battleScript;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     public float maxHP;
@@ -134,6 +136,7 @@ public class EnemyState : MonoBehaviour
     }
     void Update()
     {
+        healthText.text = currentHP.ToString("0") + " / " + maxHP.ToString("0");
         foreach (var effect in statusEffects)
         {
             if (statusEffectActions.ContainsKey(effect))

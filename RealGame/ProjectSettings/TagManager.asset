@@ -3,19 +3,21 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 3
-  tags: []
+  tags:
+  - Letter
+  - Enemy
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - PC/NPC
   - Water
   - UI
+  - Tiles
   - 
-  - 
-  - 
-  - 
-  - 
+  - Attacks
+  - Enemy
+  - Player
   - 
   - 
   - 

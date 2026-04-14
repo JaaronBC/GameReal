@@ -179,20 +179,27 @@ public class BattleScript : MonoBehaviour
         playerMovement = currentPlayer.GetComponent<PlayerMovement>();
         int randomX = -1;
         bool toggleRow = false;
+        int randomY = Random.Range(enemyGridMinY, enemyGridMaxY);
+        Dictionary<int, int> validPositions = new Dictionary<int, int>();
         HashSet<int> usedXPositions = new HashSet<int>();
+        for (int x = enemyGridMinX; x <= enemyGridMaxX; x++) {
+            // Alternate between minY and maxY for each column to ensure enemies are not spawned adjacent to each other
+            validPositions.Add(x, randomY);
+            randomY = toggleRow ? enemyGridMinY : enemyGridMaxY;
+            toggleRow = !toggleRow;
+        }
         int[] takenColumn = new int[enemies.Length];
         for (int i = 0; i < enemies.Length; i++)
         {   
+            //Spawn enemy in a validPosition from Dictionary
+            //Then add X position to usedXPositions to prevent spawning another enemy in the same column
             do
             {
             randomX = Random.Range(enemyGridMinX, enemyGridMaxX);
             }
             while (usedXPositions.Contains(randomX));
-        
-            int randomY = toggleRow ? enemyGridMinY : enemyGridMaxY;
-            toggleRow = !toggleRow;
             usedXPositions.Add(randomX);
-            var currentEnemy = Instantiate(enemies[i], new Vector3 (randomX, randomY), Quaternion.identity);
+            var currentEnemy = Instantiate(enemies[i], new Vector3 (randomX, validPositions[randomX]), Quaternion.identity);
             currentEnemy.name = $"Enemy {i+1}";
 
             EnemyState enemyState = currentEnemy.GetComponent<EnemyState>();

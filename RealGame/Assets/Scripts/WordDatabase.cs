@@ -12,7 +12,10 @@ public class WordDatabase : MonoBehaviour
         "laser",
         "ray",
         "slash",
-
+        "spear",
+        "lance",
+        "javelin",
+        "drill"
     };
     public HashSet<string> elementWords = new HashSet<string> { 
         //Put all fire words here

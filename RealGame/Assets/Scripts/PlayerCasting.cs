@@ -39,7 +39,8 @@ public class PlayerCasting : MonoBehaviour
     [SerializeField] GameObject missilePrefab;
     [SerializeField] GameObject beamPrefab;
     [SerializeField] GameObject slashPrefab;
-    
+    [SerializeField] GameObject spearPrefab;
+    [SerializeField] GameObject drillPrefab;
     public void BeginTurn()
     {
         isActive = true;
@@ -93,7 +94,7 @@ public class PlayerCasting : MonoBehaviour
         }
     }
 
-    void SpawnProjectile(GameObject prefab, GameObject target, string element, float damage, string shape)
+    void SpawnProjectile(GameObject prefab, GameObject target, string element, float damage, string shape, bool piercing = false)
     {
         GameObject proj = Instantiate(prefab, new Vector3(4.5f, 3f, 0f), Quaternion.identity);
 
@@ -149,6 +150,7 @@ public class PlayerCasting : MonoBehaviour
         projectile.damage = damage;
         projectile.shape = shape;
         projectile.element = element;
+        projectile.piercing = piercing;
     }
 }
 
@@ -249,7 +251,11 @@ public class PlayerCasting : MonoBehaviour
             { "beam", CastBeam },
             {"laser", CastBeam},
             {"ray", CastBeam},
-            {"slash", CastSlash}
+            {"slash", CastSlash},
+            {"spear", CastSpear},
+            {"lance", CastSpear},
+            {"javelin", CastSpear},
+            {"drill", CastDrill}
         };
         //Initialize letter prefab mapping for spell crafting visuals
         letterMap = new Dictionary<char, GameObject>();
@@ -421,12 +427,12 @@ public class PlayerCasting : MonoBehaviour
     //Bolt-Single Target, hits once
     void CastBolt(float damage, string element)
     {
-        SpawnProjectile(boltPrefab, currentTarget, element, damage, "bolt");
+        SpawnProjectile(boltPrefab, currentTarget, element, damage, "bolt", false);
     }
     //Ball-Single Target, hits once
     void CastBall(float damage, string element)
     {
-        SpawnProjectile(ballPrefab, currentTarget, element, damage, "ball");
+        SpawnProjectile(ballPrefab, currentTarget, element, damage, "ball", false);
     }
     //Missile-Multi Target, hits 3 times with reduced damage
     void CastMissile(float damage, string element)
@@ -441,7 +447,7 @@ public class PlayerCasting : MonoBehaviour
 
         for (int i = 0; i < missileCount; i++)
         {
-            SpawnProjectile(missilePrefab, currentTarget, element, damage / missileCount, "missile");
+            SpawnProjectile(missilePrefab, currentTarget, element, damage / missileCount, "missile", false);
             yield return new WaitForSeconds(delay);
         }
     }
@@ -457,7 +463,7 @@ public class PlayerCasting : MonoBehaviour
 
         for (int i = 0; i < beamCount; i++)
         {
-            SpawnProjectile(beamPrefab, currentTarget, element, damage / beamCount, "beam");
+            SpawnProjectile(beamPrefab, currentTarget, element, damage / beamCount, "beam", false);
             yield return new WaitForSeconds(delay);
         }
     }
@@ -473,8 +479,18 @@ public class PlayerCasting : MonoBehaviour
 
         for (int i = 0; i < slashCount; i++)
         {
-            SpawnProjectile(slashPrefab, currentTarget, element, damage / slashCount, "slash");
+            SpawnProjectile(slashPrefab, currentTarget, element, damage / slashCount, "slash", false);
             yield return new WaitForSeconds(delay);
         }
     }
+    //Spear- pierces through all enemies
+    void CastSpear(float damage, string element)
+    {
+        SpawnProjectile(spearPrefab, currentTarget, element, damage, "spear", true);
+    }
+    //Drill -Pierces and hits multiple times
+    void CastDrill(float damage, string element)
+    {
+        SpawnProjectile(drillPrefab, currentTarget, element, damage/5, "drill", true);  
+    }  
 }

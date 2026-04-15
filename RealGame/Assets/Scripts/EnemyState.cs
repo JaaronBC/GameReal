@@ -22,7 +22,7 @@ public class EnemyState : MonoBehaviour
     //Light Status effect Variables
     float lightMultiplier = 1f;
     //ice status effect variables
-    int freezeCounter = 0;
+    int freezeCounter = 0; 
 
     public void Damaged(float damage, string element = "none")
     {

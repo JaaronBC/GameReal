@@ -5918,6 +5918,8 @@ MonoBehaviour:
   missilePrefab: {fileID: 2732010235040160828, guid: f8ef2c8048c2f442f90c06df35e80b36, type: 3}
   beamPrefab: {fileID: 1740744284733183969, guid: 97b85dfbaff204516b019daf5c31c865, type: 3}
   slashPrefab: {fileID: 22358258966051480, guid: 747a475c43a1844eebc808eff22c5c8b, type: 3}
+  spearPrefab: {fileID: 7007086403398014016, guid: 3753159569ca7478e94f52ed67cc60a0, type: 3}
+  drillPrefab: {fileID: 3546433579253562760, guid: 040ad6cdb6b11430ebd0bcc7793fd9c7, type: 3}
 --- !u!114 &1257174533
 MonoBehaviour:
   m_ObjectHideFlags: 0

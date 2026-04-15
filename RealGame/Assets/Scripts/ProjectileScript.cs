@@ -9,39 +9,66 @@ public class ProjectileScript : MonoBehaviour
     public float speed = 10f;
     public string shape;
     public string element;
+    public bool piercing = false; 
+    Vector3 lastPosition;
+    float distanceTraveled = 0f;
+    public float maxRange = 10f;
+    Vector3 moveDirection;
     Dictionary<string, Action<ProjectileScript>> shapeActions; 
+    HashSet<EnemyState> piercedEnemies = new HashSet<EnemyState>(); 
     void Start()
     {
+        lastPosition = transform.position;
+        moveDirection = (target.position - transform.position).normalized;
+
         shapeActions = new Dictionary<string, Action<ProjectileScript>>()
         {
             { "bolt", (proj) => proj.Bolt() },
             { "ball", (proj) => proj.Ball() },
             { "missile", (proj) => proj.Missile() },
             { "beam", (proj) => proj.Beam() },
-            { "slash", (proj) => proj.Slash() }
+            { "slash", (proj) => proj.Slash() },
+            { "spear", (proj) => proj.Spear() },
+            { "drill", (proj) => proj.Drill() }
         };
     }
     void Update()
     {
-        if (target == null)
+        if (target == null && !piercing)
         {
             Destroy(gameObject);
             return;
         }
 
-        transform.position = Vector3.MoveTowards(
-            transform.position,
-            target.position,
-            speed * Time.deltaTime
-        );
-        Vector3 direction = target.position - transform.position;
-        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-        transform.rotation = Quaternion.Euler(0f, 0f, angle-90f);
+        lastPosition = transform.position;
 
-        if (Vector3.Distance(transform.position, target.position) < 0.1f)
+        transform.position += moveDirection * speed * Time.deltaTime;
+
+        float frameDistance = Vector3.Distance(lastPosition, transform.position);
+        distanceTraveled += frameDistance;
+
+        float angle = Mathf.Atan2(moveDirection.y, moveDirection.x) * Mathf.Rad2Deg;
+        transform.rotation = Quaternion.Euler(0f, 0f, angle - 90f);
+
+        if (piercing)
         {
-            OnHit();
-            Destroy(gameObject);
+            if (shapeActions != null && shapeActions.ContainsKey(shape))
+            {
+                shapeActions[shape].Invoke(this);
+            }
+
+            if (distanceTraveled >= maxRange)
+            {
+                Destroy(gameObject);
+            }
+        }
+        else
+        {
+            if (Vector3.Distance(transform.position, target.position) < 0.1f)
+            {
+                OnHit();
+                Destroy(gameObject);
+            }
         }
     }
 
@@ -112,6 +139,60 @@ public class ProjectileScript : MonoBehaviour
             enemy.statusEffects.Add(element); // Add element as status effect to enemy
             enemy.savedDamage = damage; // Store the original damage value for status effects to reference
             enemy.Damaged(damage, element); // Apply damage to enemy
+        }
+    }
+    void Spear()
+    {
+        float pierceRadius = 0.5f;
+
+        Vector3 movement = transform.position - lastPosition;
+        float distance = movement.magnitude;
+
+        if (distance <= 0f) return;
+
+        Vector3 direction = movement.normalized;
+
+        RaycastHit2D[] hits = Physics2D.CircleCastAll(lastPosition, pierceRadius, direction, distance);
+
+        foreach (var hit in hits)
+        {
+            EnemyState enemy = hit.collider.GetComponent<EnemyState>();
+            if (enemy != null && !piercedEnemies.Contains(enemy))
+            {
+                piercedEnemies.Add(enemy);
+
+                enemy.statusEffects.Add(element);
+                enemy.savedDamage = damage;
+                enemy.Damaged(damage, element);
+            }
+        }
+    }
+    void Drill()
+    {
+        float pierceRadius = 1.0f;
+
+        Vector3 movement = transform.position - lastPosition;
+        float distance = movement.magnitude;
+
+        if (distance <= 0f) return;
+
+        Vector3 direction = movement.normalized;
+
+        RaycastHit2D[] hits = Physics2D.CircleCastAll(lastPosition, pierceRadius, direction, distance);
+
+        foreach (var hit in hits)
+        {
+            EnemyState enemy = hit.collider.GetComponent<EnemyState>();
+            if (enemy != null && !piercedEnemies.Contains(enemy))
+            {
+                piercedEnemies.Add(enemy);
+                for (int i = 0; i < 5; i++) // Drill hits 5 times
+                {
+                    enemy.statusEffects.Add(element);
+                    enemy.savedDamage = damage; // Drill does 20% damage on each hit
+                    enemy.Damaged(damage, element);
+                }
+            }
         }
     }
 }

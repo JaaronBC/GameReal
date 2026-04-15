@@ -179,13 +179,13 @@ public class BattleScript : MonoBehaviour
         playerMovement = currentPlayer.GetComponent<PlayerMovement>();
         int randomX = -1;
         bool toggleRow = false;
-        int randomY = Random.Range(enemyGridMinY, enemyGridMaxY);
+        int currentY = (Random.value < 0.5f) ? enemyGridMinY : enemyGridMaxY;
         Dictionary<int, int> validPositions = new Dictionary<int, int>();
         HashSet<int> usedXPositions = new HashSet<int>();
         for (int x = enemyGridMinX; x <= enemyGridMaxX; x++) {
             // Alternate between minY and maxY for each column to ensure enemies are not spawned adjacent to each other
-            validPositions.Add(x, randomY);
-            randomY = toggleRow ? enemyGridMinY : enemyGridMaxY;
+            validPositions.Add(x, currentY);
+            currentY = (currentY == enemyGridMinY) ? enemyGridMaxY : enemyGridMinY;
             toggleRow = !toggleRow;
         }
         int[] takenColumn = new int[enemies.Length];
@@ -199,6 +199,7 @@ public class BattleScript : MonoBehaviour
             }
             while (usedXPositions.Contains(randomX));
             usedXPositions.Add(randomX);
+            Debug.Log("Spawning enemy at: " + randomX + ", " + validPositions[randomX]);
             var currentEnemy = Instantiate(enemies[i], new Vector3 (randomX, validPositions[randomX]), Quaternion.identity);
             currentEnemy.name = $"Enemy {i+1}";
 

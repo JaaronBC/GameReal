@@ -49,7 +49,7 @@ public class PlayerCasting : MonoBehaviour
             HighlightTarget(currentTarget);
         }
     }
-    void CycleTarget()
+    public void CycleTarget()
     {
         //debugCounter++;
         //Debug.Log("debug: cycle target called " + debugCounter);

@@ -29,6 +29,9 @@ public class DungeonManager : MonoBehaviour {
     private GameObject currentLayoutInstance;
     private Tilemap currentMarkerTilemap;
 
+    //Array for Enemies
+    public GameObject[] enemyPrefabs;
+
     void Start() {
         GenerateFloor();
     }
@@ -79,7 +82,7 @@ public class DungeonManager : MonoBehaviour {
         if (currentLayoutInstance != null)
             Destroy(currentLayoutInstance);
 
-        // Pick layout — cycle through available prefabs
+        // Pick layout ï¿½ cycle through available prefabs
         int layoutIndex = (currentFloor - 1) % floorLayoutPrefabs.Length;
         GameObject prefab = floorLayoutPrefabs[layoutIndex];
 

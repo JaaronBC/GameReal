@@ -20,7 +20,7 @@ public enum BattleState
 public class BattleScript : MonoBehaviour
 {
 
-    private float timer = 0.0f;
+    public float timer = 0.0f;
     //start turn variables
     private float startTime = 3f;
     //switch variables
@@ -54,9 +54,12 @@ public class BattleScript : MonoBehaviour
     GameObject playerObject;
     //Health Bar
     public PlayerHealthBar playerHealthBar;
-
-
-
+    //Enemy Timer
+    [SerializeField] float enemyTimer;
+    //Player Timer
+    public float playerTimer;
+    bool playerTimerFill = false;
+    [SerializeField] GameObject playerTimerUI;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -106,21 +109,21 @@ public class BattleScript : MonoBehaviour
             switch (state) {
                 case BattleState.Start:
                     SwitchState(BattleState.EnemyTurn);
-                    timer = Random.Range(baseTimeChange[0], baseTimeChange[1]) + addedTime;
+                    timer = enemyTimer;
                     break;
                 case BattleState.EnemyTurn:
                     SwitchState(BattleState.EnemySwitch);
-
-                    timer = 1f;
                     break;
                 case BattleState.EnemySwitch:
+                    if (playerTimer >= 10f){
                     SwitchState(BattleState.PlayerTurn);
-                    
-                    timer = 10f;
+                    }
                     break;
                 case BattleState.PlayerTurn:
+                    if (playerTimer <= 0f) {
                     SwitchState(BattleState.PlayerSwitch);
                     timer = 1f;
+                    }
                     break;
                 case BattleState.PlayerSwitch:
                     if (activeEnemies.Count == 0) 
@@ -131,7 +134,7 @@ public class BattleScript : MonoBehaviour
                     else 
                     {
                     SwitchState(BattleState.EnemyTurn);
-                    timer = Random.Range(baseTimeChange[0], baseTimeChange[1]) + addedTime;
+                    timer = enemyTimer;
                     }
                     break;
                 case BattleState.BattleEnd:
@@ -139,8 +142,20 @@ public class BattleScript : MonoBehaviour
                     break;
             }
         }
-
-
+        if (playerTimerFill) {
+            playerTimer += Time.deltaTime * 10f;
+            if (playerTimer >= 10f) {
+                playerTimer = 10f;
+                playerTimerFill = false;
+            }
+        } 
+        else
+        {
+            playerTimer -= Time.deltaTime;
+            if (playerTimer <= 0f) {
+                playerTimer = 0f;
+            }
+        }    
     }
     void SwitchState(BattleState newState) {
         if (newState == BattleState.PlayerTurn) {
@@ -149,6 +164,11 @@ public class BattleScript : MonoBehaviour
             targetPosition = new Vector3(playerX, playerY, playerObject.transform.position.z);
             movePlayer = true;
             playerCasting.BeginTurn();
+        } else if (newState == BattleState.EnemySwitch)
+        {
+            playerTimer = 0f;
+            playerTimerFill = true;
+            playerTimerUI.SetActive(true);
         } else {
             playerCasting.isActive = false;
             playerMovement.enabled = true;
@@ -160,6 +180,7 @@ public class BattleScript : MonoBehaviour
             playerCasting.backspaceCounter = 0;
             playerCasting.wordToColor.Clear();
             playerCasting.elementalNotFound = true;
+            playerTimerUI.SetActive(false);
         } 
        
         state = newState;
@@ -169,6 +190,7 @@ public class BattleScript : MonoBehaviour
     void setUpBattle()
     {
         Debug.Log("Setup Battle");
+        playerTimerUI.SetActive(false);
         var currentPlayer = Instantiate(playerPrefab, new Vector3 (playerX, playerY), Quaternion.identity);
         currentPlayer.name = "PlayerObject";
         // Set player health bar reference

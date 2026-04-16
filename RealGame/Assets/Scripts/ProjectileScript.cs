@@ -19,7 +19,15 @@ public class ProjectileScript : MonoBehaviour
     void Start()
     {
         lastPosition = transform.position;
-        moveDirection = (target.position - transform.position).normalized;
+        if (target != null)
+        {
+            moveDirection = (target.position - transform.position).normalized;
+        }
+        else
+        {
+            // fallback so it doesn't crash
+            moveDirection = transform.up; 
+        }
 
         shapeActions = new Dictionary<string, Action<ProjectileScript>>()
         {

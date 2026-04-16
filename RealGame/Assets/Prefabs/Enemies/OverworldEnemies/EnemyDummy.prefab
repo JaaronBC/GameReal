@@ -132,7 +132,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: '::'
   z: 0.5
   chaseRadius: 0
-  battlePrefab: {fileID: 1984905327066608720, guid: 0972e51b09acc424ca1b09f094c43d42, type: 3}
+  battlePrefab: {fileID: 8856515414033362560, guid: 6b556dcbbc3027543b506a58444610fa, type: 3}
   enemyID: enemy4
   isMovingEnemy: 0
 --- !u!50 &1080062708085640048

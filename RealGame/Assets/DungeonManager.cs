@@ -31,7 +31,8 @@ public class DungeonManager : MonoBehaviour {
 
     //Array for Enemies
     public GameObject[] enemyPrefabs;
-
+    //Counter for enemy IDs
+    int enemyIDcounter = 1;
     void Start() {
         GenerateFloor();
     }
@@ -93,7 +94,9 @@ public class DungeonManager : MonoBehaviour {
         foreach (Tilemap tm in tilemaps) {
             if (tm.gameObject.name.Contains("Marker")) {
                 currentMarkerTilemap = tm;
-                break;
+            } else if (tm.gameObject.name.Contains("EnemySpawn")) {
+                // Spawn enemies at EnemySpawn tilemap positions
+                SpawnEnemiesAtTilemap(tm);
             }
         }
 
@@ -140,6 +143,22 @@ public class DungeonManager : MonoBehaviour {
             GenerateFloor();
         } else {
             Debug.Log("You reached the bottom of the cavern!");
+        }
+    }
+    void SpawnEnemiesAtTilemap(Tilemap enemySpawnTilemap) {
+        BoundsInt bounds = enemySpawnTilemap.cellBounds; 
+        foreach (Vector3Int pos in bounds.allPositionsWithin) {
+            if (enemySpawnTilemap.HasTile(pos)) {
+                Vector3 worldPosition = enemySpawnTilemap.GetCellCenterWorld(pos);
+                worldPosition.z = -1;
+                GameObject enemyPrefab = enemyPrefabs[Random.Range(0, enemyPrefabs.Length)];
+                var enemy = Instantiate(enemyPrefab, worldPosition, Quaternion.identity, spawnedObjectsParent);
+                EnemyScript enemyScript = enemy.GetComponent<EnemyScript>();
+                if (enemyScript != null)                {
+                    enemyScript.enemyID = "enemy" + enemyIDcounter;
+                    enemyIDcounter++;
+                }
+            }
         }
     }
 }

@@ -130,8 +130,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5437467e5f2cd24b919bb6636348f15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
+  z: 0.5
   chaseRadius: 3
   battlePrefab: {fileID: 1984905327066608720, guid: 0972e51b09acc424ca1b09f094c43d42, type: 3}
+  enemyID: 
+  isMovingEnemy: 1
 --- !u!50 &1330200608452688425
 Rigidbody2D:
   serializedVersion: 5

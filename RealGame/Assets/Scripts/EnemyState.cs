@@ -23,6 +23,8 @@ public class EnemyState : MonoBehaviour
     float lightMultiplier = 1f;
     //ice status effect variables
     int freezeCounter = 0; 
+    //Dark status effect variables
+    float darkMultiplier = 1.5f;
 
     public void Damaged(float damage, string element = "none")
     {
@@ -51,8 +53,12 @@ public class EnemyState : MonoBehaviour
                 effectsToRemove.Add("ice");
                 effectsToRemove.Add("frostbite");
                 Debug.Log("Fire melted ice/frostbite!");
+            } 
+            if (statusEffects.Contains("air"))
+            {
+                damage *= 2f; // Increase damage by 100% if enemy is hit with fire while airborne
+                Debug.Log("The Flames intensify! " + damage);
             }
-
             break;
         case "ice":
             freezeCounter++;
@@ -94,9 +100,13 @@ public class EnemyState : MonoBehaviour
             break;    
 
         case "dark":
-
+            damage *= darkMultiplier;
+            Debug.Log("Dark hit! Current multiplier: " + darkMultiplier);
+            if (statusEffects.Contains("dark"))
+            {
+                darkMultiplier -= 0.25f; // Reduce damage by 20% if enemy is already shadowed and hit with dark again
+            }
             break;
-    
         default:
 
             break;
@@ -191,7 +201,7 @@ public class EnemyState : MonoBehaviour
     //Status effect for Air
     void Air()
     {
-        Debug.Log("Enemy is buffeted!");
+        Debug.Log("The air around the enemy is unstable!");
     }
     //Status effect for Shock
     void Shocked()

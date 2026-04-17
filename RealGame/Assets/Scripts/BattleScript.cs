@@ -242,6 +242,12 @@ public class BattleScript : MonoBehaviour
         //Transition to previous scene
         SceneManager.LoadScene(BattleDataHolder.returnSceneName);
     }
-
-
+    public void CheckForBattleEnd()
+    {
+        if (activeEnemies.Count == 0)
+        {
+            SwitchState(BattleState.BattleEnd);
+            timer = 1f; 
+        }
+    }
 }

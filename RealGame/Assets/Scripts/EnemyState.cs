@@ -114,6 +114,7 @@ public class EnemyState : MonoBehaviour
     if (battleScript != null)
         {
             battleScript.activeEnemies.Remove(gameObject);
+            battleScript.CheckForBattleEnd();
         }
     PlayerCasting playerCasting = FindObjectOfType<PlayerCasting>();
     Destroy(gameObject);

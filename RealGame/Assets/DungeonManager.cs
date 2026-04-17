@@ -161,4 +161,15 @@ public class DungeonManager : MonoBehaviour {
             }
         }
     }
+    public bool CheckForEnemies() {
+        bool enemiesRemaining = false;
+        FindObjectsOfType<EnemyScript>();
+        foreach (EnemyScript enemy in FindObjectsOfType<EnemyScript>()) {
+            if (enemy != null) {
+                enemiesRemaining = true;
+                break;
+            }
+        }
+        return enemiesRemaining;
+    }
 }

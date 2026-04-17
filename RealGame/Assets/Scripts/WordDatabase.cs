@@ -24,7 +24,7 @@ public class WordDatabase : MonoBehaviour
         "smoke","smolder","smoldering","char","charred",
         //Put all water words here
         "water", "wet", "drench", "drenched", "soak", "soaked", "splash", "splashed",
-        "flood", "flooded", "torrent", "torrential", "wave", "waves", "tsunami", "tsunamic", "ocean",
+        "flood", "flooded", "torrent", "torrential", "tsunami", "tsunamic", "ocean",
         "sea", "river", "stream", "brook", "pond", "lake", "aquatic", "marine", "hydro", "hydration",
         "hydrate", 
         //Put all earth words here
@@ -32,11 +32,10 @@ public class WordDatabase : MonoBehaviour
         "mountain", "hill", "cave", "cliff", "crag", "quarry", "geode", "gem", "mineral", "crystal",
         "earthquake", "seismic", "tectonic", "lithic", "terra",
         //Put all air words here
-        "air", "breeze", "gust", "wind", "gale", "draft", "whirlwind", "tornado", "hurricane", "cyclone",
-        "zephyr", "aerial", "atmosphere", "breath", "sky", "cloud", "storm", "tempest", 
+        "air", "breeze", "gust", "wind", "gale", "draft", "zephyr", "aerial", "breath", "sky", "cloud", "tempest", 
         //Put all shock words here
         "shock", "electric", "electricity", "thunder", "lightning", "bolt", "jolt", "zap", "static",
-        "surge", "overcharge", "overcharged", "charged", "charge", "shockwave", "shocking", "electrify", 
+        "surge", "overcharge", "overcharged", "charged", "charge", "shocking", "electrify", 
         "electrified", "stun", "stunning", "paralyze", "paralyzing", "voltage", "current", "ampere", "watt",
         //put all Ice words here
         "ice", "frost", "frostbite", "frosty", "chill", "chilling", "freeze", "freezing", "frozen", "glacier",
@@ -76,7 +75,7 @@ public class WordDatabase : MonoBehaviour
     public HashSet<string> waterWords = new HashSet<string> 
     { 
         "water", "wet", "drench", "drenched", "soak", "soaked", "splash", "splashed",
-        "flood", "flooded", "torrent", "torrential", "waves", "tsunami", "tsunamic", "ocean",
+        "flood", "flooded", "torrent", "torrential", "tsunami", "tsunamic", "ocean",
         "sea", "river", "stream", "brook", "pond", "lake", "aquatic", "marine", "hydro", "hydration",
         "hydrate", 
     };
@@ -88,13 +87,12 @@ public class WordDatabase : MonoBehaviour
     };
     public HashSet<string> airWords = new HashSet<string> 
     { 
-        "air", "breeze", "gust", "wind", "gale", "draft", "whirlwind", "tornado", "hurricane", "cyclone",
-        "zephyr", "aerial", "atmosphere", "breath", "sky", "cloud", "storm", "tempest"
+        "air", "breeze", "gust", "wind", "gale", "draft", "whirlwind", "zephyr", "aerial", "breath", "sky", "cloud", "tempest"
     };
     public HashSet<string> shockWords = new HashSet<string> 
     { 
         "shock", "electric", "electricity", "thunder", "lightning", "bolt", "jolt", "zap", "static",
-        "surge", "overcharge", "overcharged", "charged", "charge", "shockwave", "shocking", "electrify", 
+        "surge", "overcharge", "overcharged", "charged", "charge", "shocking", "electrify", 
         "electrified", "stun", "stunning", "paralyze", "paralyzing", "voltage", "current", "ampere", "watt"
     };
     public HashSet<string> iceWords = new HashSet<string>

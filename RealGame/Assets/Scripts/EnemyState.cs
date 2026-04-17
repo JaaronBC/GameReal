@@ -22,6 +22,7 @@ public class EnemyState : MonoBehaviour
     //ice status effect variables
     public int freezeCounter = 0; 
     //Dark status effect variables
+    int darkMultiplier = 1;
 
     public void Damaged(float damage, string element = "none")
     {
@@ -98,18 +99,25 @@ public class EnemyState : MonoBehaviour
             break;
         
         case "light":
-            effectsToRemove.Add("dark");
+            if (statusEffects.Contains("dark"))
+            {
+                darkMultiplier = 1;
+                statusEffects.Remove("dark");
+            }
             break;    
 
         case "dark":
             //Deals more damage the more effects are in StatusEffects
+            damage *= darkMultiplier;
             damage *= (1 + 0.5f * statusEffects.Count);
             Debug.Log("Dark hit! Base damage increased by " + (0.5f * statusEffects.Count * 100) + "% due to " + statusEffects.Count + " existing status effects.");
             if (statusEffects.Contains("dark"))
             {
-                damage *= 0f; // Reduce damage by 100% if enemy has alerady been hit by dark
+                darkMultiplier = 0; // Reduce damage by 100% if enemy has already been hit by dark
             }
-            effectsToRemove.Add("light");
+            //Remove all statusEffects
+            statusEffects.Clear();
+            Debug.Log("Darkness consumes all other effects!");
             break;
         default:
 

@@ -181,7 +181,7 @@ public class PlayerCasting : MonoBehaviour
             {
                 if (!usedMetaWords.Contains(word))
                 {
-                    metaMultiplier += 0.2f; // Each meta word increases multiplier by 20%
+                    metaMultiplier += 0.5f; // Each meta word increases multiplier by 50%
                     usedMetaWords.Add(word);
                 }
             }

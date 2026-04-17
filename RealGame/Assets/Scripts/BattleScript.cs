@@ -143,7 +143,7 @@ public class BattleScript : MonoBehaviour
             }
         }
         if (playerTimerFill) {
-            playerTimer += Time.deltaTime * 10f;
+            playerTimer += Time.deltaTime * 20f;
             if (playerTimer >= 10f) {
                 playerTimer = 10f;
                 playerTimerFill = false;

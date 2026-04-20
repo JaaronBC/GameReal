@@ -1443,7 +1443,6 @@ MonoBehaviour:
   player: {fileID: 0}
   enemyPrefabs:
   - {fileID: 236695506430920678, guid: 353f83e83ec00c8468aef4e20a310984, type: 3}
-  - {fileID: 5099717378222168626, guid: 2fab0aab8a99e4859b6b64fe33a16093, type: 3}
 --- !u!4 &1346901057
 Transform:
   m_ObjectHideFlags: 0

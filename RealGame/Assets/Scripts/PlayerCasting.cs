@@ -33,6 +33,7 @@ public class PlayerCasting : MonoBehaviour
 
     public int spellsCast = 0;
     public float backspaceCounter = 0;
+    public List<char> allowedLetters;
     //Prefabs for shape words
     [SerializeField] GameObject boltPrefab;
     [SerializeField] GameObject ballPrefab;
@@ -242,6 +243,20 @@ public class PlayerCasting : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        //Debug Log the usuable Letters for the player from the BattleDataHolder
+        List<char> lettersTest = new List<char>();
+        foreach (char c in BattleDataHolder.usableLetters)
+        {
+            if (c != '\0')
+            {
+                //lowercase the letter and add to lettersTest list and allowedLetters list
+                lettersTest.Add(char.ToLower(c));
+                allowedLetters.Add(char.ToLower(c));
+            }
+        }
+
+
+        Debug.Log("Usable Letters: " + string.Join(", ", lettersTest));
         //Initialize shape action dictionary with corresponding methods for each shape
         shapeActions = new Dictionary<string, System.Action<float, string>>()
         {
@@ -299,14 +314,21 @@ public class PlayerCasting : MonoBehaviour
         }
 
         if (Input.anyKeyDown)
-        {
+        {   
             foreach (char c in Input.inputString)
             {
                 if (char.IsLetter(c))
                 {
+                    if (!allowedLetters.Contains(char.ToLower(c))) 
+                    {
+                        Debug.Log("Letter '" + c + "' is invalid;"); // Ignore letters that are not in the allowed list
+                    } 
+                    else 
+                    {
                     spellWord += c;
                     SpawnLetter(c);
                     //Debug.Log("Current Spell Word: " + spellWord);
+                    }
                 }
                 else if (c == ' ')
                 {

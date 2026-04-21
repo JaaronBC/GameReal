@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine.UI;
 public class PlayerCasting : MonoBehaviour
 {
+    public bool allowAllLetters = false; // Set to true to allow all letters regardless of BattleDataHolder settings
     [SerializeField] BattleScript battleScript;
     [SerializeField] private TextMeshProUGUI spellBuildText;
     Dictionary<string, System.Action<float, string>> shapeActions;
@@ -243,13 +244,11 @@ public class PlayerCasting : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        //Debug Log the usuable Letters for the player from the BattleDataHolder
         List<char> lettersTest = new List<char>();
         foreach (char c in BattleDataHolder.usableLetters)
         {
             if (c != '\0')
             {
-                //lowercase the letter and add to lettersTest list and allowedLetters list
                 lettersTest.Add(char.ToLower(c));
                 allowedLetters.Add(char.ToLower(c));
             }
@@ -318,7 +317,12 @@ public class PlayerCasting : MonoBehaviour
             foreach (char c in Input.inputString)
             {
                 if (char.IsLetter(c))
-                {
+                {   
+                    if (allowAllLetters) {
+                        spellWord += c;
+                        SpawnLetter(c);
+                        continue;
+                    }
                     if (!allowedLetters.Contains(char.ToLower(c))) 
                     {
                         Debug.Log("Letter '" + c + "' is invalid;"); // Ignore letters that are not in the allowed list

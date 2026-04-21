@@ -6,10 +6,10 @@ using UnityEngine;
 public class GnomeSlimeBeamAttack : MonoBehaviour
 {
     //stats
-    float timer = 5.0f;
+    public float timer = 5.0f;
     protected float z = 0.5f;
     int damage = 2;
-    float speed = 3f;
+    public float speed = 3f;
     bool playerHitDestroy = true;
     public string state = "normal";
 
@@ -40,8 +40,8 @@ public class GnomeSlimeBeamAttack : MonoBehaviour
             transform.Translate(direction * (angleSpeed * Time.deltaTime), Space.World);
         }
 
-            //timer and death
-            timer -= Time.deltaTime;
+        //timer and death
+        timer -= Time.deltaTime;
         if (timer <= 0.0f)
         {
             Destroy(this.gameObject);

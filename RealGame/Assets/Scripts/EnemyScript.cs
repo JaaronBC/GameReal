@@ -43,6 +43,7 @@ public class EnemyScript : MonoBehaviour
 
 
 
+    
     void Start()
     {
         animator = GetComponent<Animator>();

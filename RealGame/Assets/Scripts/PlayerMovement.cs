@@ -112,6 +112,9 @@ public class PlayerMovement : MonoBehaviour
             }
         }
 
+        //depth
+        spriteRenderer.sortingOrder = (int)((transform.position.y - z) * -100);
+
         // air and jump speed
         if (z > 0.0f)
             speed = airSpeed;

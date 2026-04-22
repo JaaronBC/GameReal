@@ -6227,7 +6227,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a5e5d9418a5247658eeb34848d71087, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  allowAllLetters: 1
+  allowAllLetters: 0
   battleScript: {fileID: 1257174530}
   spellBuildText: {fileID: 1902509407}
   isActive: 0

@@ -314,8 +314,10 @@ public class PlayerCasting : MonoBehaviour
 
         if (Input.anyKeyDown)
         {   
-            foreach (char c in Input.inputString)
+            foreach (char character in Input.inputString)
             {
+                //Allow for uppercase letters by converting to lowercase
+                char c = char.ToLower(character);
                 if (char.IsLetter(c))
                 {   
                     if (allowAllLetters) {

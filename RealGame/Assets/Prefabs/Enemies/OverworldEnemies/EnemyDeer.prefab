@@ -133,7 +133,7 @@ MonoBehaviour:
   z: 0.75
   chaseRadius: 3
   battlePrefab: {fileID: 6498971463192142380, guid: a713ccb6d200cbd4b97510411b4b2ccf, type: 3}
-  enemyID: 
+  enemyID: enemy5
   isMovingEnemy: 1
 --- !u!50 &1330200608452688425
 Rigidbody2D:
@@ -196,7 +196,7 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: -0.24999997}
+  m_Offset: {x: 0, y: -0.5}
   m_Size: {x: 0.9, y: 0.5}
   m_Direction: 1
 --- !u!58 &1654800173060977400
@@ -233,5 +233,5 @@ CircleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: -0.2}
-  m_Radius: 0.3
+  m_Offset: {x: 0, y: -0.4}
+  m_Radius: 0.35

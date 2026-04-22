@@ -4,8 +4,8 @@ using UnityEngine;
 public class SkeletonBattleScript : EnemyBattle
 {
     //unique attack stats
-    int[] attackCount = { 4, 6 };
-    float range = 2.5f;
+    int[] attackCount = { 4, 7 };
+    float range = 2.25f;
 
     public GameObject player;
 
@@ -14,7 +14,7 @@ public class SkeletonBattleScript : EnemyBattle
     {
         // Ensure base initialisation runs so `animator`, `spriteRenderer`, `flash`, and `battleScript` are assigned.
         base.Start();
-        cooldownRange = new float[] { 2f, 3.25f };
+        cooldownRange = new float[] { 1.75f, 3f };
         //IMPORTANT: FOLLOWING LINES MUST BE IN ALL ENEMY BATTLE SCRIPTS
         timer = Random.Range(cooldownRange[0], cooldownRange[1]);
         battleScript = FindFirstObjectByType<BattleScript>();

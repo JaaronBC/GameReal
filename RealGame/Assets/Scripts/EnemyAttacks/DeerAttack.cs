@@ -8,13 +8,13 @@ public class DeerAttack : MonoBehaviour
     int damage = 4;
 
     float z = 0.25f;
-    float speed = 1.75f;
+    float speed = 2.0f;
     float timer = 4f;
 
     float angle = -90.0f;
     float angleTime = 0.5f;
-    float angleTimeR = 0.5f;
-    float angleMax = 15f;
+    float angleTimeR = 0.4f;
+    float angleChange = 0.03f;
     bool playerHitDestroy = true;
 
     //game objects
@@ -43,7 +43,7 @@ public class DeerAttack : MonoBehaviour
             float direction = Mathf.Atan2(vectorPoint.y, vectorPoint.x) * Mathf.Rad2Deg;
             if (direction < 0) direction += 360;
             if (angle < 0) angle += 360;
-            angle = Mathf.Lerp(direction, angle, 0.02f);
+            angle = Mathf.Lerp(direction, angle, angleChange);
 
             angleTime = angleTimeR;
         }

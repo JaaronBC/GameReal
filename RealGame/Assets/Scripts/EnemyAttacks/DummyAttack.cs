@@ -8,7 +8,7 @@ public class DummyAttack : GnomeSlimeBeamAttack
     private int countMax = 10;
 
     private float angleOffset = 20.0f;
-    private float offset = 0.5f;
+    private float offset = 0.75f;
     public GameObject player;
 
     private void Awake()
@@ -35,6 +35,12 @@ public class DummyAttack : GnomeSlimeBeamAttack
                 player.transform.position.x - transform.position.x) * Mathf.Rad2Deg;
             angle = direction + UnityEngine.Random.Range(-angleOffset, angleOffset);
         }
+
+        //die if not in enemy turn
+        if (battleScript != null) if (battleScript.state != BattleState.EnemyTurn)
+        {
+            Destroy(this.gameObject);
+        }
     }
 
     //
@@ -51,8 +57,6 @@ public class DummyAttack : GnomeSlimeBeamAttack
             newScript.count = count - 1;
             newScript.angle = angle + UnityEngine.Random.Range(-25f, 25f);
         }
-
-        print(count);
 
         Destroy(this.gameObject);
     }

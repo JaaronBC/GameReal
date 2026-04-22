@@ -64,5 +64,8 @@ TagManager:
   - name: HUD
     uniqueID: 1944665303
     locked: 0
+  - name: Attacks
+    uniqueID: 1077950023
+    locked: 0
   m_RenderingLayers:
   - Default

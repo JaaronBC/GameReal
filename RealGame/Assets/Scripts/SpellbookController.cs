@@ -8,7 +8,6 @@ public class SpellbookController : MonoBehaviour
     public GameObject inventoryPanel;
     public GameObject slotPrefab;
     public int slotCount;
-    Dictionary<char, GameObject> letterPrefabs = new Dictionary<char, GameObject>();
     Dictionary<char, Sprite> letterSprites = new Dictionary<char, Sprite>();
     void Awake()
     {
@@ -17,7 +16,6 @@ public class SpellbookController : MonoBehaviour
             GameObject prefab = Resources.Load<GameObject>("Letters/Letter" + c);
             if (prefab != null)
             {
-                letterPrefabs[c] = prefab;
                 letterSprites[c] = prefab.GetComponent<Image>().sprite;
             }
             else
@@ -35,14 +33,13 @@ public class SpellbookController : MonoBehaviour
             if (BattleDataHolder.usableLetters[i] != '\0') 
             {
                 char letter = BattleDataHolder.usableLetters[i];
-                GameObject letterPrefab = letterPrefabs[letter];
-                if (letterPrefab != null)
+                if (letter != null)
                 {
                     AddLetter(letter);
                 }
                 else
                 {
-                    Debug.LogError("Letter prefab not found for letter: " + letter);
+                    Debug.LogError("Letter not found: " + letter);
                 }
             }
         }

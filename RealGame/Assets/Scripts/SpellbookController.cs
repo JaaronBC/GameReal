@@ -1,6 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
-
+using System.Collections.Generic;
 public class SpellbookController : MonoBehaviour
 {
     public PlayerState playerState;
@@ -8,7 +8,24 @@ public class SpellbookController : MonoBehaviour
     public GameObject inventoryPanel;
     public GameObject slotPrefab;
     public int slotCount;
-
+    Dictionary<char, GameObject> letterPrefabs = new Dictionary<char, GameObject>();
+    Dictionary<char, Sprite> letterSprites = new Dictionary<char, Sprite>();
+    void Awake()
+    {
+        for (char c = 'A'; c <= 'Z'; c++)
+        {
+            GameObject prefab = Resources.Load<GameObject>("Letters/Letter" + c);
+            if (prefab != null)
+            {
+                letterPrefabs[c] = prefab;
+                letterSprites[c] = prefab.GetComponent<Image>().sprite;
+            }
+            else
+            {
+                Debug.LogError("Missing prefab for letter: " + c);
+            }
+        }
+    }
     void Start()
     {
         //Creates letter slots on game start equal to the slot count
@@ -18,10 +35,10 @@ public class SpellbookController : MonoBehaviour
             if (BattleDataHolder.usableLetters[i] != '\0') 
             {
                 char letter = BattleDataHolder.usableLetters[i];
-                GameObject letterPrefab = Resources.Load<GameObject>("Letters/Letter" + letter);
+                GameObject letterPrefab = letterPrefabs[letter];
                 if (letterPrefab != null)
                 {
-                    AddLetter(letterPrefab);
+                    AddLetter(letter);
                 }
                 else
                 {
@@ -31,54 +48,27 @@ public class SpellbookController : MonoBehaviour
         }
     }
     
-public bool AddLetter(GameObject letterPrefab)
-{
-    Letter letterScript = letterPrefab.GetComponent<Letter>();
-
-    if (letterScript == null)
+    public bool AddLetter(char letter)
     {
-        Debug.LogError("Letter prefab is missing Letter script.");
-        return false;
-    }
+        int slotIndex = letter - 'A';
 
-    char letter = letterScript.letterValue;
+        if (!letterSprites.ContainsKey(letter)) return false;
 
-    // Convert Alphabet A-Z a numerical value of 0-25
-    int slotIndex = letter - 'A';
+        Transform slotTransform = inventoryPanel.transform.GetChild(slotIndex);
+        Slot slot = slotTransform.GetComponent<Slot>();
 
-    if (slotIndex < 0 || slotIndex >= inventoryPanel.transform.childCount)
-    {
-        Debug.LogError("Invalid slot index for letter: " + letter);
-        return false;
-    }
-    
-    Transform slotTransform = inventoryPanel.transform.GetChild(slotIndex);
-    //Gets the script component Slot from slotTransform prefab and sets it to the "slot" variable
-    Slot slot = slotTransform.GetComponent<Slot>();
-
-    if (slot != null && slot.currentLetter == null)
-    {
-        //Creates copy of letter and sets it to newLetter
-        GameObject newLetter = Instantiate(letterPrefab, slotTransform);
-        newLetter.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
-        //Retrieves image components from slot and and letter prefabs and sets them to variables
-        Image slotImage = slotTransform.GetComponent<Image>();
-        Image letterImage = newLetter.GetComponent<Image>();
-
-        if (slotImage != null && letterImage != null)
+        if (slot.currentLetter == '\0')
         {
-            //Makes slot image component sprite the slot image component of letter image component
-            //Sets color of the slots image component to white
-            slotImage.sprite = letterImage.sprite;
-            slotImage.color = Color.white;
-        }
-        //Sets the currentLetter of the slot to newLetter prefab
-        slot.currentLetter = newLetter;
-        BattleDataHolder.usableLetters[slotIndex] = letter;
-        return true;
-    }
+            slot.currentLetter = letter;
 
-    Debug.Log("Slot already occupied or invalid.");
-    return false;
+            Image slotImage = slotTransform.GetComponent<Image>();
+            slotImage.sprite = letterSprites[letter];
+            slotImage.color = Color.white;
+
+            BattleDataHolder.usableLetters[slotIndex] = letter;
+            return true;
+        }
+
+        return false;
     }
 }

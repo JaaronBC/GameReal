@@ -3,5 +3,5 @@ using UnityEngine.UI;
 
 public class Slot : MonoBehaviour
 {
-    public GameObject currentLetter;
+    public char currentLetter = '\0';
 }

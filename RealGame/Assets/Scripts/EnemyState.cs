@@ -19,13 +19,18 @@ public class EnemyState : MonoBehaviour
     float burnDuration = 5f;
     float burnTickTimer = 0f;
     float burnElapsed = 0f;
-    //Light Status effect Variables
-    float lightMultiplier = 1f;
     //ice status effect variables
-    int freezeCounter = 0; 
+    public int freezeCounter = 0; 
+    //Dark status effect variables
+    int darkMultiplier = 1;
 
     public void Damaged(float damage, string element = "none")
     {
+        if (statusEffects.Contains("light"))
+        {
+            damage *= 1.2f; // Increase damage by 20% if enemy is illuminated
+            Debug.Log("Light makes the enemy more vulnerable! " + damage);
+        }
         switch (element)
         {
         case "shock":
@@ -42,6 +47,11 @@ public class EnemyState : MonoBehaviour
             {
                 effectsToRemove.Add("fire"); 
                 Debug.Log("Water extinguished fire");
+            } 
+            if (statusEffects.Contains("frostbite"))
+            {
+                damage *= 1.5f; // Increase damage by 50% if enemy is frostbitten and hit with water
+                Debug.Log("Water intensifies frostbite! " + damage);
             }
             break;
 
@@ -51,8 +61,12 @@ public class EnemyState : MonoBehaviour
                 effectsToRemove.Add("ice");
                 effectsToRemove.Add("frostbite");
                 Debug.Log("Fire melted ice/frostbite!");
+            } 
+            if (statusEffects.Contains("air"))
+            {
+                damage *= 2f; // Increase damage by 100% if enemy is hit with fire while airborne
+                Debug.Log("The Flames intensify! " + damage);
             }
-
             break;
         case "ice":
             freezeCounter++;
@@ -74,7 +88,7 @@ public class EnemyState : MonoBehaviour
             if (statusEffects.Contains("frostbite"))
             {
                 damage *= 2f; // Increase damage by 100% if enemy is frostbitten and hit with earth
-                Debug.Log("Frostbite + Earth combo: Damage increased to " + damage);
+                Debug.Log("The Earth Breaks the Ice: " + damage);
                 effectsToRemove.Add("frostbite"); // Remove frostbite after applying the combo
             }
 
@@ -85,22 +99,36 @@ public class EnemyState : MonoBehaviour
             break;
         
         case "light":
-            if (statusEffects.Contains("light"))
+            if (statusEffects.Contains("dark"))
             {
-                damage *= lightMultiplier;
-                lightMultiplier += 0.2f; // Increase multiplier for each additional light hit
-                Debug.Log("Light hit! Current multiplier: " + lightMultiplier);
+                darkMultiplier = 1;
+                statusEffects.Remove("dark");
             }
             break;    
 
         case "dark":
-
+            //Deals more damage the more effects are in StatusEffects
+            damage *= darkMultiplier;
+            damage *= (1 + 0.5f * statusEffects.Count);
+            Debug.Log("Dark hit! Base damage increased by " + (0.5f * statusEffects.Count * 100) + "% due to " + statusEffects.Count + " existing status effects.");
+            if (statusEffects.Contains("dark"))
+            {
+                darkMultiplier = 0; // Reduce damage by 100% if enemy has already been hit by dark
+            }
+            //Remove all statusEffects
+            statusEffects.Clear();
+            Debug.Log("Darkness consumes all other effects!");
             break;
-    
         default:
 
             break;
         }
+        if (statusEffects.Contains("frostbite"))
+        {
+            damage *= 1.2f; // Increase damage by 20% if enemy is frostbitten
+             Debug.Log("Frostbite increases damage taken: " + damage);
+        }
+
         Debug.Log("Enemy took damage: " + damage + " with status effects: " + string.Join(", ", statusEffects));
         currentHP -= damage;
         if (currentHP < 0)
@@ -114,6 +142,7 @@ public class EnemyState : MonoBehaviour
     if (battleScript != null)
         {
             battleScript.activeEnemies.Remove(gameObject);
+            battleScript.CheckForBattleEnd();
         }
     PlayerCasting playerCasting = FindObjectOfType<PlayerCasting>();
     Destroy(gameObject);
@@ -174,7 +203,7 @@ public class EnemyState : MonoBehaviour
     //Status effect for Water
     void Wet()
     {
-        Debug.Log("Enemy is drenched!");
+        //Debug.Log("Enemy is drenched!");
         //Remove burn status effect if enemy is on fire and gets wet
         if (statusEffects.Contains("fire"))        
         {
@@ -185,12 +214,12 @@ public class EnemyState : MonoBehaviour
     //Status effect for Earth
     void Tremor()
     {
-        Debug.Log("Enemy is grounded!");
+        //Debug.Log("Enemy is grounded!");
     }
     //Status effect for Air
     void Air()
     {
-        Debug.Log("Enemy is buffeted!");
+        //Debug.Log("The air around the enemy is unstable!");
     }
     //Status effect for Shock
     void Shocked()
@@ -227,16 +256,16 @@ public class EnemyState : MonoBehaviour
     //Status effect for Ice
     void Ice()
     {
-        Debug.Log("Enemy is getting colder!");
+        //Debug.Log("Enemy is getting colder!");
     }
     //Status effect for Light
     void Light()
     {
-        Debug.Log("Enemy is illuminated!");
+        //Debug.Log("Enemy is illuminated!");
     }
     //Status effect for Dark
     void Dark()
     {
-        Debug.Log("Enemy is shadowed!");   
+        //Debug.Log("Enemy is shadowed!");   
     }
 }

@@ -8,7 +8,7 @@ public class PlayerLetterCollector : MonoBehaviour
     public SpellbookController spellbookController;
     void Start()
     {
-        //spellbookController = FindObjectOfType<SpellbookController>();
+        spellbookController = FindObjectOfType<SpellbookController>();
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {

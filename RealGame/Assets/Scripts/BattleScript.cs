@@ -143,7 +143,7 @@ public class BattleScript : MonoBehaviour
             }
         }
         if (playerTimerFill) {
-            playerTimer += Time.deltaTime * 10f;
+            playerTimer += Time.deltaTime * 20f;
             if (playerTimer >= 10f) {
                 playerTimer = 10f;
                 playerTimerFill = false;
@@ -242,6 +242,12 @@ public class BattleScript : MonoBehaviour
         //Transition to previous scene
         SceneManager.LoadScene(BattleDataHolder.returnSceneName);
     }
-
-
+    public void CheckForBattleEnd()
+    {
+        if (activeEnemies.Count == 0)
+        {
+            SwitchState(BattleState.BattleEnd);
+            timer = 1f; 
+        }
+    }
 }

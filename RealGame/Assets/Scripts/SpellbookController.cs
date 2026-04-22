@@ -8,18 +8,25 @@ public class SpellbookController : MonoBehaviour
     public GameObject inventoryPanel;
     public GameObject slotPrefab;
     public int slotCount;
-    public GameObject[] letterPrefabs;
+
     void Start()
     {
         //Creates letter slots on game start equal to the slot count
         for(int i = 0; i < slotCount; i++)
         {
             Slot slot = Instantiate(slotPrefab, inventoryPanel.transform).GetComponent<Slot>();
-            if(i < letterPrefabs.Length)
+            if (BattleDataHolder.usableLetters[i] != '\0') 
             {
-                GameObject letter = Instantiate(letterPrefabs[i], slot.transform);
-                letter.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
-                slot.currentLetter = letter;
+                char letter = BattleDataHolder.usableLetters[i];
+                GameObject letterPrefab = Resources.Load<GameObject>("Letters/Letter" + letter);
+                if (letterPrefab != null)
+                {
+                    AddLetter(letterPrefab);
+                }
+                else
+                {
+                    Debug.LogError("Letter prefab not found for letter: " + letter);
+                }
             }
         }
     }
@@ -67,9 +74,7 @@ public bool AddLetter(GameObject letterPrefab)
         }
         //Sets the currentLetter of the slot to newLetter prefab
         slot.currentLetter = newLetter;
-        playerState.usableLetters[slotIndex] = letter;
-        playerState.letterSprites[slotIndex] = slotImage.sprite;
-
+        BattleDataHolder.usableLetters[slotIndex] = letter;
         return true;
     }
 

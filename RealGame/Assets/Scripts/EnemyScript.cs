@@ -67,6 +67,7 @@ public class EnemyScript : MonoBehaviour
             // If already exists, check if defeated
             if (BattleDataHolder.enemyDatabase[enemyID].defeated)
             {
+                Debug.Log("Destroying " + enemyID);
                 Destroy(gameObject);
             }
         }

@@ -10,7 +10,8 @@ public static class BattleDataHolder
     public static Dictionary<string, EnemySaveData> enemyDatabase = new Dictionary<string, EnemySaveData>();
     public static bool hasReturnPosition = false;
     public static char[] usableLetters = new char[26];
-    public static List<char> LettersLeft = new List<char>("abcdefghijklmnopqrstuvwxyz".ToCharArray());
+    public static HashSet<char> ConsonantsLeft = new HashSet<char>("BCDFGHJKLMNPQRSTVWXYZ".ToCharArray());
+    public static HashSet<char> VowelsLeft = new HashSet<char>("AEIOU".ToCharArray());
     public static Dictionary<char, GameObject> letterPrefabs = new Dictionary<char, GameObject>
     {
         { 'A', Resources.Load<GameObject>("Letters/LetterA") },

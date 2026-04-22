@@ -60,6 +60,8 @@ public class BattleScript : MonoBehaviour
     public float playerTimer;
     bool playerTimerFill = false;
     [SerializeField] GameObject playerTimerUI;
+    int enemyCount = 0;
+    [SerializeField] RandomLetter randomLetter;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -80,6 +82,7 @@ public class BattleScript : MonoBehaviour
             }
         }
         state = BattleState.Start;
+        enemyCount = enemies.Length;
         setUpBattle();
         playerObject = GameObject.Find("PlayerObject");
     }
@@ -240,6 +243,11 @@ public class BattleScript : MonoBehaviour
     {
         Debug.Log("Battle Ended!");
         //Transition to previous scene
+        for (int i = 0; i < enemyCount; i++)
+        {
+            //Give random consonant for each enemy
+            randomLetter.RandomConsonant();
+        }
         SceneManager.LoadScene(BattleDataHolder.returnSceneName);
     }
     public void CheckForBattleEnd()

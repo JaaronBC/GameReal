@@ -6196,6 +6196,7 @@ MonoBehaviour:
   enemyTimer: 10
   playerTimer: 0
   playerTimerUI: {fileID: 592354709}
+  randomLetter: {fileID: 1920163124}
 --- !u!224 &1257174531
 RectTransform:
   m_ObjectHideFlags: 0
@@ -7186,8 +7187,40 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8818195158728404346, guid: 8cc8be698bbd84aa9b3f8bbfaf903055, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1920163124}
   m_SourcePrefab: {fileID: 100100000, guid: 8cc8be698bbd84aa9b3f8bbfaf903055, type: 3}
+--- !u!1 &1920163122 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8818195158728404346, guid: 8cc8be698bbd84aa9b3f8bbfaf903055, type: 3}
+  m_PrefabInstance: {fileID: 1920163121}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1920163123 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5958140960861867568, guid: 8cc8be698bbd84aa9b3f8bbfaf903055, type: 3}
+  m_PrefabInstance: {fileID: 1920163121}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1920163122}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e7f6a4a718099416d8b9d7423ba2ddd4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+--- !u!114 &1920163124
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1920163122}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5839a9a863d404baca036946bb97dad6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  spellbookController: {fileID: 1920163123}
 --- !u!1 &2136812287
 GameObject:
   m_ObjectHideFlags: 0

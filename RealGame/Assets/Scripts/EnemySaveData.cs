@@ -5,4 +5,5 @@ public class EnemySaveData
     public Vector3 position;
     public bool defeated;
     public bool returnablePosition;
+    public bool hasDroppedLetter;
 }

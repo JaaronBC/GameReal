@@ -71,20 +71,25 @@ public class EnemyScript : MonoBehaviour
                 //Get position from BattleDataHolder and save it to a variable
                 Vector3 enemyPosition = BattleDataHolder.enemyDatabase[enemyID].position;
                 Destroy(gameObject);
-                RandomLetter randomLetter = FindObjectOfType<RandomLetter>();
-                if (randomLetter != null)                {
-                    char randomChar = randomLetter.RandomConsonant();
-                    //Get letter prefab equal to the random Char and Instantiate it at the enemy's position
-                    GameObject letterPrefab = Resources.Load<GameObject>("Letters/Letter" + randomChar);
-                    if (letterPrefab != null)                    {
-                        Instantiate(letterPrefab, enemyPosition, Quaternion.identity);
-                    }
-                    else if (randomChar == '\0')
+                if (!BattleDataHolder.enemyDatabase[enemyID].hasDroppedLetter)
+                {
+                    BattleDataHolder.enemyDatabase[enemyID].hasDroppedLetter = true;
+                    RandomLetter randomLetter = FindObjectOfType<RandomLetter>();
+                    if (randomLetter != null)                
                     {
-                        Debug.Log("No consonants left to drop!");
-                    }
-                    else  {
-                        Debug.LogError("Letter prefab not found for char: " + randomChar);
+                        char randomChar = randomLetter.RandomConsonant();
+                        //Get letter prefab equal to the random Char and Instantiate it at the enemy's position
+                        GameObject letterPrefab = Resources.Load<GameObject>("Letters/Letter" + randomChar);
+                        if (letterPrefab != null)                    {
+                            Instantiate(letterPrefab, enemyPosition, Quaternion.identity);
+                        }
+                        else if (randomChar == '\0')
+                        {
+                            Debug.Log("No consonants left to drop!");
+                        }
+                        else  {
+                            Debug.LogError("Letter prefab not found for char: " + randomChar);
+                        }
                     }
                 }
 

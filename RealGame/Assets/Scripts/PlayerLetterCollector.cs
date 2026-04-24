@@ -26,7 +26,7 @@ public class PlayerLetterCollector : MonoBehaviour
             if(letter != null)
             {
                 //add letter inventory
-                bool letterAdded = spellbookController.AddLetter(collision.gameObject);
+                bool letterAdded = spellbookController.AddLetter(letter.letterValue);
                 if (letterAdded)
                 {
                     Destroy(collision.gameObject);

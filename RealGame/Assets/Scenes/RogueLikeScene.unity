@@ -1390,13 +1390,45 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8818195158728404346, guid: 8cc8be698bbd84aa9b3f8bbfaf903055, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1319505403}
   m_SourcePrefab: {fileID: 100100000, guid: 8cc8be698bbd84aa9b3f8bbfaf903055, type: 3}
+--- !u!1 &1199898095 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8818195158728404346, guid: 8cc8be698bbd84aa9b3f8bbfaf903055, type: 3}
+  m_PrefabInstance: {fileID: 1199898094}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1271987094 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 178219979476959909, guid: f130753d9c09f4c779cfd1a6444a79d7, type: 3}
   m_PrefabInstance: {fileID: 289156451}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1319505402 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5958140960861867568, guid: 8cc8be698bbd84aa9b3f8bbfaf903055, type: 3}
+  m_PrefabInstance: {fileID: 1199898094}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1199898095}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e7f6a4a718099416d8b9d7423ba2ddd4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+--- !u!114 &1319505403
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1199898095}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5839a9a863d404baca036946bb97dad6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RandomLetter
+  spellbookController: {fileID: 1319505402}
 --- !u!1 &1346901055
 GameObject:
   m_ObjectHideFlags: 0
@@ -1441,8 +1473,11 @@ MonoBehaviour:
   maxFloors: 5
   spawnedObjectsParent: {fileID: 0}
   player: {fileID: 0}
+  spellbookController: {fileID: 1319505402}
   enemyPrefabs:
   - {fileID: 236695506430920678, guid: 353f83e83ec00c8468aef4e20a310984, type: 3}
+  - {fileID: 236695506430920678, guid: b191cc1078b36b04ea8494d89b19dc19, type: 3}
+  - {fileID: 236695506430920678, guid: bea1a089bc411354ead148dbdb4d78f7, type: 3}
 --- !u!4 &1346901057
 Transform:
   m_ObjectHideFlags: 0

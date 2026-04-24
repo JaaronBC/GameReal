@@ -29,7 +29,6 @@ public class SkeletonBattleScript : EnemyBattle
         if (!player)
         {
             player = GameObject.Find("PlayerObject");
-            if (player) print("player found");
         }
         timer = Random.Range(cooldownRange[0], cooldownRange[1]);
         //generate attack pattern

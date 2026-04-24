@@ -454,7 +454,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Items
+  m_text: SpellList
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 992730f3d878a4fc8b9c3cf13a41f76f, type: 2}
   m_sharedMaterial: {fileID: -4903732915375926624, guid: 992730f3d878a4fc8b9c3cf13a41f76f, type: 2}
@@ -538,7 +538,7 @@ GameObject:
   - component: {fileID: 4159870111641573828}
   - component: {fileID: 8032079128766581699}
   m_Layer: 5
-  m_Name: ItemsPage
+  m_Name: SpellListPage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -269,7 +269,10 @@ public class PlayerCasting : MonoBehaviour
             {"spear", CastSpear},
             {"lance", CastSpear},
             {"javelin", CastSpear},
-            {"drill", CastDrill}
+            {"drill", CastDrill},
+            {"cut", CastSlash},
+            {"stab", CastSpear},
+            {"pierce", CastSpear},
         };
         //Initialize letter prefab mapping for spell crafting visuals
         letterMap = new Dictionary<char, GameObject>();

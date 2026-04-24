@@ -36,29 +36,33 @@ public class DungeonManager : MonoBehaviour {
     int enemyIDcounter = 1;
     void Start() {
         GenerateFloor();
-        spellbookController.AddLetter('B');
-        spellbookController.AddLetter('O');
-        spellbookController.AddLetter('L');
-        spellbookController.AddLetter('T');
-        spellbookController.AddLetter('A');
-        BattleDataHolder.ConsonantsLeft.Remove('B');
-        BattleDataHolder.VowelsLeft.Remove('O');
-        BattleDataHolder.ConsonantsLeft.Remove('L');
-        BattleDataHolder.ConsonantsLeft.Remove('T');
-        BattleDataHolder.VowelsLeft.Remove('A');
-        //Give the player 3 random consonants
-        for (int i = 0; i < 3; i++) {
-            if (BattleDataHolder.ConsonantsLeft.Count > 0) {
-                char randomConsonant = GetRandomCharFromSet(BattleDataHolder.ConsonantsLeft);
-                spellbookController.AddLetter(randomConsonant);
-                BattleDataHolder.ConsonantsLeft.Remove(randomConsonant);
+        if (BattleDataHolder.startOfRun) 
+        {
+            spellbookController.AddLetter('B');
+            spellbookController.AddLetter('O');
+            spellbookController.AddLetter('L');
+            spellbookController.AddLetter('T');
+            spellbookController.AddLetter('A');
+            BattleDataHolder.ConsonantsLeft.Remove('B');
+            BattleDataHolder.VowelsLeft.Remove('O');
+            BattleDataHolder.ConsonantsLeft.Remove('L');
+            BattleDataHolder.ConsonantsLeft.Remove('T');
+            BattleDataHolder.VowelsLeft.Remove('A');
+            //Give the player 3 random consonants
+            for (int i = 0; i < 3; i++) {
+                if (BattleDataHolder.ConsonantsLeft.Count > 0) {
+                    char randomConsonant = GetRandomCharFromSet(BattleDataHolder.ConsonantsLeft);
+                    spellbookController.AddLetter(randomConsonant);
+                    BattleDataHolder.ConsonantsLeft.Remove(randomConsonant);
+                }
             }
-        }
-        //Give the player a random vowel
-        if (BattleDataHolder.VowelsLeft.Count > 0) {
-            char randomVowel = GetRandomCharFromSet(BattleDataHolder.VowelsLeft);
-            spellbookController.AddLetter(randomVowel);
-            BattleDataHolder.VowelsLeft.Remove(randomVowel);
+            //Give the player a random vowel
+            if (BattleDataHolder.VowelsLeft.Count > 0) {
+                char randomVowel = GetRandomCharFromSet(BattleDataHolder.VowelsLeft);
+                spellbookController.AddLetter(randomVowel);
+                BattleDataHolder.VowelsLeft.Remove(randomVowel);
+            }
+            BattleDataHolder.startOfRun = false;
         }
     }
     char GetRandomCharFromSet(HashSet<char> charSet) {
@@ -67,7 +71,7 @@ public class DungeonManager : MonoBehaviour {
             if (index == 0) return c;
             index--;
         }
-        return '\0'; // Should never reach here
+        return '\0'; 
     }
 
     public void GenerateFloor() {

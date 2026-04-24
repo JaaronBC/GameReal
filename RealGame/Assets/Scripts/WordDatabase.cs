@@ -15,7 +15,12 @@ public class WordDatabase : MonoBehaviour
         "spear",
         "lance",
         "javelin",
-        "drill"
+        "drill",
+        "cut",
+        "stab",
+        "pierce",
+        "sword",
+        "blade"
     };
     public HashSet<string> elementWords = new HashSet<string> { 
         //Put all fire words here

@@ -43,6 +43,19 @@ public class PlayerCasting : MonoBehaviour
     [SerializeField] GameObject slashPrefab;
     [SerializeField] GameObject spearPrefab;
     [SerializeField] GameObject drillPrefab;
+    [SerializeField] GameObject swordPrefab;
+
+     void Awake()
+    {
+        //Initialize allowed letters from BattleDataHolder
+        foreach (char c in BattleDataHolder.usableLetters)
+        {
+            if (c != '\0')
+            {
+                allowedLetters.Add(char.ToLower(c));
+            }
+        }
+    }
     public void BeginTurn()
     {
         isActive = true;
@@ -273,6 +286,8 @@ public class PlayerCasting : MonoBehaviour
             {"cut", CastSlash},
             {"stab", CastSpear},
             {"pierce", CastSpear},
+            {"sword", CastSword},
+            {"blade", CastSword}
         };
         //Initialize letter prefab mapping for spell crafting visuals
         letterMap = new Dictionary<char, GameObject>();
@@ -451,8 +466,6 @@ public class PlayerCasting : MonoBehaviour
         }
         wordToColor.Clear();
     }
-
-
     //Spell shape methods
 
     //Bolt-Single Target, hits once
@@ -485,7 +498,7 @@ public class PlayerCasting : MonoBehaviour
     //Beam-Single Target, hits multiple times with reduced damage
     void CastBeam(float damage, string element)
     {
-        StartCoroutine(SpawnBeamCoroutine(damage, element));
+        StartCoroutine(SpawnBeamCoroutine(damage *1.5f, element));
     }
     private System.Collections.IEnumerator SpawnBeamCoroutine(float damage, string element)
     {
@@ -501,7 +514,7 @@ public class PlayerCasting : MonoBehaviour
     //Slash-Multi Target, hits 2 times with reduced damage
     void CastSlash(float damage, string element)
     {
-        StartCoroutine(SpawnSlashCoroutine(damage, element));
+        StartCoroutine(SpawnSlashCoroutine(damage * 1.5f, element));
     }
     private System.Collections.IEnumerator SpawnSlashCoroutine(float damage, string element)
     {
@@ -517,11 +530,16 @@ public class PlayerCasting : MonoBehaviour
     //Spear- pierces through all enemies
     void CastSpear(float damage, string element)
     {
-        SpawnProjectile(spearPrefab, currentTarget, element, damage, "spear", true);
+        SpawnProjectile(spearPrefab, currentTarget, element, damage * 1.3f, "spear", true);
     }
     //Drill -Pierces and hits multiple times
     void CastDrill(float damage, string element)
     {
-        SpawnProjectile(drillPrefab, currentTarget, element, damage/5, "drill", true);  
+        SpawnProjectile(drillPrefab, currentTarget, element, (damage*1.5f)/5, "drill", true);  
     }  
+    //Sword-Single Tarrget
+    void CastSword(float damage, string element)
+    {
+        SpawnProjectile(swordPrefab, currentTarget, element, damage * 1.5f, "sword", false);
+    }
 }

@@ -6417,6 +6417,7 @@ MonoBehaviour:
   beamAttack: {fileID: 2446677959458874758, guid: 985002d751b76ed449438478c2fb65c4, type: 3}
   explosionAttack: {fileID: 4196338464414878270, guid: 17ae6336023ea434c8f7934d55debc13, type: 3}
   ballAttack: {fileID: 4196338464414878270, guid: d2166f4e0d4d5e34faf760637db924f3, type: 3}
+  gnomeSlime: {fileID: 1984905327066608720, guid: 0972e51b09acc424ca1b09f094c43d42, type: 3}
 --- !u!1 &1299753923
 GameObject:
   m_ObjectHideFlags: 0

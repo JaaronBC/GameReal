@@ -1,5 +1,8 @@
+using System;
+using System.Linq;
 using UnityEditor.Tilemaps;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.UIElements;
 
 public class BossBattleScript : EnemyBattle
@@ -19,12 +22,19 @@ public class BossBattleScript : EnemyBattle
     string state = "";
     int attackNum = 0;
     int rangeNum = 3;
-    protected string[] stateList = { "tornado", "slimes", "explosion"};
-    float[] stateListTimers = { 2.0f, 2.0f, 1.25f };
+    protected string[] stateList = { "tornado", "explosion", "slimes" };
+    float[] stateListTimers = { 2.0f, 1.25f, 0.5f };
 
     //tornado
     int tornadoCount = 2;
     int tornadoBlastCount = 2;
+
+    //slime
+    int slimeCount = 0;
+    int slimeMax = 3;
+    int slimeMinimum = 1;
+    GameObject[] slimes = { };
+    Vector3[] slimeVectors = { };
 
     //explosion
     int explosionCount = 9;
@@ -38,6 +48,7 @@ public class BossBattleScript : EnemyBattle
     public GameObject beamAttack;
     public GameObject explosionAttack;
     public GameObject ballAttack;
+    public GameObject gnomeSlime;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     protected override void Start()
@@ -58,9 +69,23 @@ public class BossBattleScript : EnemyBattle
         if (battleScript.state == BattleState.EnemyTurn && !active)
         {
             active = true;
-            //pick state
-            state = stateList[2];
+            //slime count and info
+            slimes = GameObject.FindGameObjectsWithTag("GnomeBattle");
+            slimeCount = slimes.Length;
+            for (int i = 0; i < slimeCount; i ++)
+            {
+                slimeVectors[i] = slimes[i].transform.position;
+            }
+            //state selection
+            if (slimeCount < slimeMinimum)
+            {
+                state = stateList[ UnityEngine.Random.Range(0, 2) ];
+            } else
+            {
+                state = stateList[ UnityEngine.Random.Range(0, 3) ];
+            }
             attackNum = 0;
+
             //state variables
             switch (state)
             {
@@ -69,12 +94,12 @@ public class BossBattleScript : EnemyBattle
                     
                     break;
                 case ("slimes"):
-                    cooldown = stateListTimers[1];
+                    cooldown = stateListTimers[2];
                     print("");
 
                     break;
                 case ("explosion"):
-                    cooldown = stateListTimers[2];
+                    cooldown = stateListTimers[1];
                     print("");
 
                     break;
@@ -119,7 +144,9 @@ public class BossBattleScript : EnemyBattle
                 break;
             case ("slimes"):
                 cooldown = stateListTimers[1];
-                print("");
+                if (attackNum == 0) slimeSummonAttack();
+                else slimeStateAttack();
+                    print("");
 
                 break;
             case ("explosion"):
@@ -156,7 +183,7 @@ public class BossBattleScript : EnemyBattle
         else
         {
             int _beamCoordinateLimit = xBoundry[1] - tornadoBlastCount + 1;
-            int _beamCoordinateX = Random.Range(xBoundry[0], _beamCoordinateLimit);
+            int _beamCoordinateX = UnityEngine.Random.Range(xBoundry[0], _beamCoordinateLimit);
             for (int x = 0; x < tornadoBlastCount; x ++)
             {
                 print("make attack beam! " + _beamCoordinateX);
@@ -170,9 +197,46 @@ public class BossBattleScript : EnemyBattle
     }
 
     //slime attack
+    private void slimeSummonAttack()
+    {
+        for (int i = 0; i < slimeMax - slimeCount; i ++)
+        {
+            while (true) {
+                Vector3 _spawnPosition;
+                int _offset_x;
+                //generate offset and spawn position
+                _offset_x = UnityEngine.Random.Range(xBoundry[0], xBoundry[1]+1);
+                _spawnPosition = transform.position;
+                _spawnPosition.x = _offset_x;
+                //check if spawn position is okay
+                bool _invalid = false;
+                for (int j = 0; j < slimeCount; j ++)
+                {
+                    if (_spawnPosition == slimeVectors[j])
+                    {
+                        _invalid = true;
+                        break;
+                    }
+                }
+                if (_spawnPosition == transform.position) _invalid = true;
+                if (_invalid) break;
+                //check if spawn position is valid
+                Instantiate(gnomeSlime, _spawnPosition, Quaternion.identity);
+                break;
+            }
+        }
+    }
+
+    //ball attack
     private void slimeStateAttack()
     {
-
+        for (int i = 0; i < 3; i++)
+        {
+            float _xOffset = UnityEngine.Random.Range(-1.5f, 1.5f);
+            Vector2 _spawnPosition = transform.position;
+            _spawnPosition.x += _xOffset;
+            Instantiate(ballAttack, _spawnPosition, Quaternion.identity);
+        }
     }
 
     //explosion attack
@@ -189,8 +253,8 @@ public class BossBattleScript : EnemyBattle
             for (int i = 0; i < explosionCount; i++)
             {
                 //generate offset and spawn position
-                _offset_x = Random.Range(-explosionRange, explosionRange);
-                _offset_y = Random.Range(-explosionRange, explosionRange);
+                _offset_x = UnityEngine.Random.Range(-explosionRange, explosionRange);
+                _offset_y = UnityEngine.Random.Range(-explosionRange, explosionRange);
                 _spawnPosition = player.transform.position;
                 _spawnPosition.x += _offset_x;
                 _spawnPosition.y += _offset_y;

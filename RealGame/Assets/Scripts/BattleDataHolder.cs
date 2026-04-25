@@ -12,7 +12,8 @@ public static class BattleDataHolder
     public static char[] usableLetters = new char[26];
     public static HashSet<char> ConsonantsLeft = new HashSet<char>("BCDFGHJKLMNPQRSTVWXYZ".ToCharArray());
     public static HashSet<char> VowelsLeft = new HashSet<char>("AEIOU".ToCharArray());
-    public static Dictionary<char, GameObject> letterPrefabs = new Dictionary<char, GameObject>
+    public static bool startOfRun = true;
+    /*public static Dictionary<char, GameObject> letterPrefabs = new Dictionary<char, GameObject>
     {
         { 'A', Resources.Load<GameObject>("Letters/LetterA") },
         { 'B', Resources.Load<GameObject>("Letters/LetterB") },
@@ -41,4 +42,6 @@ public static class BattleDataHolder
         { 'Y', Resources.Load<GameObject>("Letters/LetterY") },
         { 'Z', Resources.Load<GameObject>("Letters/LetterZ") }
     };
+    */
+    public static HashSet<char> LettersGained = new HashSet<char>();
 }

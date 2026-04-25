@@ -43,6 +43,21 @@ public class PlayerCasting : MonoBehaviour
     [SerializeField] GameObject slashPrefab;
     [SerializeField] GameObject spearPrefab;
     [SerializeField] GameObject drillPrefab;
+    [SerializeField] GameObject swordPrefab;
+    [SerializeField] GameObject daggerPrefab;
+    [SerializeField] GameObject arrowPrefab;
+
+     void Awake()
+    {
+        //Initialize allowed letters from BattleDataHolder
+        foreach (char c in BattleDataHolder.usableLetters)
+        {
+            if (c != '\0')
+            {
+                allowedLetters.Add(char.ToLower(c));
+            }
+        }
+    }
     public void BeginTurn()
     {
         isActive = true;
@@ -269,7 +284,17 @@ public class PlayerCasting : MonoBehaviour
             {"spear", CastSpear},
             {"lance", CastSpear},
             {"javelin", CastSpear},
-            {"drill", CastDrill}
+            {"drill", CastDrill},
+            {"cut", CastSlash},
+            {"stab", CastSpear},
+            {"pierce", CastSpear},
+            {"sword", CastSword},
+            {"blade", CastSword},
+            {"dagger", CastDagger},
+            { "knife", CastDagger},
+            {"arrow", CastArrow},
+            {"bow", CastArrow},
+            {"quiver", CastArrow}
         };
         //Initialize letter prefab mapping for spell crafting visuals
         letterMap = new Dictionary<char, GameObject>();
@@ -448,14 +473,12 @@ public class PlayerCasting : MonoBehaviour
         }
         wordToColor.Clear();
     }
-
-
     //Spell shape methods
 
     //Bolt-Single Target, hits once
     void CastBolt(float damage, string element)
     {
-        SpawnProjectile(boltPrefab, currentTarget, element, damage, "bolt", false);
+        SpawnProjectile(boltPrefab, currentTarget, element, damage*1.2f, "bolt", false);
     }
     //Ball-Single Target, hits once
     void CastBall(float damage, string element)
@@ -475,14 +498,14 @@ public class PlayerCasting : MonoBehaviour
 
         for (int i = 0; i < missileCount; i++)
         {
-            SpawnProjectile(missilePrefab, currentTarget, element, damage / missileCount, "missile", false);
+            SpawnProjectile(missilePrefab, currentTarget, element, damage*1.5f / missileCount, "missile", false);
             yield return new WaitForSeconds(delay);
         }
     }
     //Beam-Single Target, hits multiple times with reduced damage
     void CastBeam(float damage, string element)
     {
-        StartCoroutine(SpawnBeamCoroutine(damage, element));
+        StartCoroutine(SpawnBeamCoroutine(damage *1.5f, element));
     }
     private System.Collections.IEnumerator SpawnBeamCoroutine(float damage, string element)
     {
@@ -498,7 +521,7 @@ public class PlayerCasting : MonoBehaviour
     //Slash-Multi Target, hits 2 times with reduced damage
     void CastSlash(float damage, string element)
     {
-        StartCoroutine(SpawnSlashCoroutine(damage, element));
+        StartCoroutine(SpawnSlashCoroutine(damage * 1.5f, element));
     }
     private System.Collections.IEnumerator SpawnSlashCoroutine(float damage, string element)
     {
@@ -514,11 +537,24 @@ public class PlayerCasting : MonoBehaviour
     //Spear- pierces through all enemies
     void CastSpear(float damage, string element)
     {
-        SpawnProjectile(spearPrefab, currentTarget, element, damage, "spear", true);
+        SpawnProjectile(spearPrefab, currentTarget, element, damage * 1.3f, "spear", true);
     }
     //Drill -Pierces and hits multiple times
     void CastDrill(float damage, string element)
     {
-        SpawnProjectile(drillPrefab, currentTarget, element, damage/5, "drill", true);  
+        SpawnProjectile(drillPrefab, currentTarget, element, (damage*1.5f)/5, "drill", true);  
     }  
+    //Sword-Single Tarrget
+    void CastSword(float damage, string element)
+    {
+        SpawnProjectile(swordPrefab, currentTarget, element, damage * 1.5f, "sword", false);
+    }
+    void CastDagger(float damage, string element)
+    {
+        SpawnProjectile(daggerPrefab, currentTarget, element, damage*1.4f, "dagger", false);
+    }
+    void CastArrow(float damage, string element)
+    {
+        SpawnProjectile(arrowPrefab, currentTarget, element, damage*1.5f, "arrow", false);
+    }
 }

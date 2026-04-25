@@ -63,6 +63,7 @@ public class SpellbookController : MonoBehaviour
             slotImage.color = Color.white;
 
             BattleDataHolder.usableLetters[slotIndex] = letter;
+            BattleDataHolder.LettersGained.Add(letter);
             return true;
         }
 

@@ -37,7 +37,11 @@ public class ProjectileScript : MonoBehaviour
             { "beam", (proj) => proj.Beam() },
             { "slash", (proj) => proj.Slash() },
             { "spear", (proj) => proj.Spear() },
-            { "drill", (proj) => proj.Drill() }
+            { "drill", (proj) => proj.Drill() },
+            {"sword", (proj) => proj.Sword() },
+            {"dagger", (proj) => proj.Dagger() },
+            {"arrow", (proj) => proj.Arrow() }
+
         };
     }
     void Update()
@@ -201,6 +205,39 @@ public class ProjectileScript : MonoBehaviour
                     enemy.Damaged(damage, element);
                 }
             }
+        }
+    }
+    void Sword()
+    {
+        if (targetObject == null) return;
+        EnemyState enemy = targetObject.GetComponent<EnemyState>();
+        if (enemy != null)
+        {
+            enemy.statusEffects.Add(element); // Add element as status effect to enemy
+            enemy.savedDamage = damage; // Store the original damage value for status effects to reference
+            enemy.Damaged(damage, element); // Apply damage to enemy
+        }
+    }
+    void Dagger()
+    {
+        if (targetObject == null) return;
+        EnemyState enemy = targetObject.GetComponent<EnemyState>();
+        if (enemy != null)
+        {
+            enemy.statusEffects.Add(element); // Add element as status effect to enemy
+            enemy.savedDamage = damage; // Store the original damage value for status effects to reference
+            enemy.Damaged(damage, element); // Apply damage to enemy
+        }
+    }
+    void Arrow()
+    {
+        if (targetObject == null) return;
+        EnemyState enemy = targetObject.GetComponent<EnemyState>();
+        if (enemy != null)
+        {
+            enemy.statusEffects.Add(element); // Add element as status effect to enemy
+            enemy.savedDamage = damage; // Store the original damage value for status effects to reference
+            enemy.Damaged(damage, element); // Apply damage to enemy
         }
     }
 }

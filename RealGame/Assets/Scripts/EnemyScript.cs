@@ -68,7 +68,31 @@ public class EnemyScript : MonoBehaviour
             if (BattleDataHolder.enemyDatabase[enemyID].defeated)
             {
                 Debug.Log("Destroying " + enemyID);
+                //Get position from BattleDataHolder and save it to a variable
+                Vector3 enemyPosition = BattleDataHolder.enemyDatabase[enemyID].position;
                 Destroy(gameObject);
+                if (!BattleDataHolder.enemyDatabase[enemyID].hasDroppedLetter)
+                {
+                    BattleDataHolder.enemyDatabase[enemyID].hasDroppedLetter = true;
+                    RandomLetter randomLetter = FindObjectOfType<RandomLetter>();
+                    if (randomLetter != null)                
+                    {
+                        char randomChar = randomLetter.RandomConsonant();
+                        //Get letter prefab equal to the random Char and Instantiate it at the enemy's position
+                        GameObject letterPrefab = Resources.Load<GameObject>("Letters/Letter" + randomChar);
+                        if (letterPrefab != null)                    {
+                            Instantiate(letterPrefab, enemyPosition, Quaternion.identity);
+                        }
+                        else if (randomChar == '\0')
+                        {
+                            Debug.Log("No consonants left to drop!");
+                        }
+                        else  {
+                            Debug.LogError("Letter prefab not found for char: " + randomChar);
+                        }
+                    }
+                }
+
             }
         }
         if (BattleDataHolder.enemyDatabase.ContainsKey(enemyID) && BattleDataHolder.enemyDatabase[enemyID].returnablePosition)

@@ -6279,6 +6279,8 @@ MonoBehaviour:
   slashPrefab: {fileID: 22358258966051480, guid: 747a475c43a1844eebc808eff22c5c8b, type: 3}
   spearPrefab: {fileID: 7007086403398014016, guid: 3753159569ca7478e94f52ed67cc60a0, type: 3}
   drillPrefab: {fileID: 3546433579253562760, guid: 040ad6cdb6b11430ebd0bcc7793fd9c7, type: 3}
+  swordPrefab: {fileID: 6439867023761520703, guid: 925c12d32787240879e0e29208fc9949, type: 3}
+  daggerPrefab: {fileID: 7459259533032768947, guid: 0c74faff798134c578f85133e67b80d3, type: 3}
 --- !u!114 &1257174533
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -5,32 +5,34 @@ public class RandomLetter : MonoBehaviour
 {
     [SerializeField] private SpellbookController spellbookController;
    
-    public void RandomConsonant()
+    public char RandomConsonant()
     {
         if (BattleDataHolder.ConsonantsLeft.Count > 0)
         {
             char randomConsonant = GetRandomElement(BattleDataHolder.ConsonantsLeft);
             BattleDataHolder.ConsonantsLeft.Remove(randomConsonant);
-            spellbookController.AddLetter(randomConsonant);
             Debug.Log("Random Consonant: " + randomConsonant);
+            return randomConsonant;
         }
         else
         {
             Debug.Log("No consonants left!");
+            return '\0';
         }
     }
-    public void RandomVowel()
+    public char RandomVowel()
     {
         if (BattleDataHolder.VowelsLeft.Count > 0)
         {
             char randomVowel = GetRandomElement(BattleDataHolder.VowelsLeft);
             BattleDataHolder.VowelsLeft.Remove(randomVowel);
-            spellbookController.AddLetter(randomVowel);
             Debug.Log("Random Vowel: " + randomVowel); 
+            return randomVowel;
         }
         else
         {
             Debug.Log("No vowels left!");
+            return '\0';
         }
 
     }

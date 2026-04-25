@@ -5,7 +5,7 @@ using UnityEngine.Rendering;
 public class DeerAttack : MonoBehaviour
 {
     //stats
-    int damage = 4;
+    public int damage = 4;
 
     float z = 0.25f;
     float speed = 2.25f;

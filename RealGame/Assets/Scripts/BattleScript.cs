@@ -27,7 +27,7 @@ public class BattleScript : MonoBehaviour
     private float switchTime = 1f;
     //enemy turn variables
     private float[] baseTimeChange = { 4f, 5f };
-    float addedTime = 10.0f;
+    public float addedTime = 0.0f;
     //turn order
     public BattleState state;
     //objects
@@ -77,7 +77,8 @@ public class BattleScript : MonoBehaviour
             {
                 EnemySaveData enemy = BattleDataHolder.enemyDatabase[enemyID];
                 if (!enemy.defeated && !countedEnemies.Contains(enemyID))
-                {                    enemy.defeated = true; 
+                {                    
+                    enemy.defeated = true; 
                 }
             }
         }
@@ -89,7 +90,16 @@ public class BattleScript : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {   
+    {
+        //update timer 
+        if (addedTime != 0.0f)
+        {
+            enemyTimer += addedTime;
+            addedTime = 0.0f;
+        }
+
+
+
         //for moving player to the center of the screen during player turn
         if (movePlayer) {
         GameObject playerObject = GameObject.Find("PlayerObject");

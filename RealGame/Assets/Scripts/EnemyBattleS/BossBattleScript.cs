@@ -8,6 +8,8 @@ using UnityEngine.UIElements;
 public class BossBattleScript : EnemyBattle
 {
     GameObject player;
+    float bossAddTime = 3.0f;
+    int damageIncrease = 2;
 
     //boundries
     int[] xBoundry = { 2, 7 };
@@ -22,8 +24,9 @@ public class BossBattleScript : EnemyBattle
     string state = "";
     int attackNum = 0;
     int rangeNum = 3;
+    string lastAttack = "slimes";
     protected string[] stateList = { "tornado", "explosion", "slimes" };
-    float[] stateListTimers = { 2.0f, 1.25f, 0.5f };
+    float[] stateListTimers = { 2.5f, 0.75f, 0.5f };
 
     //tornado
     int tornadoCount = 2;
@@ -34,14 +37,13 @@ public class BossBattleScript : EnemyBattle
     int slimeMax = 3;
     int slimeMinimum = 1;
     GameObject[] slimes = { };
-    Vector3[] slimeVectors = { };
+    Vector3[] slimeVectors = new Vector3[3];
 
     //explosion
-    int explosionCount = 9;
-    float explosionRange = 2.25f;
-    int bulletCount = 12;
+    int explosionCount = 12;
+    float explosionRange = 2.75f;
+    int bulletCount = 15;
     float bulletAngleRange = 60;
-
 
     //attack objects
     public GameObject tornadoAttack;
@@ -59,6 +61,8 @@ public class BossBattleScript : EnemyBattle
         battleScript = FindFirstObjectByType<BattleScript>();
         xBoundryDiff = xBoundry[1] - xBoundry[0];
         player = GameObject.Find("PlayerObject");
+        transform.position = new Vector3(5f, 6f, 0f);
+        battleScript.addedTime = bossAddTime;
     }
 
     // Update is called once per frame
@@ -77,14 +81,25 @@ public class BossBattleScript : EnemyBattle
                 slimeVectors[i] = slimes[i].transform.position;
             }
             //state selection
-            if (slimeCount < slimeMinimum)
+            state = lastAttack;
+            if (slimeCount > slimeMinimum)
             {
-                state = stateList[ UnityEngine.Random.Range(0, 2) ];
+                while (state == lastAttack) {
+                    state = stateList[UnityEngine.Random.Range(0, 2)];
+                    print(state);
+                }
+                lastAttack = state;
             } else
             {
-                state = stateList[ UnityEngine.Random.Range(0, 3) ];
+                while (state == lastAttack)
+                {
+                    state = stateList[UnityEngine.Random.Range(0, 3)];
+                    print(state);
+                }
+                lastAttack = state;
             }
             attackNum = 0;
+            print("");
 
             //state variables
             switch (state)
@@ -95,12 +110,10 @@ public class BossBattleScript : EnemyBattle
                     break;
                 case ("slimes"):
                     cooldown = stateListTimers[2];
-                    print("");
 
                     break;
                 case ("explosion"):
                     cooldown = stateListTimers[1];
-                    print("");
 
                     break;
                 default:
@@ -136,7 +149,6 @@ public class BossBattleScript : EnemyBattle
     //
     public override void makeAttack()
     {
-        print(attackNum);
         switch (state)
         {
             case ("tornado"):
@@ -146,7 +158,6 @@ public class BossBattleScript : EnemyBattle
                 cooldown = stateListTimers[1];
                 if (attackNum == 0) slimeSummonAttack();
                 else slimeStateAttack();
-                    print("");
 
                 break;
             case ("explosion"):
@@ -165,9 +176,8 @@ public class BossBattleScript : EnemyBattle
     //tornado attack
     private void tornadoStateAttack(int _attackNum)
     {
-        
         //tornado
-        if (_attackNum == 0)
+        if (_attackNum %2 == 0)
         {
             for (int x = 0; x < tornadoCount; x ++)
             {
@@ -180,18 +190,15 @@ public class BossBattleScript : EnemyBattle
             }
         }
         // beam walls
-        else
+        if (_attackNum != 0)
         {
             int _beamCoordinateLimit = xBoundry[1] - tornadoBlastCount + 1;
             int _beamCoordinateX = UnityEngine.Random.Range(xBoundry[0], _beamCoordinateLimit);
             for (int x = 0; x < tornadoBlastCount; x ++)
             {
-                print("make attack beam! " + _beamCoordinateX);
                 Instantiate(beamAttack, new Vector2((float) _beamCoordinateX + x,
                     transform.position.y), Quaternion.identity);
                 GameObject beam = Instantiate(beamAttack, transform.position, Quaternion.identity);
-                if (beam) print("made beam!");
-                else print("no beam");
             } 
         }
     }
@@ -221,7 +228,8 @@ public class BossBattleScript : EnemyBattle
                 if (_spawnPosition == transform.position) _invalid = true;
                 if (_invalid) break;
                 //check if spawn position is valid
-                Instantiate(gnomeSlime, _spawnPosition, Quaternion.identity);
+                GameObject _gnomeSlime = Instantiate(gnomeSlime, _spawnPosition, Quaternion.identity);
+                battleScript.activeEnemies.Add(gnomeSlime);
                 break;
             }
         }
@@ -254,7 +262,7 @@ public class BossBattleScript : EnemyBattle
             {
                 //generate offset and spawn position
                 _offset_x = UnityEngine.Random.Range(-explosionRange, explosionRange);
-                _offset_y = UnityEngine.Random.Range(-explosionRange, explosionRange);
+                _offset_y = UnityEngine.Random.Range(-explosionRange/1.5f, explosionRange/1.5f);
                 _spawnPosition = player.transform.position;
                 _spawnPosition.x += _offset_x;
                 _spawnPosition.y += _offset_y;

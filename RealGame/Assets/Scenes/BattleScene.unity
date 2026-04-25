@@ -6176,6 +6176,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   timer: 0
+  addedTime: 10
   state: 0
   selfTextComponent: {fileID: 1098482477}
   playerX: 4.5
@@ -6186,9 +6187,7 @@ MonoBehaviour:
   enemyGridMaxY: 7
   playerPrefab: {fileID: 7620887840857654650, guid: dfce6b46e3bc347558338a3c8d83ddce, type: 3}
   enemies:
-  - {fileID: 8856515414033362560, guid: 6b556dcbbc3027543b506a58444610fa, type: 3}
-  - {fileID: 8856515414033362560, guid: 6b556dcbbc3027543b506a58444610fa, type: 3}
-  - {fileID: 8856515414033362560, guid: 6b556dcbbc3027543b506a58444610fa, type: 3}
+  - {fileID: 6829489110424819961, guid: ba5c6165708681644bc820f014b13864, type: 3}
   activeEnemies: []
   playerMovement: {fileID: 3285433953536994103, guid: dfce6b46e3bc347558338a3c8d83ddce, type: 3}
   playerCasting: {fileID: 1257174532}

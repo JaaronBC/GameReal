@@ -5,16 +5,16 @@ using UnityEngine.Rendering;
 public class DeerAttack : MonoBehaviour
 {
     //stats
-    int damage = 4;
+    public int damage = 4;
 
     float z = 0.25f;
-    float speed = 2.0f;
-    float timer = 4f;
+    float speed = 2.25f;
+    float timer = 4.5f;
 
-    float angle = -90.0f;
+    public float angle = -90.0f;
     float angleTime = 0.5f;
-    float angleTimeR = 0.4f;
-    float angleChange = 0.03f;
+    float angleTimeR = 0.1f;
+    float angleChange = 0.2f;
     bool playerHitDestroy = true;
 
     //game objects
@@ -43,7 +43,7 @@ public class DeerAttack : MonoBehaviour
             float direction = Mathf.Atan2(vectorPoint.y, vectorPoint.x) * Mathf.Rad2Deg;
             if (direction < 0) direction += 360;
             if (angle < 0) angle += 360;
-            angle = Mathf.Lerp(direction, angle, angleChange);
+            angle = Mathf.Lerp(angle, direction, angleChange);
 
             angleTime = angleTimeR;
         }

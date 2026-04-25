@@ -8,7 +8,7 @@ public class GnomeSlimeBeamAttack : MonoBehaviour
     //stats
     public float timer = 5.0f;
     protected float z = 0.5f;
-    int damage = 2;
+    public int damage = 2;
     public float speed = 3f;
     bool playerHitDestroy = true;
     public string state = "normal";

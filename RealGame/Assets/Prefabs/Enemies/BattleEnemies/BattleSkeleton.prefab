@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 2516006709993218396}
   - component: {fileID: 1609372942963380809}
   - component: {fileID: 5178653642498056298}
-  - component: {fileID: 7795372827524270814}
+  - component: {fileID: 510163362809895111}
   m_Layer: 0
   m_Name: BattleSkeleton
   m_TagString: Untagged
@@ -33,7 +33,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 4, y: 6, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.75, y: 0.75, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7031108145548133680}
@@ -88,7 +88,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 1
   m_MaskInteraction: 0
-  m_Sprite: {fileID: -8693844036913640564, guid: 158445b83c09db04ba79055d2e18f09a, type: 3}
+  m_Sprite: {fileID: -3242354723562556132, guid: 5fc1337ced4f1f248a80d16a3f7e1183, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -108,7 +108,7 @@ Animator:
   m_GameObject: {fileID: 6498971463192142380}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: da699ca54d80dd94685acd0688f5e0a7, type: 2}
+  m_Controller: {fileID: 9100000, guid: 17d0b05202f018146b9f10c8ab5d1699, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -213,7 +213,8 @@ MonoBehaviour:
   maxHP: 60
   currentHP: 60
   savedDamage: 0
---- !u!114 &7795372827524270814
+  freezeCounter: 0
+--- !u!114 &510163362809895111
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -222,9 +223,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 6498971463192142380}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f7fd2cd494cfe144abc2260c29e33ea4, type: 3}
+  m_Script: {fileID: 11500000, guid: d9ce3fda6acfcd646817f79ae88ddc8a, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: '::'
+  m_EditorClassIdentifier: Assembly-CSharp::SkeletonBattleScript
   cooldownRange:
   - 1
   - 1.5
@@ -235,7 +236,8 @@ MonoBehaviour:
   animator: {fileID: 0}
   battleScript: {fileID: 0}
   flash: {fileID: 0}
-  attackObject: {fileID: 1006923619365185912, guid: 8d9071706bb564e4dbadd3189dbf65cd, type: 3}
+  attackObject: {fileID: 0}
+  player: {fileID: 0}
 --- !u!1001 &4686800798627546693
 PrefabInstance:
   m_ObjectHideFlags: 0

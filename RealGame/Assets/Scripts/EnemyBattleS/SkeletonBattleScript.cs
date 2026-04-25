@@ -14,7 +14,7 @@ public class SkeletonBattleScript : EnemyBattle
     {
         // Ensure base initialisation runs so `animator`, `spriteRenderer`, `flash`, and `battleScript` are assigned.
         base.Start();
-        cooldownRange = new float[] { 1.75f, 3f };
+        cooldownRange = new float[] { 1.75f, 2.5f };
         //IMPORTANT: FOLLOWING LINES MUST BE IN ALL ENEMY BATTLE SCRIPTS
         timer = Random.Range(cooldownRange[0], cooldownRange[1]);
         battleScript = FindFirstObjectByType<BattleScript>();
@@ -29,7 +29,6 @@ public class SkeletonBattleScript : EnemyBattle
         if (!player)
         {
             player = GameObject.Find("PlayerObject");
-            if (player) print("player found");
         }
         timer = Random.Range(cooldownRange[0], cooldownRange[1]);
         //generate attack pattern

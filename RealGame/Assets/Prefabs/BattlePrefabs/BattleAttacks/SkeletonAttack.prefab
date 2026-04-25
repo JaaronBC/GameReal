@@ -166,6 +166,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   timer: 5
+  damage: 6
   speed: 3
   state: normal
   battleScript: {fileID: 0}

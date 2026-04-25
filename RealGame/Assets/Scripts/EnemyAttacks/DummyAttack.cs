@@ -13,6 +13,7 @@ public class DummyAttack : GnomeSlimeBeamAttack
 
     private void Awake()
     {
+        damage = 4;
         countMax = count;
         angle = -90.0f;
         z = 1.0f;

@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Letter
   - Enemy
+  - GnomeBattle
   layers:
   - Default
   - TransparentFX

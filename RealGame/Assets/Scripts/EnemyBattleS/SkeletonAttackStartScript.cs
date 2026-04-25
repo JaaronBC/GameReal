@@ -6,7 +6,7 @@ public class SkeletonAttackStartScript : MonoBehaviour
     public GameObject attackObject;
     public SpriteRenderer spriteRenderer;
     public BattleScript battleScript;
-    float timer = 2.0f;
+    float timer = 1.5f;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()

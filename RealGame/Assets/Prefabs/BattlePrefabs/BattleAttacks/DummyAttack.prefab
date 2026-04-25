@@ -165,6 +165,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca1864d3e17dc114ba63441313673d9d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
+  timer: 5
+  damage: 3
+  speed: 3
+  state: normal
   battleScript: {fileID: 0}
-  count: 10
   angle: 0
+  count: 10
+  player: {fileID: 0}

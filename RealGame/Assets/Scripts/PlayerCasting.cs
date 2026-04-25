@@ -71,13 +71,12 @@ public class PlayerCasting : MonoBehaviour
     {
         //debugCounter++;
         //Debug.Log("debug: cycle target called " + debugCounter);
-        var enemies = battleScript.activeEnemies;
 
-        if (enemies.Count == 0) return;
+        if (battleScript.activeEnemies.Count == 0) return;
 
-        currentTargetIndex = (currentTargetIndex + 1) % enemies.Count;
+        currentTargetIndex = (currentTargetIndex + 1) % battleScript.activeEnemies.Count;
 
-        currentTarget = enemies[currentTargetIndex];
+        currentTarget = battleScript.activeEnemies[currentTargetIndex];
         HighlightTarget(currentTarget);
     }
 

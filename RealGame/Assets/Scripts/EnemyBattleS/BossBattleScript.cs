@@ -229,7 +229,7 @@ public class BossBattleScript : EnemyBattle
                 if (_invalid) break;
                 //check if spawn position is valid
                 GameObject _gnomeSlime = Instantiate(gnomeSlime, _spawnPosition, Quaternion.identity);
-                battleScript.activeEnemies.Add(gnomeSlime);
+                battleScript.activeEnemies.Add(_gnomeSlime);
                 break;
             }
         }

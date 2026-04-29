@@ -6176,7 +6176,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   timer: 0
-  addedTime: 10
+  addedTime: 0
   state: 0
   selfTextComponent: {fileID: 1098482477}
   playerX: 4.5
@@ -6281,6 +6281,7 @@ MonoBehaviour:
   drillPrefab: {fileID: 3546433579253562760, guid: 040ad6cdb6b11430ebd0bcc7793fd9c7, type: 3}
   swordPrefab: {fileID: 6439867023761520703, guid: 925c12d32787240879e0e29208fc9949, type: 3}
   daggerPrefab: {fileID: 7459259533032768947, guid: 0c74faff798134c578f85133e67b80d3, type: 3}
+  arrowPrefab: {fileID: 4781532446189284119, guid: 7c0d2fb5758e34cf68cdef5423682bdc, type: 3}
 --- !u!114 &1257174533
 MonoBehaviour:
   m_ObjectHideFlags: 0

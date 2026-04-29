@@ -138,15 +138,16 @@ public class EnemyState : MonoBehaviour
     }
     public void Die()
     {
-        
     if (battleScript != null)
         {
+            // Remove this enemy from the activeEnemies list in BattleScript
             battleScript.activeEnemies.Remove(gameObject);
             battleScript.CheckForBattleEnd();
         }
     PlayerCasting playerCasting = FindObjectOfType<PlayerCasting>();
     Destroy(gameObject);
     playerCasting.CycleTarget();
+    playerCasting.VeryifyTarget();
     }
 
     void Start()

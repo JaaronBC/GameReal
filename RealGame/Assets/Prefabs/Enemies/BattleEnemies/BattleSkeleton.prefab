@@ -236,7 +236,7 @@ MonoBehaviour:
   animator: {fileID: 0}
   battleScript: {fileID: 0}
   flash: {fileID: 0}
-  attackObject: {fileID: 0}
+  attackObject: {fileID: 4196338464414878270, guid: 17ae6336023ea434c8f7934d55debc13, type: 3}
   player: {fileID: 0}
 --- !u!1001 &4686800798627546693
 PrefabInstance:

@@ -33,6 +33,7 @@ public class EnemyScript : MonoBehaviour
     private int[] chaseTimeRange = { 60, 120 };
 
     //battle transition
+    public string returnSceneName = "";
     private string battleSceneName = "BattleScene";
     public GameObject battlePrefab;
     private bool isTransitioning = false;
@@ -219,7 +220,9 @@ public class EnemyScript : MonoBehaviour
                     }
                 }
             }
-            BattleDataHolder.returnSceneName = SceneManager.GetActiveScene().name;
+
+            if (returnSceneName == "") BattleDataHolder.returnSceneName = SceneManager.GetActiveScene().name;
+            else BattleDataHolder.returnSceneName = returnSceneName;
             BattleDataHolder.playerPosition = GameObject.Find("Player").transform.position;
             BattleDataHolder.hasReturnPosition = true;
             BattleDataHolder.enemiesToSpawn = enemies.ToArray();

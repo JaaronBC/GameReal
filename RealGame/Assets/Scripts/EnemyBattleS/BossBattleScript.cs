@@ -44,6 +44,7 @@ public class BossBattleScript : EnemyBattle
     float explosionRange = 2.75f;
     int bulletCount = 15;
     float bulletAngleRange = 60;
+    int summontCount = 1;
 
     //attack objects
     public GameObject tornadoAttack;
@@ -229,7 +230,9 @@ public class BossBattleScript : EnemyBattle
                 if (_invalid) break;
                 //check if spawn position is valid
                 GameObject _gnomeSlime = Instantiate(gnomeSlime, _spawnPosition, Quaternion.identity);
-                battleScript.activeEnemies.Add(gnomeSlime);
+                _gnomeSlime.name = "summon" + summontCount;
+                summontCount++;
+                battleScript.activeEnemies.Add(_gnomeSlime);
                 break;
             }
         }

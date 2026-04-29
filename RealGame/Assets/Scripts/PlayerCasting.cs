@@ -71,18 +71,18 @@ public class PlayerCasting : MonoBehaviour
     {
         //debugCounter++;
         //Debug.Log("debug: cycle target called " + debugCounter);
+        CleanEnemyList();
         var enemies = battleScript.activeEnemies;
 
         if (enemies.Count == 0) return;
-
         currentTargetIndex = (currentTargetIndex + 1) % enemies.Count;
-
         currentTarget = enemies[currentTargetIndex];
         HighlightTarget(currentTarget);
     }
 
     void HighlightTarget(GameObject target)
     {
+        CleanEnemyList();
         var renderer = target.GetComponent<SpriteRenderer>();
 
         if (renderer != null)
@@ -109,6 +109,25 @@ public class PlayerCasting : MonoBehaviour
                 img.color = Color.red;
             }
         }
+    }
+    public void VeryifyTarget()
+    {
+         //Count all current enemies
+        int enemyCount = battleScript.activeEnemies.Count;
+        Debug.Log("Verifying Enemy Count: " + enemyCount);
+        if (currentTarget == null) {
+            if (battleScript.activeEnemies.Count > 0)
+            {
+                currentTargetIndex = 0;
+                currentTarget = battleScript.activeEnemies[currentTargetIndex];
+                HighlightTarget(currentTarget);
+            }
+        }
+    }
+
+    void CleanEnemyList()
+    {
+        battleScript.activeEnemies.RemoveAll(enemy => enemy == null);
     }
 
     void SpawnProjectile(GameObject prefab, GameObject target, string element, float damage, string shape, bool piercing = false)

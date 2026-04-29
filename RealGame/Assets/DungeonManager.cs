@@ -38,6 +38,7 @@ public class DungeonManager : MonoBehaviour {
         GenerateFloor();
         if (BattleDataHolder.startOfRun) 
         {
+            Debug.Log("First floor of the run, giving starting letters.");
             spellbookController.AddLetter('B');
             spellbookController.AddLetter('O');
             spellbookController.AddLetter('L');

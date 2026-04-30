@@ -67,7 +67,6 @@ MonoBehaviour:
   spellListPage: {fileID: 0}
   wordDatabase: {fileID: 2839916518416015360}
   shapeWordSlotPrefab: {fileID: 7323038566750842641, guid: f0ace0c6ad98a4e4eabc34233d839a63, type: 3}
-  elementWordSlotPrefab: {fileID: 0}
   shapeWordSprites:
   - {fileID: 1160157280950888960, guid: a9849f98c080b4e328a689dd673647d3, type: 3}
   - {fileID: 2521596067584109623, guid: a9849f98c080b4e328a689dd673647d3, type: 3}
@@ -79,6 +78,7 @@ MonoBehaviour:
   - {fileID: 6682682173074477021, guid: 8f061af48e03e4d45949d4f042ddbd43, type: 3}
   - {fileID: 1605711669316281466, guid: 8f061af48e03e4d45949d4f042ddbd43, type: 3}
   - {fileID: 1324060596047648491, guid: 8f061af48e03e4d45949d4f042ddbd43, type: 3}
+  textComponent: {fileID: 5604762755484944837, guid: eea8012aaee914c109e6507ae9fbc0ef, type: 3}
 --- !u!114 &4336142981743849688
 MonoBehaviour:
   m_ObjectHideFlags: 0

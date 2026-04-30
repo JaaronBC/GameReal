@@ -44,7 +44,7 @@ public class WordDatabase : MonoBehaviour
         //Put all air words here
         "air", "breeze", "gust", "wind", "gale", "draft", "zephyr", "aerial", "breath", "sky", "cloud", "tempest", 
         //Put all shock words here
-        "shock", "electric", "electricity", "thunder", "lightning", "bolt", "jolt", "zap", "static",
+        "shock", "electric", "electricity", "thunder", "lightning", "jolt", "zap", "static",
         "surge", "overcharge", "overcharged", "charged", "charge", "shocking", "electrify", 
         "electrified", "stun", "stunning", "paralyze", "paralyzing", "voltage", "current", "ampere", "watt",
         //put all Ice words here
@@ -101,7 +101,7 @@ public class WordDatabase : MonoBehaviour
     };
     public HashSet<string> shockWords = new HashSet<string> 
     { 
-        "shock", "electric", "electricity", "thunder", "lightning", "bolt", "jolt", "zap", "static",
+        "shock", "electric", "electricity", "thunder", "lightning", "jolt", "zap", "static",
         "surge", "overcharge", "overcharged", "charged", "charge", "shocking", "electrify", 
         "electrified", "stun", "stunning", "paralyze", "paralyzing", "voltage", "current", "ampere", "watt"
     };

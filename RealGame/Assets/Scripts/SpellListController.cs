@@ -20,9 +20,15 @@ public class SpellListController : MonoBehaviour
             Instantiate(shapeWordSlotPrefab, spellListPage.transform.Find("ShapeScroll/Content"));
         }
         */
-        foreach (GameObject slot in BattleDataHolder.ShapeSlotsFilled)
+        foreach (string word in BattleDataHolder.unlockedShapeWords)
         {
-            Instantiate(shapeWordSlotPrefab, spellListPage.transform.Find("ShapeScroll/Content"));
+            GameObject slot = Instantiate(shapeWordSlotPrefab, spellListPage.transform.Find("ShapeScroll/Content"));
+
+            ShapeWordScript script = slot.GetComponent<ShapeWordScript>();
+            script.word = word;
+
+            Image image = slot.GetComponent<Image>();
+            image.sprite = shapeWordSprites[BattleDataHolder.shapeSpellSpritesPointer[word]];
         }
     }
     public void checkForWords()
@@ -49,7 +55,7 @@ public class SpellListController : MonoBehaviour
                 //Get image component
                 Image image = slot.GetComponent<Image>();
                 image.sprite = shapeWordSprites[BattleDataHolder.shapeSpellSpritesPointer[word]];
-                BattleDataHolder.ShapeSlotsFilled.Add(slot);
+                BattleDataHolder.unlockedShapeWords.Add(word);
                 wordsToRemove.Add(word);
             }
             

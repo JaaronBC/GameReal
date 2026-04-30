@@ -45,6 +45,5 @@ public static class BattleDataHolder
     public static HashSet<string> shapeWordsLeft = new HashSet<string>();
     public static HashSet<string> elementWordsLeft = new HashSet<string>();
     public static HashSet<string> powerWordsLeft = new HashSet<string>();
-
-    public static HashSet<GameObject> ShapeSlotsFilled = new HashSet<GameObject>();
+    public static HashSet<string> unlockedShapeWords = new HashSet<string>();
 }

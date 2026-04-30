@@ -11,6 +11,8 @@ GameObject:
   - component: {fileID: 2526695646423908162}
   - component: {fileID: 5958140960861867568}
   - component: {fileID: -3286956586709032157}
+  - component: {fileID: 4336142981743849688}
+  - component: {fileID: 2839916518416015360}
   m_Layer: 0
   m_Name: GameController
   m_TagString: Untagged
@@ -27,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 8818195158728404346}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 413.65466, y: 607.0248, z: 0}
+  m_LocalPosition: {x: -2.76292, y: 1.66087, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -48,6 +50,7 @@ MonoBehaviour:
   playerState: {fileID: 0}
   inventoryPanel: {fileID: 0}
   slotPrefab: {fileID: 8738946618182595877, guid: c8b5dff73fb0844e1881a704d9a5a7b3, type: 3}
+  spellListController: {fileID: 0}
   slotCount: 26
 --- !u!114 &-3286956586709032157
 MonoBehaviour:
@@ -61,3 +64,43 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 495a22cac54654c49af9fed4f75821c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
+  spellListPage: {fileID: 0}
+  wordDatabase: {fileID: 2839916518416015360}
+  shapeWordSlotPrefab: {fileID: 7323038566750842641, guid: f0ace0c6ad98a4e4eabc34233d839a63, type: 3}
+  elementWordSlotPrefab: {fileID: 0}
+  shapeWordSprites:
+  - {fileID: 1160157280950888960, guid: a9849f98c080b4e328a689dd673647d3, type: 3}
+  - {fileID: 2521596067584109623, guid: a9849f98c080b4e328a689dd673647d3, type: 3}
+  - {fileID: 7108221999786788515, guid: 09f948d869dc14d388a12e1b7ec0a641, type: 3}
+  - {fileID: -5882460238890035336, guid: 09f948d869dc14d388a12e1b7ec0a641, type: 3}
+  - {fileID: 4525494822386202962, guid: 09f948d869dc14d388a12e1b7ec0a641, type: 3}
+  - {fileID: 7537045619757817925, guid: 2c11e5d81b9e4467c9b1f2f905acde87, type: 3}
+  - {fileID: 5077684828180809190, guid: 2c11e5d81b9e4467c9b1f2f905acde87, type: 3}
+  - {fileID: 6682682173074477021, guid: 8f061af48e03e4d45949d4f042ddbd43, type: 3}
+  - {fileID: 1605711669316281466, guid: 8f061af48e03e4d45949d4f042ddbd43, type: 3}
+  - {fileID: 1324060596047648491, guid: 8f061af48e03e4d45949d4f042ddbd43, type: 3}
+--- !u!114 &4336142981743849688
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8818195158728404346}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5839a9a863d404baca036946bb97dad6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RandomLetter
+  spellbookController: {fileID: 5958140960861867568}
+--- !u!114 &2839916518416015360
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8818195158728404346}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d9dce3a7cd3b408492f06650033d9c8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WordDatabase

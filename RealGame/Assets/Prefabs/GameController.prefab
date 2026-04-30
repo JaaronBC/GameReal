@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2526695646423908162}
   - component: {fileID: 5958140960861867568}
+  - component: {fileID: -3286956586709032157}
   m_Layer: 0
   m_Name: GameController
   m_TagString: Untagged
@@ -48,4 +49,15 @@ MonoBehaviour:
   inventoryPanel: {fileID: 0}
   slotPrefab: {fileID: 8738946618182595877, guid: c8b5dff73fb0844e1881a704d9a5a7b3, type: 3}
   slotCount: 26
-  letterPrefabs: []
+--- !u!114 &-3286956586709032157
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8818195158728404346}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 495a22cac54654c49af9fed4f75821c4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'

@@ -49,7 +49,7 @@ public class WordDatabase : MonoBehaviour
         "electrified", "stun", "stunning", "paralyze", "paralyzing", "voltage", "current", "ampere", "watt",
         //put all Ice words here
         "ice", "frost", "frostbite", "frosty", "chill", "chilling", "freeze", "freezing", "frozen", "glacier",
-        "snow", "snowy", "blizzard", "hail", "icy", "subzero", "frigid", "arctic", "polar", "winter",
+        "snow", "snowy", "blizzard", "hail", "icy", "frigid", "arctic", "polar", "winter",
         //Put all light words here
         "light", "bright", "radiant", "luminous", "glowing", "shining", "brilliant", "dazzling", "sparkling", 
         "gleaming", "glimmering", "illuminated", "illumination", "sun", "sunlight", "sunshine", "daylight",
@@ -108,7 +108,7 @@ public class WordDatabase : MonoBehaviour
     public HashSet<string> iceWords = new HashSet<string>
     {
         "ice", "frost", "frostbite", "frosty", "chill", "chilling", "freeze", "freezing", "frozen", "glacier",
-        "snow", "snowy", "blizzard", "hail", "icy", "subzero", "frigid", "arctic", "polar", "winter"
+        "snow", "snowy", "blizzard", "hail", "icy", "frigid", "arctic", "polar", "winter"
     };
     public HashSet<string> lightWords = new HashSet<string>
     {
@@ -137,5 +137,54 @@ public class WordDatabase : MonoBehaviour
 
         if (metaWords != null)
             validWords.UnionWith(metaWords);
+        if (BattleDataHolder.characterMapCreated == false)
+        {
+            GetWordCharacterMap();
+            BattleDataHolder.shapeWordsLeft.UnionWith(shapeWords);
+            BattleDataHolder.elementWordsLeft.UnionWith(elementWords);
+            BattleDataHolder.powerWordsLeft.UnionWith(metaWords);
+            BattleDataHolder.characterMapCreated = true;
+        }
+    }
+    void Start()
+    {
+        /*
+        foreach (var kvp in BattleDataHolder.shapeWordCharacterMap)
+        {            
+            Debug.Log("Shape Word: " + kvp.Key + " Characters: " + string.Join(", ", kvp.Value));
+        }
+        foreach (var kvp in BattleDataHolder.elementWordCharacterMap)
+        {
+            Debug.Log("Element Word: " + kvp.Key + " Characters: " + string.Join(", ", kvp.Value));
+        }
+        foreach (var kvp in BattleDataHolder.powerWordCharacterMap)        {
+            Debug.Log("Power Word: " + kvp.Key + " Characters: " + string.Join(", ", kvp.Value));
+        }
+        */
+    }
+    void GetWordCharacterMap()
+    {
+        Dictionary<string, HashSet<char>> tempCharacterMapCreate = new Dictionary<string, HashSet<char>>();
+
+        foreach (string word in shapeWords)
+        {
+            HashSet<char> characters = new HashSet<char>(word);
+            tempCharacterMapCreate[word] = characters;
+        }
+        BattleDataHolder.shapeWordCharacterMap = tempCharacterMapCreate;
+        tempCharacterMapCreate = new Dictionary<string, HashSet<char>>();
+        foreach (string word in elementWords)
+        {
+            HashSet<char> characters = new HashSet<char>(word);
+            tempCharacterMapCreate[word] = characters;
+        }
+        BattleDataHolder.elementWordCharacterMap = tempCharacterMapCreate;
+        tempCharacterMapCreate = new Dictionary<string, HashSet<char>>();
+        foreach (string word in metaWords)
+        {
+            HashSet<char> characters = new HashSet<char>(word);
+            tempCharacterMapCreate[word] = characters;
+        }
+        BattleDataHolder.powerWordCharacterMap = tempCharacterMapCreate;
     }
 }

@@ -29,6 +29,7 @@ public class DungeonManager : MonoBehaviour {
     private GameObject currentLayoutInstance;
     private Tilemap currentMarkerTilemap;
     [SerializeField] SpellbookController spellbookController; // Reference to the SpellbookController script
+    [SerializeField] SpellListController spellListController; // Reference to the SpellListController script
 
     //Array for Enemies
     public GameObject[] enemyPrefabs;
@@ -63,6 +64,7 @@ public class DungeonManager : MonoBehaviour {
                 spellbookController.AddLetter(randomVowel);
                 BattleDataHolder.VowelsLeft.Remove(randomVowel);
             }
+            spellListController.checkForWords();
             BattleDataHolder.startOfRun = false;
         }
     }

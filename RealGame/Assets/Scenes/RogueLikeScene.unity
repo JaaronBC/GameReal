@@ -1164,6 +1164,7 @@ MonoBehaviour:
   - {fileID: 1717001365431442725, guid: 9be4ecb793f4711418dd0901960e8876, type: 3}
   - {fileID: 3127034549541251206, guid: 6554f53fc4a43884998351062c4ef6f0, type: 3}
   - {fileID: 6879263028555090611, guid: 1075efbdeeebb434796e4e62b4fdeb39, type: 3}
+  - {fileID: 1717001365431442725, guid: 5e145e11846d1bf4a91673b4ba284d61, type: 3}
   barrelPrefab: {fileID: 4019241347438631876, guid: 6fab0200be2b68348a2b05d2aa9ce187, type: 3}
   chestPrefab: {fileID: 6847072173190459681, guid: 33685dfa3d963704c9959d7e90d78f83, type: 3}
   holePrefab: {fileID: 2790026077173143644, guid: baaa98332d5375e4ab6f8d75bd722d19, type: 3}

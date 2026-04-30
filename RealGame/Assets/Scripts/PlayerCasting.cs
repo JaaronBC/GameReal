@@ -47,7 +47,12 @@ public class PlayerCasting : MonoBehaviour
     [SerializeField] GameObject daggerPrefab;
     [SerializeField] GameObject arrowPrefab;
 
-     void Awake()
+    // adding audio sources for spell casting sounds
+    // just one for the time being, but can be expanded later for different sounds for different shapes/elements
+    public AudioSource audioSource;
+    public AudioClip spellCastSound;
+
+    void Awake()
     {
         //Initialize allowed letters from BattleDataHolder
         foreach (char c in BattleDataHolder.usableLetters)
@@ -388,6 +393,14 @@ public class PlayerCasting : MonoBehaviour
                         spellBuilder.Add(spellWord);
                         if (wordDatabase.shapeWords.Contains(spellWord))
                         {
+                            
+                            // for spell casting purposes
+                            if (audioSource != null && spellCastSound != null)
+                            {
+                                audioSource.pitch = Random.Range(0.95f, 1.1f);
+                                audioSource.PlayOneShot(spellCastSound);
+                            }
+
                             CraftSpell();
                             spellBuilder.Clear();
                             currentLetters.ForEach(letter => Destroy(letter));

@@ -5,7 +5,10 @@ public class gameOverRetry : MonoBehaviour
 {
     private string sceneName = "BattleScene";
     private Animator animator;
-    private float timer = 2.0f;
+    private float timer = 3.0f;
+    // silly audio source for the retry input sound effect
+    public AudioSource audioSource;
+    public AudioClip retrySound;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -24,10 +27,16 @@ public class gameOverRetry : MonoBehaviour
 
     public void Restart(string sceneName)
     {
+        if (audioSource != null && retrySound != null)
+        {
+            audioSource.PlayOneShot(retrySound);
+        }
+
         if (animator)
         {
             animator.SetBool("restart", true);
         }
+
         Invoke(nameof(RestartTransition), timer);
     }
 

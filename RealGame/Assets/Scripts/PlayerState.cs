@@ -2,6 +2,7 @@ using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.UIElements;
+using System.Collections;
 
 public class PlayerState : MonoBehaviour
 {
@@ -26,6 +27,12 @@ public class PlayerState : MonoBehaviour
     public char[] usableLetters;
     public Sprite[] letterSprites;
     public PlayerMovement movementScript;
+
+    // sfx (taking damage)
+    public AudioSource audioSource;
+    public AudioClip hitSound;
+    public AudioClip deathHitSound; // when player dies plays dramatic hit sound
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -72,6 +79,24 @@ public class PlayerState : MonoBehaviour
         CurrentHP -= damage;
         CurrentHP = Mathf.Max(CurrentHP, 0);
 
+        // play hit sound with random pitch
+        if (audioSource != null)
+        {
+            if (CurrentHP <= 0 && deathHitSound != null)
+            {
+                audioSource.pitch = 0.85f;   // deeper = heavier
+                audioSource.volume = 1.2f;   // slightly louder
+                audioSource.PlayOneShot(deathHitSound);
+                StartCoroutine(EchoDeathHit());
+            }
+            else if (hitSound != null)
+            {
+                audioSource.pitch = Random.Range(0.95f, 1.05f);
+                audioSource.volume = 1.0f;
+                audioSource.PlayOneShot(hitSound);
+            }
+        }
+
         //flash, involnerability
         flash.Flash();
         involnerable = involnerableTime;
@@ -87,6 +112,20 @@ public class PlayerState : MonoBehaviour
         playerMovement.movementForce = (direction * knockbackForce);
         return true;
     }
+    
+    // echo effect for final death hit
+    IEnumerator EchoDeathHit()
+    {
+        yield return new WaitForSeconds(0.08f);
+
+        if (audioSource != null && deathHitSound != null)
+        {
+            audioSource.pitch = 0.7f;
+            audioSource.volume = 0.5f;
+            audioSource.PlayOneShot(deathHitSound);
+            audioSource.volume = 1.0f;
+        }
+    }
 
     //death
     private void Death()
@@ -98,6 +137,15 @@ public class PlayerState : MonoBehaviour
     }
     private void DeathTransition()
     {
+        StartCoroutine(DeathTransitionCoroutine());     // added coroutine to allow for BGM fade out before scene transition 
+    }
+
+    IEnumerator DeathTransitionCoroutine()
+    {
+        FindObjectOfType<BGMFade>()?.FadeOut(1.0f);
+
+        yield return new WaitForSeconds(1.0f);
+
         SceneController sc = FindObjectOfType<SceneController>();
         if (sc != null)
         {

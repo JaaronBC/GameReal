@@ -1,10 +1,11 @@
+using System.Collections;
+using System.Collections.Generic;
 using TMPro;
+using TMPro; //text mesh pro
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
-using TMPro; //text mesh pro
-using System.Collections.Generic;
 
 
 public enum BattleState
@@ -62,6 +63,9 @@ public class BattleScript : MonoBehaviour
     [SerializeField] GameObject playerTimerUI;
     [SerializeField] RandomLetter randomLetter;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
+
+    // prevents coroutine from starting multiple times (for sanity sake)
+    bool isEnding = false;
     void Start()
     {
         if (BattleDataHolder.enemiesToSpawn != null)
@@ -249,10 +253,21 @@ public class BattleScript : MonoBehaviour
     }
     void BattleEnd()
     {
+        if (isEnding) return;
+        isEnding = true;
+        // fades in OST before switching scenes
         Debug.Log("Battle Ended!");
-        //Transition to previous scene
-        SceneManager.LoadScene(BattleDataHolder.returnSceneName);
+        StartCoroutine(EndBattleCoroutine());
     }
+    IEnumerator EndBattleCoroutine()
+    {
+        FindObjectOfType<BGMFade>()?.FadeOut(1.0f);
+
+        yield return new WaitForSeconds(1.0f);
+
+        SceneManager.LoadScene(BattleDataHolder.returnSceneName);   // transitions back to previous scene here
+    }
+
     public void CheckForBattleEnd()
     {
         if (activeEnemies.Count == 0)

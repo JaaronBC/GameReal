@@ -25,7 +25,19 @@ public class WordDatabase : MonoBehaviour
         "knife",
         "arrow",
         "bow",
-        "quiver"
+        "quiver",
+        "star",
+        "shuriken",
+        "wave",
+        "vortex",
+        "tornado",
+        "cyclone",
+        "twister",
+        "punch",
+        "kick",
+        "bite",
+        "tackle",
+        "headbutt"
     };
     public HashSet<string> elementWords = new HashSet<string> { 
         //Put all fire words here

@@ -78,6 +78,10 @@ MonoBehaviour:
   - {fileID: 6682682173074477021, guid: 8f061af48e03e4d45949d4f042ddbd43, type: 3}
   - {fileID: 1605711669316281466, guid: 8f061af48e03e4d45949d4f042ddbd43, type: 3}
   - {fileID: 1324060596047648491, guid: 8f061af48e03e4d45949d4f042ddbd43, type: 3}
+  - {fileID: 1937896135, guid: 8f061af48e03e4d45949d4f042ddbd43, type: 3}
+  - {fileID: 2213553188274523003, guid: dadedda8d9ece4163a676e70835a5276, type: 3}
+  - {fileID: -8778377569687425300, guid: dadedda8d9ece4163a676e70835a5276, type: 3}
+  - {fileID: 695437125611431760, guid: ea66d66a287b940228336b8a927c553d, type: 3}
   textComponent: {fileID: 5604762755484944837, guid: eea8012aaee914c109e6507ae9fbc0ef, type: 3}
 --- !u!114 &4336142981743849688
 MonoBehaviour:

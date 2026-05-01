@@ -18,7 +18,7 @@ public class DungeonManager : MonoBehaviour {
     public int maxChests = 2;
 
     [Header("Dungeon Settings")]
-    public int currentFloor = 1;
+    public int currentFloor;
     public int maxFloors = 5;
 
     [Header("References")]
@@ -38,6 +38,12 @@ public class DungeonManager : MonoBehaviour {
     //Counter for enemy IDs
     int enemyIDcounter = 1;
     void Start() {
+        currentFloor = BattleDataHolder.currentFloor;
+        if (BattleDataHolder.startOfRun)
+        {
+            BattleDataHolder.dungeonSeed = Random.Range(int.MinValue, int.MaxValue);
+        }
+
         GenerateFloor();
         if (BattleDataHolder.startOfRun) 
         {
@@ -80,6 +86,8 @@ public class DungeonManager : MonoBehaviour {
     }
 
     public void GenerateFloor() {
+        Random.InitState(BattleDataHolder.dungeonSeed + currentFloor);
+
         ClearSpawnedObjects();
         LoadFloorLayout();
 
@@ -110,13 +118,6 @@ public class DungeonManager : MonoBehaviour {
             Debug.Log("Final floor reached!");
         }
 
-        // Spawn player at the marker tilemap's center
-        if (player != null) {
-            Vector3 center = currentMarkerTilemap.localBounds.center;
-            center.z = 0;
-            player.position = center;
-        }
-
         Debug.Log("Generated floor " + currentFloor);
     }
 
@@ -140,9 +141,27 @@ public class DungeonManager : MonoBehaviour {
             } else if (tm.gameObject.name.Contains("EnemySpawn")) {
                 // Spawn enemies at EnemySpawn tilemap positions
                 SpawnEnemiesAtTilemap(tm);
+            } else if (tm.gameObject.name.Contains("PlayerSpawn"))
+            {
+                BoundsInt bounds = tm.cellBounds;
+
+                foreach (Vector3Int pos in bounds.allPositionsWithin) 
+                {
+                    if (tm.HasTile(pos)) 
+                    {
+                        Vector3 worldPosition = tm.GetCellCenterWorld(pos);
+                        worldPosition.z = 0;
+
+                        if (player != null) 
+                        {
+                            player.position = worldPosition;
+                        }
+
+                        break; // stop after first valid tile
+                    }
+                }
             }
         }
-
         if (currentMarkerTilemap == null)
             Debug.LogError("No Marker tilemap found in floor layout prefab!");
     }
@@ -180,16 +199,18 @@ public class DungeonManager : MonoBehaviour {
         }
     }
 
-    public void GoToNextFloor() {
-        if (currentFloor < maxFloors) {
-            currentFloor++;
-            GenerateFloor();
-        } else {
-            Debug.Log("You reached the bottom of the cavern!");
+        public void GoToNextFloor() {
+            if (currentFloor < maxFloors) {
+                currentFloor++;
+                BattleDataHolder.currentFloor = currentFloor;
+                GenerateFloor();
+            } else {
+                Debug.Log("You reached the bottom of the cavern!");
+            }
         }
-    }
     void SpawnEnemiesAtTilemap(Tilemap enemySpawnTilemap) {
         if (disableEnemies) { return; }
+        enemySpawnTilemap.CompressBounds();
         BoundsInt bounds = enemySpawnTilemap.cellBounds; 
         foreach (Vector3Int pos in bounds.allPositionsWithin) {
             if (enemySpawnTilemap.HasTile(pos)) {
@@ -197,6 +218,7 @@ public class DungeonManager : MonoBehaviour {
                 worldPosition.z = -1;
                 GameObject enemyPrefab = enemyPrefabs[Random.Range(0, enemyPrefabs.Length)];
                 var enemy = Instantiate(enemyPrefab, worldPosition, Quaternion.identity, spawnedObjectsParent);
+                spawnedObjects.Add(enemy);
                 EnemyScript enemyScript = enemy.GetComponent<EnemyScript>();
                 if (enemyScript != null)                {
                     enemyScript.enemyID = "enemy" + enemyIDcounter;

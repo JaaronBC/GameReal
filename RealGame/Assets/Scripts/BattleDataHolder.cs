@@ -35,7 +35,19 @@ public static class BattleDataHolder
         {"blade", 7},
         {"knife", 8},
         {"bow", 9},
-        {"quiver", 9}
+        {"quiver", 9},
+        {"star", 10},
+        {"shuriken", 10},
+        {"wave", 11},
+        {"vortex", 12},
+        {"tornado", 12},
+        {"cyclone", 12},
+        {"twister", 12},
+        {"punch", 13},
+        {"kick", 13},
+        {"bite", 13},
+        {"tackle", 13},
+        {"headbutt", 13}
     };
     public static HashSet<char> LettersGained = new HashSet<char>();
     public static bool characterMapCreated = false;

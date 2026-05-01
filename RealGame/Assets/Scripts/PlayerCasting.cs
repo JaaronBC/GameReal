@@ -46,7 +46,10 @@ public class PlayerCasting : MonoBehaviour
     [SerializeField] GameObject swordPrefab;
     [SerializeField] GameObject daggerPrefab;
     [SerializeField] GameObject arrowPrefab;
-
+    [SerializeField] GameObject starPrefab;
+    [SerializeField] GameObject wavePrefab;
+    [SerializeField] GameObject vortexPrefab;
+    [SerializeField] GameObject punchPrefab;
      void Awake()
     {
         //Initialize allowed letters from BattleDataHolder
@@ -313,7 +316,20 @@ public class PlayerCasting : MonoBehaviour
             { "knife", CastDagger},
             {"arrow", CastArrow},
             {"bow", CastArrow},
-            {"quiver", CastArrow}
+            {"quiver", CastArrow},
+            {"star", CastStar},
+            {"shuriken", CastStar},
+            {"wave", CastWave},
+            {"vortex", CastVortex},
+            {"tornado", CastVortex},
+            {"cyclone", CastVortex},
+            {"twister", CastVortex},
+            {"punch", CastPunch},
+            {"kick", CastPunch},
+            {"bite", CastPunch},
+            {"tackle", CastPunch},
+            {"headbutt", CastPunch}
+
         };
         //Initialize letter prefab mapping for spell crafting visuals
         letterMap = new Dictionary<char, GameObject>();
@@ -556,7 +572,7 @@ public class PlayerCasting : MonoBehaviour
     //Spear- pierces through all enemies
     void CastSpear(float damage, string element)
     {
-        SpawnProjectile(spearPrefab, currentTarget, element, damage * 1.3f, "spear", true);
+        SpawnProjectile(spearPrefab, currentTarget, element, damage * 1.4f, "spear", true);
     }
     //Drill -Pierces and hits multiple times
     void CastDrill(float damage, string element)
@@ -575,5 +591,21 @@ public class PlayerCasting : MonoBehaviour
     void CastArrow(float damage, string element)
     {
         SpawnProjectile(arrowPrefab, currentTarget, element, damage*1.5f, "arrow", false);
+    }
+    void CastStar(float damage, string element)
+    {
+        SpawnProjectile(starPrefab, currentTarget, element, (damage*1.6f)/2f, "star", false);
+    }
+    void CastWave(float damage, string element)
+    {
+        SpawnProjectile(wavePrefab, currentTarget, element, damage * 1.3f, "wave", true);
+    }
+    void CastVortex(float damage, string element)
+    {
+        SpawnProjectile(vortexPrefab, currentTarget, element, damage * 1.4f/5, "vortex", true);
+    }
+    void CastPunch(float damage, string element)
+    {
+        SpawnProjectile(punchPrefab, currentTarget, element, damage*1.5f, "punch", false);
     }
 }

@@ -40,8 +40,11 @@ public class ProjectileScript : MonoBehaviour
             { "drill", (proj) => proj.Drill() },
             {"sword", (proj) => proj.Sword() },
             {"dagger", (proj) => proj.Dagger() },
-            {"arrow", (proj) => proj.Arrow() }
-
+            {"arrow", (proj) => proj.Arrow() },
+            {"star", (proj) => proj.Star() },
+            {"wave", (proj) => proj.Wave() },
+            {"vortex", (proj) => proj.Vortex() },
+            {"punch", (proj) => proj.Punch() }
         };
     }
     void Update()
@@ -230,6 +233,87 @@ public class ProjectileScript : MonoBehaviour
         }
     }
     void Arrow()
+    {
+        if (targetObject == null) return;
+        EnemyState enemy = targetObject.GetComponent<EnemyState>();
+        if (enemy != null)
+        {
+            enemy.statusEffects.Add(element); // Add element as status effect to enemy
+            enemy.savedDamage = damage; // Store the original damage value for status effects to reference
+            enemy.Damaged(damage, element); // Apply damage to enemy
+        }
+    }
+    void Star()
+    {
+        if (targetObject == null) return;
+        EnemyState enemy = targetObject.GetComponent<EnemyState>();
+        if (enemy != null)
+        {
+            //star hits twice but at half damage, so we call the damage function twice with half damage
+            enemy.statusEffects.Add(element); // Add element as status effect to enemy
+            enemy.savedDamage = damage; // Store the original damage value for status effects to reference
+            enemy.Damaged(damage, element); // Apply damage to enemy
+
+            enemy.statusEffects.Add(element); // Add element as status effect to enemy
+            enemy.savedDamage = damage; // Store the original damage value for status effects to reference
+            enemy.Damaged(damage, element); // Apply damage to enemy
+        }
+    }
+    void Wave()
+    {
+        float pierceRadius = 3f;
+
+        Vector3 movement = transform.position - lastPosition;
+        float distance = movement.magnitude;
+
+        if (distance <= 0f) return;
+
+        Vector3 direction = movement.normalized;
+
+        RaycastHit2D[] hits = Physics2D.CircleCastAll(lastPosition, pierceRadius, direction, distance);
+
+        foreach (var hit in hits)
+        {
+            EnemyState enemy = hit.collider.GetComponent<EnemyState>();
+            if (enemy != null && !piercedEnemies.Contains(enemy))
+            {
+                piercedEnemies.Add(enemy);
+
+                enemy.statusEffects.Add(element);
+                enemy.savedDamage = damage;
+                enemy.Damaged(damage, element);
+            }
+        }
+    }
+    void Vortex()
+    {
+        float pierceRadius = 3.0f;
+
+        Vector3 movement = transform.position - lastPosition;
+        float distance = movement.magnitude;
+
+        if (distance <= 0f) return;
+
+        Vector3 direction = movement.normalized;
+
+        RaycastHit2D[] hits = Physics2D.CircleCastAll(lastPosition, pierceRadius, direction, distance);
+
+        foreach (var hit in hits)
+        {
+            EnemyState enemy = hit.collider.GetComponent<EnemyState>();
+            if (enemy != null && !piercedEnemies.Contains(enemy))
+            {
+                piercedEnemies.Add(enemy);
+                for (int i = 0; i < 5; i++) // Drill hits 5 times
+                {
+                    enemy.statusEffects.Add(element);
+                    enemy.savedDamage = damage; // Drill does 20% damage on each hit
+                    enemy.Damaged(damage, element);
+                }
+            }
+        }
+    }
+    void Punch()
     {
         if (targetObject == null) return;
         EnemyState enemy = targetObject.GetComponent<EnemyState>();

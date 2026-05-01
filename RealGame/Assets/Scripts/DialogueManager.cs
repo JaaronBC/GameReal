@@ -12,7 +12,7 @@ public class DialogueManager : MonoBehaviour
 
     private Coroutine typingCoroutine;
     private string[] currentLines;
-    private int currentLineIndex = 0;
+    public int currentLineIndex = 0;
     private bool isTyping = false;
 
     public void ShowDialogue(string[] lines)

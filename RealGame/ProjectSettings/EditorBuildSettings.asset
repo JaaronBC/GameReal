@@ -6,6 +6,21 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/TitleScreen.unity
+    guid: a93ade6a19200694cb4ad92ee9a6d7d6
+  - enabled: 1
+    path: Assets/Scenes/TutorialScenesFolder/ClassRoom.unity
+    guid: 5402aaa42a0abb245a912be30571a012
+  - enabled: 1
+    path: Assets/Scenes/TutorialScenesFolder/SchoolHall.unity
+    guid: 4726f309f3fa4e640b0bdd14d73e7b0e
+  - enabled: 1
+    path: Assets/Scenes/TutorialScenesFolder/ClassBathroom.unity
+    guid: 227ec0df676cccd47aa1c23811515326
+  - enabled: 1
+    path: Assets/Scenes/TutorialScenesFolder/SchoolHallToRougeLike.unity
+    guid: 3d653f5288fa27e488279fd5650a2396
+  - enabled: 1
     path: Assets/Scenes/RogueLikeScene.unity
     guid: 8c9cfa26abfee488c85f1582747f6a02
   - enabled: 1
@@ -17,15 +32,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/TutorialScenesFolder/endScene.unity
     guid: 25229e6e1bc272a459683fb7ec5f8bbe
-  - enabled: 1
-    path: Assets/Scenes/TutorialScenesFolder/SchoolHall.unity
-    guid: 4726f309f3fa4e640b0bdd14d73e7b0e
-  - enabled: 1
-    path: Assets/Scenes/TutorialScenesFolder/ClassBathroom.unity
-    guid: 227ec0df676cccd47aa1c23811515326
-  - enabled: 1
-    path: Assets/Scenes/TutorialScenesFolder/SchoolHallToRougeLike.unity
-    guid: 3d653f5288fa27e488279fd5650a2396
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   m_UseUCBPForAssetBundles: 0

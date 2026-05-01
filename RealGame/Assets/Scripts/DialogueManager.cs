@@ -15,6 +15,15 @@ public class DialogueManager : MonoBehaviour
     public int currentLineIndex = 0;
     private bool isTyping = false;
 
+    // For NPC dialogue sound
+    public AudioSource audioSource;
+    public AudioClip dialogueSound;
+
+    [Header("Dialogue Sound Settings")]
+    public int soundInterval = 2; // play sound every X characters
+    public float minPitch = 0.6f;
+    public float maxPitch = 0.9f;
+
     public void ShowDialogue(string[] lines)
     {
         if (lines == null || lines.Length == 0)
@@ -44,9 +53,20 @@ public class DialogueManager : MonoBehaviour
         isTyping = true;
         dialogueText.text = "";
 
+        // NPC dialogue sound
+        int charIndex = 0;
+
         foreach (char letter in line)
         {
             dialogueText.text += letter;
+
+            if (audioSource != null && dialogueSound != null && letter != ' ' && soundInterval > 0 && charIndex % soundInterval == 0)
+            {
+                audioSource.pitch = Random.Range(minPitch, maxPitch);
+                audioSource.PlayOneShot(dialogueSound);
+            }
+
+            charIndex++;
             yield return new WaitForSeconds(typingSpeed);
         }
 

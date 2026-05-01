@@ -14,6 +14,7 @@ public class EndSceneScript : MonoBehaviour
     bool endingStarted = false;
     bool dialogueWasOpen = false;
 
+    public BoxCollider2D collider;
     private DialogueManager dialougeScript;
 
     void Start()
@@ -34,6 +35,7 @@ public class EndSceneScript : MonoBehaviour
 
             if (!endingStarted && dialogueWasOpen && !dialougeScript.dialogueBox.activeSelf)
             {
+                collider.enabled = false;
                 endingStarted = true;
                 Debug.Log("Ending started. Fading BGM and going to title.");
                 StartCoroutine(EndToTitleCoroutine());

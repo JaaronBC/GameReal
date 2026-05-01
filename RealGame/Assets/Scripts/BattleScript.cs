@@ -112,7 +112,7 @@ public class BattleScript : MonoBehaviour
             movePlayer = false;
         }
     }
-        selfTextComponent.text = "timer: " + timer + " state: " + state + " Movement:" + playerMovement.enabled;
+        selfTextComponent.text = "timer: " + timer + " state: " + state + " Movement:" + playerMovement.enabled + "\n \n" + activeEnemies;
 
         //timer and set states
         if (timer > 0.0) timer -= Time.deltaTime;

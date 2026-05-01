@@ -33,6 +33,8 @@ public class DungeonManager : MonoBehaviour {
 
     //Array for Enemies
     public GameObject[] enemyPrefabs;
+    public bool disableEnemies = false;
+
     //Counter for enemy IDs
     int enemyIDcounter = 1;
     void Start() {
@@ -125,7 +127,8 @@ public class DungeonManager : MonoBehaviour {
             Destroy(currentLayoutInstance);
 
         // Pick layout � cycle through available prefabs
-        int layoutIndex = (currentFloor - 1) % floorLayoutPrefabs.Length;
+        int layoutIndex = (currentFloor - 1) % (floorLayoutPrefabs.Length - 1);
+        if (currentFloor >= maxFloors) layoutIndex = floorLayoutPrefabs.Length - 1;
         GameObject prefab = floorLayoutPrefabs[layoutIndex];
 
         currentLayoutInstance = Instantiate(prefab, new Vector3(0,0,1), Quaternion.identity);
@@ -206,6 +209,7 @@ public class DungeonManager : MonoBehaviour {
         }
     }
     void SpawnEnemiesAtTilemap(Tilemap enemySpawnTilemap) {
+        if (disableEnemies) { return; }
         BoundsInt bounds = enemySpawnTilemap.cellBounds; 
         foreach (Vector3Int pos in bounds.allPositionsWithin) {
             if (enemySpawnTilemap.HasTile(pos)) {

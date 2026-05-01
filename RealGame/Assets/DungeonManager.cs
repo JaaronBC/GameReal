@@ -38,6 +38,7 @@ public class DungeonManager : MonoBehaviour {
     //Counter for enemy IDs
     int enemyIDcounter = 1;
     void Start() {
+
         currentFloor = BattleDataHolder.currentFloor;
         if (BattleDataHolder.startOfRun)
         {
@@ -75,6 +76,7 @@ public class DungeonManager : MonoBehaviour {
             spellListController.checkForWords();
             BattleDataHolder.startOfRun = false;
         }
+        Debug.Log(BattleDataHolder.startOfRun);
     }
     char GetRandomCharFromSet(HashSet<char> charSet) {
         int index = Random.Range(0, charSet.Count);

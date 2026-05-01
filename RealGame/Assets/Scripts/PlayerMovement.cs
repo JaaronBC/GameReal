@@ -37,6 +37,15 @@ public class PlayerMovement : MonoBehaviour
     private GameObject shadowSpriteObj;
     private SpriteRenderer sr;
 
+    // jump sound effect
+    public AudioSource audioSource;
+    public AudioClip jumpSound;
+
+    // footstep sound effect
+    public AudioClip footstepSound;
+    public float stepInterval = 0.35f;
+    private float stepTimer = 0f;
+
     void Start()
     {
         PlayerMovement playerMovement = GetComponent<PlayerMovement>();
@@ -120,10 +129,20 @@ public class PlayerMovement : MonoBehaviour
             speed = airSpeed;
         else
             speed = moveSpeed;
+
+        // footsteps
+        HandleFootsteps();
     }
 
     void jump()
     {
+        // jump sound effect
+        if (audioSource != null && jumpSound != null)
+        {
+            audioSource.pitch = Random.Range(0.95f, 1.05f);
+            audioSource.PlayOneShot(jumpSound);
+        }
+
         currentSpriteObj = Instantiate(spriteObj, transform.position, Quaternion.identity);
         shadowSpriteObj = Instantiate(shadowObj, transform.position, Quaternion.identity);
         currentSpriteObj.transform.SetParent(this.transform);
@@ -148,6 +167,32 @@ public class PlayerMovement : MonoBehaviour
 
         if (currentSpriteObj != null) Destroy(currentSpriteObj);
         if (shadowSpriteObj != null) Destroy(shadowSpriteObj);
+    }
+
+    // handles the footstep sound effects based on player movement and grounded state
+    void HandleFootsteps()
+    {
+        bool isMoving = moveInput.magnitude > 0.1f;
+        bool isGrounded = z <= 0.0f;
+
+        if (!isMoving || !isGrounded || !canMove)
+        {
+            stepTimer = 0f;
+            return;
+        }
+
+        stepTimer -= Time.deltaTime;
+
+        if (stepTimer <= 0f)
+        {
+            if (audioSource != null && footstepSound != null)
+            {
+                audioSource.pitch = Random.Range(0.9f, 1.1f);
+                audioSource.PlayOneShot(footstepSound);
+            }
+
+            stepTimer = stepInterval;
+        }
     }
 
     void OnDisable()

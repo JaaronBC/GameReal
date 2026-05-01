@@ -7,6 +7,7 @@ public class SpellbookController : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     public GameObject inventoryPanel;
     public GameObject slotPrefab;
+    [SerializeField] private SpellListController spellListController;
     public int slotCount;
     Dictionary<char, Sprite> letterSprites = new Dictionary<char, Sprite>();
     void Awake()
@@ -64,6 +65,7 @@ public class SpellbookController : MonoBehaviour
 
             BattleDataHolder.usableLetters[slotIndex] = letter;
             BattleDataHolder.LettersGained.Add(letter);
+            spellListController.checkForWords();
             return true;
         }
 

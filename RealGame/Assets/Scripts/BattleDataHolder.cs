@@ -13,35 +13,39 @@ public static class BattleDataHolder
     public static HashSet<char> ConsonantsLeft = new HashSet<char>("BCDFGHJKLMNPQRSTVWXYZ".ToCharArray());
     public static HashSet<char> VowelsLeft = new HashSet<char>("AEIOU".ToCharArray());
     public static bool startOfRun = true;
-    /*public static Dictionary<char, GameObject> letterPrefabs = new Dictionary<char, GameObject>
+    public static Dictionary<string, int> shapeSpellSpritesPointer = new Dictionary<string, int>
     {
-        { 'A', Resources.Load<GameObject>("Letters/LetterA") },
-        { 'B', Resources.Load<GameObject>("Letters/LetterB") },
-        { 'C', Resources.Load<GameObject>("Letters/LetterC") },
-        { 'D', Resources.Load<GameObject>("Letters/LetterD") },
-        { 'E', Resources.Load<GameObject>("Letters/LetterE") },
-        { 'F', Resources.Load<GameObject>("Letters/LetterF") },
-        { 'G', Resources.Load<GameObject>("Letters/LetterG") },
-        { 'H', Resources.Load<GameObject>("Letters/LetterH") },
-        { 'I', Resources.Load<GameObject>("Letters/LetterI") },
-        { 'J', Resources.Load<GameObject>("Letters/LetterJ") },
-        { 'K', Resources.Load<GameObject>("Letters/LetterK") },
-        { 'L', Resources.Load<GameObject>("Letters/LetterL") },
-        { 'M', Resources.Load<GameObject>("Letters/LetterM") },
-        { 'N', Resources.Load<GameObject>("Letters/LetterN") },
-        { 'O', Resources.Load<GameObject>("Letters/LetterO") },
-        { 'P', Resources.Load<GameObject>("Letters/LetterP") },
-        { 'Q', Resources.Load<GameObject>("Letters/LetterQ") },
-        { 'R', Resources.Load<GameObject>("Letters/LetterR") },
-        { 'S', Resources.Load<GameObject>("Letters/LetterS") },
-        { 'T', Resources.Load<GameObject>("Letters/LetterT") },
-        { 'U', Resources.Load<GameObject>("Letters/LetterU") },
-        { 'V', Resources.Load<GameObject>("Letters/LetterV") },
-        { 'W', Resources.Load<GameObject>("Letters/LetterW") },
-        { 'X', Resources.Load<GameObject>("Letters/LetterX") },
-        { 'Y', Resources.Load<GameObject>("Letters/LetterY") },
-        { 'Z', Resources.Load<GameObject>("Letters/LetterZ") }
+        {"bolt", 1},
+        {"ball", 0},
+        {"missile", 4},
+        {"beam", 2},
+        {"slash", 3},
+        {"spear", 5},
+        {"drill", 6},
+        {"sword", 7},
+        {"dagger", 8},
+        {"arrow", 9},
+        {"ray", 2},
+        {"laser", 2},
+        {"cut", 3},
+        {"stab", 5},
+        {"pierce", 5},
+        {"lance", 5},
+        {"javelin", 5},
+        {"blade", 7},
+        {"knife", 8},
+        {"bow", 9},
+        {"quiver", 9}
     };
-    */
     public static HashSet<char> LettersGained = new HashSet<char>();
+    public static bool characterMapCreated = false;
+    public static Dictionary<string, HashSet<char>> shapeWordCharacterMap;
+    public static Dictionary<string, HashSet<char>> elementWordCharacterMap;
+    public static Dictionary<string, HashSet<char>> powerWordCharacterMap;
+    public static HashSet<string> shapeWordsLeft = new HashSet<string>();
+    public static HashSet<string> elementWordsLeft = new HashSet<string>();
+    public static HashSet<string> powerWordsLeft = new HashSet<string>();
+    public static HashSet<string> unlockedShapeWords = new HashSet<string>();
+    public static HashSet<string> unlockedElementWords = new HashSet<string>();
+    public static HashSet<string> unlockedPowerWords = new HashSet<string>();
 }

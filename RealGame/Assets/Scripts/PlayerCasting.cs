@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+
 public class PlayerCasting : MonoBehaviour
 {
     public bool allowAllLetters = false; // Set to true to allow all letters regardless of BattleDataHolder settings
@@ -50,7 +51,13 @@ public class PlayerCasting : MonoBehaviour
     [SerializeField] GameObject wavePrefab;
     [SerializeField] GameObject vortexPrefab;
     [SerializeField] GameObject punchPrefab;
-     void Awake()
+
+    // Audio for spell casting sounds
+    // Just one for now, but this can be expanded later for different shapes/elements
+    public AudioSource audioSource;
+    public AudioClip spellCastSound;
+
+    void Awake()
     {
         //Initialize allowed letters from BattleDataHolder
         foreach (char c in BattleDataHolder.usableLetters)
@@ -61,6 +68,7 @@ public class PlayerCasting : MonoBehaviour
             }
         }
     }
+
     public void BeginTurn()
     {
         isActive = true;
@@ -70,6 +78,7 @@ public class PlayerCasting : MonoBehaviour
             HighlightTarget(currentTarget);
         }
     }
+
     public void CycleTarget()
     {
         //debugCounter++;
@@ -94,13 +103,14 @@ public class PlayerCasting : MonoBehaviour
             foreach (var enemy in battleScript.activeEnemies)
             {
                 Transform targetUI = enemy.transform.Find("EnemyHealthBar/Target");
-                if (targetUI != null)                
-                 {
-                     Image img = targetUI.GetComponent<Image>();
-                     if (img != null)                     {
-                         img.color = Color.white;    
-                     }
-                 }
+                if (targetUI != null)
+                {
+                    Image img = targetUI.GetComponent<Image>();
+                    if (img != null)
+                    {
+                        img.color = Color.white;
+                    }
+                }
             }
         }
         Transform selectedTargetUI = target.transform.Find("EnemyHealthBar/Target");
@@ -113,12 +123,14 @@ public class PlayerCasting : MonoBehaviour
             }
         }
     }
+
     public void VeryifyTarget()
     {
-         //Count all current enemies
+        //Count all current enemies
         int enemyCount = battleScript.activeEnemies.Count;
         Debug.Log("Verifying Enemy Count: " + enemyCount);
-        if (currentTarget == null) {
+        if (currentTarget == null)
+        {
             if (battleScript.activeEnemies.Count > 0)
             {
                 currentTargetIndex = 0;
@@ -142,7 +154,7 @@ public class PlayerCasting : MonoBehaviour
         {
             Color colorToUse = Color.white; // default
 
-            switch (element?.ToLower()) 
+            switch (element?.ToLower())
             {
                 case "fire":
                     colorToUse = new Color(1f, 0.5f, 0f, 1f); // bright orange
@@ -171,27 +183,27 @@ public class PlayerCasting : MonoBehaviour
                 default:
                     colorToUse = Color.white;
                     break;
+            }
+
+            projRenderer.color = colorToUse;
+            projRenderer.sortingOrder = 10;
         }
 
-        projRenderer.color = colorToUse;
-        projRenderer.sortingOrder = 10; 
-    }
+        // Assign target for projectile movement
+        ProjectileScript projectile = proj.GetComponent<ProjectileScript>();
+        if (projectile != null && target != null)
+        {
+            if (element == null) element = "none"; // Handle case where no element is assigned
 
-    // Assign target for projectile movement
-    ProjectileScript projectile = proj.GetComponent<ProjectileScript>();
-    if (projectile != null && target != null)
-    {
-        if (element == null) element = "none"; // Handle case where no element is assigned
-
-        //Data passed to projectile for damage calculation and hit effects
-        projectile.target = target.transform;
-        projectile.targetObject = target;
-        projectile.damage = damage;
-        projectile.shape = shape;
-        projectile.element = element;
-        projectile.piercing = piercing;
+            //Data passed to projectile for damage calculation and hit effects
+            projectile.target = target.transform;
+            projectile.targetObject = target;
+            projectile.damage = damage;
+            projectile.shape = shape;
+            projectile.element = element;
+            projectile.piercing = piercing;
+        }
     }
-}
 
     void CraftSpell()
     {
@@ -258,7 +270,7 @@ public class PlayerCasting : MonoBehaviour
         else if (wordDatabase.darkWords.Contains(element))
         {
             element = "dark";
-        } 
+        }
         else
         {
             element = null; // If element word isn't recognized, treat as no element
@@ -270,7 +282,7 @@ public class PlayerCasting : MonoBehaviour
         if (baseMultiplier < 0.1f) baseMultiplier = 0.1f; // Minimum damage multiplier of 10%
         float damage = baseDamage * baseMultiplier * metaMultiplier;
         //Switch case for shape to determine attack type
-       
+
         if (shape != null && shapeActions.ContainsKey(shape))
         {
             shapeActions[shape].Invoke(damage, element);
@@ -373,27 +385,28 @@ public class PlayerCasting : MonoBehaviour
         }
 
         if (Input.anyKeyDown)
-        {   
+        {
             foreach (char character in Input.inputString)
             {
                 //Allow for uppercase letters by converting to lowercase
                 char c = char.ToLower(character);
                 if (char.IsLetter(c))
-                {   
-                    if (allowAllLetters) {
+                {
+                    if (allowAllLetters)
+                    {
                         spellWord += c;
                         SpawnLetter(c);
                         continue;
                     }
-                    if (!allowedLetters.Contains(char.ToLower(c))) 
+                    if (!allowedLetters.Contains(char.ToLower(c)))
                     {
                         Debug.Log("Letter '" + c + "' is invalid;"); // Ignore letters that are not in the allowed list
-                    } 
-                    else 
+                    }
+                    else
                     {
-                    spellWord += c;
-                    SpawnLetter(c);
-                    //Debug.Log("Current Spell Word: " + spellWord);
+                        spellWord += c;
+                        SpawnLetter(c);
+                        //Debug.Log("Current Spell Word: " + spellWord);
                     }
                 }
                 else if (c == ' ')
@@ -404,6 +417,13 @@ public class PlayerCasting : MonoBehaviour
                         spellBuilder.Add(spellWord);
                         if (wordDatabase.shapeWords.Contains(spellWord))
                         {
+                            // Play spell casting sound
+                            if (audioSource != null && spellCastSound != null)
+                            {
+                                audioSource.pitch = Random.Range(0.95f, 1.1f);
+                                audioSource.PlayOneShot(spellCastSound);
+                            }
+
                             CraftSpell();
                             spellBuilder.Clear();
                             currentLetters.ForEach(letter => Destroy(letter));
@@ -419,6 +439,7 @@ public class PlayerCasting : MonoBehaviour
             }
         }
     }
+
     void SpawnLetter(char c)
     {
         c = char.ToLower(c);
@@ -432,6 +453,7 @@ public class PlayerCasting : MonoBehaviour
 
         UpdateLetterPositions();
     }
+
     void UpdateLetterPositions()
     {
         float spacing = 1f;
@@ -440,16 +462,17 @@ public class PlayerCasting : MonoBehaviour
         for (int i = 0; i < currentLetters.Count; i++)
         {
             float x = i * spacing - totalWidth / 2f;
-            currentLetters[i].transform.localPosition = new Vector3(letterBuildX+x, letterBuildY, 0);
+            currentLetters[i].transform.localPosition = new Vector3(letterBuildX + x, letterBuildY, 0);
         }
     }
+
     void ColorWord()
     {
         //Color all letters in wordToColor 
         //Element words match their element color, meta words are pink, shape words remain white
         //Words that are not recognized are colored black
 
-        Color colorToUse = Color.white; 
+        Color colorToUse = Color.white;
         if (wordDatabase.shapeWords.Contains(spellWord))
         {
             colorToUse = Color.white;
@@ -487,7 +510,8 @@ public class PlayerCasting : MonoBehaviour
             else if (wordDatabase.darkWords.Contains(spellWord))
             {
                 colorToUse = new Color(0.5f, 0f, 0.5f, 1f); // dark purple
-            } else
+            }
+            else
             {
                 colorToUse = Color.black;
             }
@@ -496,30 +520,36 @@ public class PlayerCasting : MonoBehaviour
         else if (wordDatabase.metaWords.Contains(spellWord))
         {
             colorToUse = Color.magenta;
-        } else
+        }
+        else
         {
             colorToUse = Color.black;
         }
-        foreach (GameObject letterObj in wordToColor)        {
+        foreach (GameObject letterObj in wordToColor)
+        {
             SpriteRenderer renderer = letterObj.GetComponent<SpriteRenderer>();
-            if (renderer != null)            {
-                renderer.color = colorToUse;    
+            if (renderer != null)
+            {
+                renderer.color = colorToUse;
             }
         }
         wordToColor.Clear();
     }
+
     //Spell shape methods
 
     //Bolt-Single Target, hits once
     void CastBolt(float damage, string element)
     {
-        SpawnProjectile(boltPrefab, currentTarget, element, damage*1.2f, "bolt", false);
+        SpawnProjectile(boltPrefab, currentTarget, element, damage * 1.2f, "bolt", false);
     }
+
     //Ball-Single Target, hits once
     void CastBall(float damage, string element)
     {
         SpawnProjectile(ballPrefab, currentTarget, element, damage, "ball", false);
     }
+
     //Missile-Multi Target, hits 3 times with reduced damage
     void CastMissile(float damage, string element)
     {
@@ -529,23 +559,25 @@ public class PlayerCasting : MonoBehaviour
     private System.Collections.IEnumerator SpawnMissilesCoroutine(float damage, string element)
     {
         int missileCount = 3;
-        float delay = 0.2f; 
+        float delay = 0.2f;
 
         for (int i = 0; i < missileCount; i++)
         {
-            SpawnProjectile(missilePrefab, currentTarget, element, damage*1.5f / missileCount, "missile", false);
+            SpawnProjectile(missilePrefab, currentTarget, element, damage * 1.5f / missileCount, "missile", false);
             yield return new WaitForSeconds(delay);
         }
     }
+
     //Beam-Single Target, hits multiple times with reduced damage
     void CastBeam(float damage, string element)
     {
-        StartCoroutine(SpawnBeamCoroutine(damage *1.5f, element));
+        StartCoroutine(SpawnBeamCoroutine(damage * 1.5f, element));
     }
+
     private System.Collections.IEnumerator SpawnBeamCoroutine(float damage, string element)
     {
         int beamCount = 20;
-        float delay = 0.05f; 
+        float delay = 0.05f;
 
         for (int i = 0; i < beamCount; i++)
         {
@@ -553,15 +585,17 @@ public class PlayerCasting : MonoBehaviour
             yield return new WaitForSeconds(delay);
         }
     }
+
     //Slash-Multi Target, hits 2 times with reduced damage
     void CastSlash(float damage, string element)
     {
         StartCoroutine(SpawnSlashCoroutine(damage * 1.5f, element));
     }
+
     private System.Collections.IEnumerator SpawnSlashCoroutine(float damage, string element)
     {
         int slashCount = 2;
-        float delay = 0.1f; 
+        float delay = 0.1f;
 
         for (int i = 0; i < slashCount; i++)
         {
@@ -569,28 +603,33 @@ public class PlayerCasting : MonoBehaviour
             yield return new WaitForSeconds(delay);
         }
     }
+
     //Spear- pierces through all enemies
     void CastSpear(float damage, string element)
     {
         SpawnProjectile(spearPrefab, currentTarget, element, damage * 1.4f, "spear", true);
     }
+
     //Drill -Pierces and hits multiple times
     void CastDrill(float damage, string element)
     {
-        SpawnProjectile(drillPrefab, currentTarget, element, (damage*1.5f)/5, "drill", true);  
-    }  
+        SpawnProjectile(drillPrefab, currentTarget, element, (damage * 1.5f) / 5, "drill", true);
+    }
+
     //Sword-Single Tarrget
     void CastSword(float damage, string element)
     {
         SpawnProjectile(swordPrefab, currentTarget, element, damage * 1.5f, "sword", false);
     }
+
     void CastDagger(float damage, string element)
     {
-        SpawnProjectile(daggerPrefab, currentTarget, element, damage*1.4f, "dagger", false);
+        SpawnProjectile(daggerPrefab, currentTarget, element, damage * 1.4f, "dagger", false);
     }
+
     void CastArrow(float damage, string element)
     {
-        SpawnProjectile(arrowPrefab, currentTarget, element, damage*1.5f, "arrow", false);
+        SpawnProjectile(arrowPrefab, currentTarget, element, damage * 1.5f, "arrow", false);
     }
     void CastStar(float damage, string element)
     {

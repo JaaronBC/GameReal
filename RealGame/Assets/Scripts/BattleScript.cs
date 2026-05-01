@@ -1,3 +1,4 @@
+using System.Collections;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -37,7 +38,7 @@ public class BattleScript : MonoBehaviour
     //Coordinates for enemy spawn range
     public int enemyGridMinX, enemyGridMaxX;
 
-    public int enemyGridMinY, enemyGridMaxY; 
+    public int enemyGridMinY, enemyGridMaxY;
     //prefab for player object
     public GameObject playerPrefab;
     //array of enemy prefabs to be spawned
@@ -61,6 +62,10 @@ public class BattleScript : MonoBehaviour
     bool playerTimerFill = false;
     [SerializeField] GameObject playerTimerUI;
     [SerializeField] RandomLetter randomLetter;
+
+    //prevents battle end coroutine from starting multiple times
+    bool isEnding = false;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -76,8 +81,8 @@ public class BattleScript : MonoBehaviour
             {
                 EnemySaveData enemy = BattleDataHolder.enemyDatabase[enemyID];
                 if (!enemy.defeated && !countedEnemies.Contains(enemyID))
-                {                    
-                    enemy.defeated = true; 
+                {
+                    enemy.defeated = true;
                 }
             }
         }
@@ -99,25 +104,29 @@ public class BattleScript : MonoBehaviour
 
 
         //for moving player to the center of the screen during player turn
-        if (movePlayer) {
-        GameObject playerObject = GameObject.Find("PlayerObject");
+        if (movePlayer)
+        {
+            GameObject playerObject = GameObject.Find("PlayerObject");
 
-        playerObject.transform.position = Vector3.MoveTowards(
-            playerObject.transform.position,
-            targetPosition,
-            5f * Time.deltaTime
-        );
+            playerObject.transform.position = Vector3.MoveTowards(
+                playerObject.transform.position,
+                targetPosition,
+                5f * Time.deltaTime
+            );
 
-        if (Vector3.Distance(playerObject.transform.position, targetPosition) < 0.01f) {
-            movePlayer = false;
+            if (Vector3.Distance(playerObject.transform.position, targetPosition) < 0.01f)
+            {
+                movePlayer = false;
+            }
         }
-    }
         selfTextComponent.text = "timer: " + timer + " state: " + state + " Movement:" + playerMovement.enabled + "\n \n" + activeEnemies;
 
         //timer and set states
         if (timer > 0.0) timer -= Time.deltaTime;
-        else {
-            switch (state) {
+        else
+        {
+            switch (state)
+            {
                 case BattleState.Start:
                     SwitchState(BattleState.EnemyTurn);
                     timer = enemyTimer;
@@ -126,26 +135,28 @@ public class BattleScript : MonoBehaviour
                     SwitchState(BattleState.EnemySwitch);
                     break;
                 case BattleState.EnemySwitch:
-                    if (playerTimer >= 10f){
-                    SwitchState(BattleState.PlayerTurn);
+                    if (playerTimer >= 10f)
+                    {
+                        SwitchState(BattleState.PlayerTurn);
                     }
                     break;
                 case BattleState.PlayerTurn:
-                    if (playerTimer <= 0f) {
-                    SwitchState(BattleState.PlayerSwitch);
-                    timer = 1f;
+                    if (playerTimer <= 0f)
+                    {
+                        SwitchState(BattleState.PlayerSwitch);
+                        timer = 1f;
                     }
                     break;
                 case BattleState.PlayerSwitch:
-                    if (activeEnemies.Count == 0) 
+                    if (activeEnemies.Count == 0)
                     {
                         SwitchState(BattleState.BattleEnd);
                         timer = 1f;
                     }
-                    else 
+                    else
                     {
-                    SwitchState(BattleState.EnemyTurn);
-                    timer = enemyTimer;
+                        SwitchState(BattleState.EnemyTurn);
+                        timer = enemyTimer;
                     }
                     break;
                 case BattleState.BattleEnd:
@@ -153,34 +164,42 @@ public class BattleScript : MonoBehaviour
                     break;
             }
         }
-        if (playerTimerFill) {
+        if (playerTimerFill)
+        {
             playerTimer += Time.deltaTime * 20f;
-            if (playerTimer >= 10f) {
+            if (playerTimer >= 10f)
+            {
                 playerTimer = 10f;
                 playerTimerFill = false;
             }
-        } 
+        }
         else
         {
             playerTimer -= Time.deltaTime;
-            if (playerTimer <= 0f) {
+            if (playerTimer <= 0f)
+            {
                 playerTimer = 0f;
             }
-        }    
+        }
     }
-    void SwitchState(BattleState newState) {
-        if (newState == BattleState.PlayerTurn) {
+    void SwitchState(BattleState newState)
+    {
+        if (newState == BattleState.PlayerTurn)
+        {
             playerMovement.enabled = false;
 
             targetPosition = new Vector3(playerX, playerY, playerObject.transform.position.z);
             movePlayer = true;
             playerCasting.BeginTurn();
-        } else if (newState == BattleState.EnemySwitch)
+        }
+        else if (newState == BattleState.EnemySwitch)
         {
             playerTimer = 0f;
             playerTimerFill = true;
             playerTimerUI.SetActive(true);
-        } else {
+        }
+        else
+        {
             playerCasting.isActive = false;
             playerMovement.enabled = true;
             playerCasting.spellsCast = 0;
@@ -192,8 +211,8 @@ public class BattleScript : MonoBehaviour
             playerCasting.wordToColor.Clear();
             playerCasting.elementalNotFound = true;
             playerTimerUI.SetActive(false);
-        } 
-       
+        }
+
         state = newState;
     }
 
@@ -202,11 +221,12 @@ public class BattleScript : MonoBehaviour
     {
         Debug.Log("Setup Battle");
         playerTimerUI.SetActive(false);
-        var currentPlayer = Instantiate(playerPrefab, new Vector3 (playerX, playerY), Quaternion.identity);
+        var currentPlayer = Instantiate(playerPrefab, new Vector3(playerX, playerY), Quaternion.identity);
         currentPlayer.name = "PlayerObject";
         // Set player health bar reference
         PlayerState playerState = currentPlayer.GetComponent<PlayerState>();
-        if (playerState != null)        {
+        if (playerState != null)
+        {
             playerHealthBar.unit = playerState;
         }
         playerMovement = currentPlayer.GetComponent<PlayerMovement>();
@@ -215,7 +235,8 @@ public class BattleScript : MonoBehaviour
         int currentY = (Random.value < 0.5f) ? enemyGridMinY : enemyGridMaxY;
         Dictionary<int, int> validPositions = new Dictionary<int, int>();
         HashSet<int> usedXPositions = new HashSet<int>();
-        for (int x = enemyGridMinX; x <= enemyGridMaxX; x++) {
+        for (int x = enemyGridMinX; x <= enemyGridMaxX; x++)
+        {
             // Alternate between minY and maxY for each column to ensure enemies are not spawned adjacent to each other
             validPositions.Add(x, currentY);
             currentY = (currentY == enemyGridMinY) ? enemyGridMaxY : enemyGridMinY;
@@ -223,18 +244,18 @@ public class BattleScript : MonoBehaviour
         }
         int[] takenColumn = new int[enemies.Length];
         for (int i = 0; i < enemies.Length; i++)
-        {   
+        {
             //Spawn enemy in a validPosition from Dictionary
             //Then add X position to usedXPositions to prevent spawning another enemy in the same column
             do
             {
-            randomX = Random.Range(enemyGridMinX, enemyGridMaxX);
+                randomX = Random.Range(enemyGridMinX, enemyGridMaxX);
             }
             while (usedXPositions.Contains(randomX));
             usedXPositions.Add(randomX);
             Debug.Log("Spawning enemy at: " + randomX + ", " + validPositions[randomX]);
-            var currentEnemy = Instantiate(enemies[i], new Vector3 (randomX, validPositions[randomX]), Quaternion.identity);
-            currentEnemy.name = $"Enemy {i+1}";
+            var currentEnemy = Instantiate(enemies[i], new Vector3(randomX, validPositions[randomX]), Quaternion.identity);
+            currentEnemy.name = $"Enemy {i + 1}";
 
             EnemyState enemyState = currentEnemy.GetComponent<EnemyState>();
             if (enemyState != null)
@@ -244,21 +265,34 @@ public class BattleScript : MonoBehaviour
 
             activeEnemies.Add(currentEnemy);
         }
-        timer = startTime; 
+        timer = startTime;
 
     }
     void BattleEnd()
     {
+        if (isEnding) return;
+        isEnding = true;
+
         Debug.Log("Battle Ended!");
+        StartCoroutine(EndBattleCoroutine());
+    }
+
+    IEnumerator EndBattleCoroutine()
+    {
+        FindObjectOfType<BGMFade>()?.FadeOut(1.0f);
+
+        yield return new WaitForSeconds(1.0f);
+
         //Transition to previous scene
         SceneManager.LoadScene(BattleDataHolder.returnSceneName);
     }
+
     public void CheckForBattleEnd()
     {
         if (activeEnemies.Count == 0)
         {
             SwitchState(BattleState.BattleEnd);
-            timer = 1f; 
+            timer = 1f;
         }
     }
 }

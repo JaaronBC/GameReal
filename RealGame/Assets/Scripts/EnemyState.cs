@@ -79,6 +79,7 @@ public class EnemyState : MonoBehaviour
                 {
                     statusEffects.Add("frostbite");
                     effectsToRemove.Add("ice");
+                    Damaged(8, "ice");
                     Debug.Log("Enemy is frostbitten!");
                     freezeCounter = 0; // Reset counter after applying frostbite
                 }

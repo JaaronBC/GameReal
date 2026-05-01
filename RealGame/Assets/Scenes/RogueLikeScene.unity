@@ -1960,7 +1960,7 @@ MonoBehaviour:
   minChests: 1
   maxChests: 2
   currentFloor: 1
-  maxFloors: 5
+  maxFloors: 4
   spawnedObjectsParent: {fileID: 0}
   player: {fileID: 0}
   spellbookController: {fileID: 1319505402}

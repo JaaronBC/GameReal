@@ -199,17 +199,18 @@ public class DungeonManager : MonoBehaviour {
         }
     }
 
-    public void GoToNextFloor() {
-        if (currentFloor < maxFloors) {
-            currentFloor++;
-            BattleDataHolder.currentFloor = currentFloor;
-            GenerateFloor();
-        } else {
-            Debug.Log("You reached the bottom of the cavern!");
+        public void GoToNextFloor() {
+            if (currentFloor < maxFloors) {
+                currentFloor++;
+                BattleDataHolder.currentFloor = currentFloor;
+                GenerateFloor();
+            } else {
+                Debug.Log("You reached the bottom of the cavern!");
+            }
         }
-    }
     void SpawnEnemiesAtTilemap(Tilemap enemySpawnTilemap) {
         if (disableEnemies) { return; }
+        enemySpawnTilemap.CompressBounds();
         BoundsInt bounds = enemySpawnTilemap.cellBounds; 
         foreach (Vector3Int pos in bounds.allPositionsWithin) {
             if (enemySpawnTilemap.HasTile(pos)) {
@@ -217,6 +218,7 @@ public class DungeonManager : MonoBehaviour {
                 worldPosition.z = -1;
                 GameObject enemyPrefab = enemyPrefabs[Random.Range(0, enemyPrefabs.Length)];
                 var enemy = Instantiate(enemyPrefab, worldPosition, Quaternion.identity, spawnedObjectsParent);
+                spawnedObjects.Add(enemy);
                 EnemyScript enemyScript = enemy.GetComponent<EnemyScript>();
                 if (enemyScript != null)                {
                     enemyScript.enemyID = "enemy" + enemyIDcounter;

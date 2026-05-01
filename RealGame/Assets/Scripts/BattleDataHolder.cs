@@ -48,4 +48,6 @@ public static class BattleDataHolder
     public static HashSet<string> unlockedShapeWords = new HashSet<string>();
     public static HashSet<string> unlockedElementWords = new HashSet<string>();
     public static HashSet<string> unlockedPowerWords = new HashSet<string>();
+    public static int currentFloor = 1;
+    public static int dungeonSeed;
 }

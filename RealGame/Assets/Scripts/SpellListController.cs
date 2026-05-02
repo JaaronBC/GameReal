@@ -78,7 +78,6 @@ public class SpellListController : MonoBehaviour
                 default:
                     colorToUse = Color.white;
                     break;  
-
             }
             textForElement.color = colorToUse;
             textForElement.fontMaterial = new Material(textForElement.fontMaterial);

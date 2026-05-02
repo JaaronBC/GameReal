@@ -14,6 +14,7 @@ public class ProjectileScript : MonoBehaviour
     float distanceTraveled = 0f;
     public float maxRange = 10f;
     Vector3 moveDirection;
+    public float spinSpeed = 360f;
     Dictionary<string, Action<ProjectileScript>> shapeActions; 
     HashSet<EnemyState> piercedEnemies = new HashSet<EnemyState>(); 
     void Start()
@@ -63,7 +64,16 @@ public class ProjectileScript : MonoBehaviour
         distanceTraveled += frameDistance;
 
         float angle = Mathf.Atan2(moveDirection.y, moveDirection.x) * Mathf.Rad2Deg;
-        transform.rotation = Quaternion.Euler(0f, 0f, angle - 90f);
+
+        if (shape == "vortex")
+        {
+            transform.rotation = Quaternion.Euler(0f, 0f, angle - 90f) *
+                                Quaternion.Euler(0f, 0f, Time.time * spinSpeed);
+        }
+        else
+        {
+            transform.rotation = Quaternion.Euler(0f, 0f, angle - 90f);
+        }
 
         if (piercing)
         {

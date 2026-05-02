@@ -77,9 +77,13 @@ public class EnemyState : MonoBehaviour
                 }
             if (freezeCounter >= 3)
                 {
-                    statusEffects.Add("frostbite");
+                    freezeCounter = 0; 
+                    if (!statusEffects.Contains("frostbite"))
+                    {
+                        statusEffects.Add("frostbite");
+                        currentHP -= 8f;
+                    }
                     effectsToRemove.Add("ice");
-                    Damaged(8, "ice");
                     Debug.Log("Enemy is frostbitten!");
                     freezeCounter = 0; // Reset counter after applying frostbite
                 }
@@ -104,6 +108,7 @@ public class EnemyState : MonoBehaviour
             {
                 darkMultiplier = 1;
                 statusEffects.Remove("dark");
+                Debug.Log("Light reinvigorates the dark: " + darkMultiplier);
             }
             break;    
 

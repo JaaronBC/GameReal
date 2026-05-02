@@ -1975,7 +1975,7 @@ MonoBehaviour:
   - {fileID: 236695506430920678, guid: 353f83e83ec00c8468aef4e20a310984, type: 3}
   - {fileID: 236695506430920678, guid: b191cc1078b36b04ea8494d89b19dc19, type: 3}
   - {fileID: 236695506430920678, guid: bea1a089bc411354ead148dbdb4d78f7, type: 3}
-  disableEnemies: 1
+  disableEnemies: 0
 --- !u!4 &1346901057
 Transform:
   m_ObjectHideFlags: 0

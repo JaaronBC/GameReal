@@ -210,8 +210,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyState
   healthText: {fileID: 8000384955009362690}
   battleScript: {fileID: 0}
-  maxHP: 60
-  currentHP: 60
+  maxHP: 45
+  currentHP: 45
   savedDamage: 0
   freezeCounter: 0
 --- !u!114 &510163362809895111

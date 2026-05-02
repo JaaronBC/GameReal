@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
-
 public class PlayerCasting : MonoBehaviour
 {
     public bool allowAllLetters = false; // Set to true to allow all letters regardless of BattleDataHolder settings
@@ -293,6 +292,8 @@ public class PlayerCasting : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        Debug.Log(BattleDataHolder.startOfRun);
+        allowAllLetters = BattleDataHolder.startOfRun;
         List<char> lettersTest = new List<char>();
         foreach (char c in BattleDataHolder.usableLetters)
         {

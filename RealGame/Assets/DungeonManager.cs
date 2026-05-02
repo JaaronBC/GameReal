@@ -10,6 +10,7 @@ public class DungeonManager : MonoBehaviour {
     public GameObject barrelPrefab;
     public GameObject chestPrefab;
     public GameObject holePrefab;
+    public GameObject playerPrefab;
 
     [Header("Spawn Settings")]
     public int minBarrels = 2;
@@ -122,6 +123,9 @@ public class DungeonManager : MonoBehaviour {
     }
 
     void LoadFloorLayout() {
+        //playerPrefab
+        playerPrefab.transform.position = new Vector3(0, 0, 0);
+
         // Destroy old layout
         if (currentLayoutInstance != null)
             Destroy(currentLayoutInstance);

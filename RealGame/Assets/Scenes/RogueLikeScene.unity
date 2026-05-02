@@ -1896,6 +1896,11 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 178219979476959909, guid: f130753d9c09f4c779cfd1a6444a79d7, type: 3}
   m_PrefabInstance: {fileID: 289156451}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1283951654 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7620887840857654650, guid: dfce6b46e3bc347558338a3c8d83ddce, type: 3}
+  m_PrefabInstance: {fileID: 404536389}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1319505402 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5958140960861867568, guid: 8cc8be698bbd84aa9b3f8bbfaf903055, type: 3}
@@ -1955,6 +1960,7 @@ MonoBehaviour:
   barrelPrefab: {fileID: 4019241347438631876, guid: 6fab0200be2b68348a2b05d2aa9ce187, type: 3}
   chestPrefab: {fileID: 6847072173190459681, guid: 33685dfa3d963704c9959d7e90d78f83, type: 3}
   holePrefab: {fileID: 2790026077173143644, guid: baaa98332d5375e4ab6f8d75bd722d19, type: 3}
+  playerPrefab: {fileID: 1283951654}
   minBarrels: 2
   maxBarrels: 5
   minChests: 1
@@ -1969,7 +1975,7 @@ MonoBehaviour:
   - {fileID: 236695506430920678, guid: 353f83e83ec00c8468aef4e20a310984, type: 3}
   - {fileID: 236695506430920678, guid: b191cc1078b36b04ea8494d89b19dc19, type: 3}
   - {fileID: 236695506430920678, guid: bea1a089bc411354ead148dbdb4d78f7, type: 3}
-  disableEnemies: 0
+  disableEnemies: 1
 --- !u!4 &1346901057
 Transform:
   m_ObjectHideFlags: 0
@@ -1995,7 +2001,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1891448053136318928, guid: dfce6b46e3bc347558338a3c8d83ddce, type: 3}
   m_PrefabInstance: {fileID: 404536389}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 1283951654}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: eddda0f9b553044dea137a4e62b425ce, type: 3}

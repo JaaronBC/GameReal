@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 4486038840313356186}
   - component: {fileID: 6230459393700795752}
   - component: {fileID: 7943925759470865130}
+  - component: {fileID: 2112747844282604443}
   m_Layer: 9
   m_Name: BattleGnomeSlime
   m_TagString: GnomeBattle
@@ -237,6 +238,41 @@ MonoBehaviour:
   currentHP: 20
   savedDamage: 0
   freezeCounter: 0
+--- !u!114 &2112747844282604443
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1984905327066608720}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c29e7f56c72c34d4ba1edb97a25826bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StatusEffectVFX
+  enemy: {fileID: 7943925759470865130}
+  effects:
+  - effectName: fire
+    prefab: {fileID: 1772205178839045218, guid: 008c354950b754a488952b44e685797e, type: 3}
+    spawnInterval: 0.25
+  - effectName: ice
+    prefab: {fileID: 410907267515298736, guid: aec11d433467e4507a927f640ee78557, type: 3}
+    spawnInterval: 0.33
+  - effectName: earth
+    prefab: {fileID: 7226714659430598384, guid: 4654e138034c44c0fb09fcb1412c72dc, type: 3}
+    spawnInterval: 0.5
+  - effectName: frostbite
+    prefab: {fileID: 8572622812676230015, guid: b6e5f62acdaba46169d0ff58d7d10fc8, type: 3}
+    spawnInterval: 0.5
+  - effectName: water
+    prefab: {fileID: 8636286491569951989, guid: 52fd69923fc68405cb72b75b0925f610, type: 3}
+    spawnInterval: 0.5
+  - effectName: light
+    prefab: {fileID: 1413921549262050373, guid: ade2c76d19e16488686187ad87bd4419, type: 3}
+    spawnInterval: 0.25
+  - effectName: air
+    prefab: {fileID: 6983326301790427860, guid: 612c92d2ac7d74660b3a909f297a726e, type: 3}
+    spawnInterval: 0.5
 --- !u!1001 &3038714007203989457
 PrefabInstance:
   m_ObjectHideFlags: 0

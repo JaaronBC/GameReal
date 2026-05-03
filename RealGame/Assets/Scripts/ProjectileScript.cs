@@ -329,6 +329,11 @@ public class ProjectileScript : MonoBehaviour
         EnemyState enemy = targetObject.GetComponent<EnemyState>();
         if (enemy != null)
         {
+            if (enemy.statusEffects.Contains("earth"))
+            {
+                damage *= 1.5f; // Earth status effect increases punch damage by 50%
+                Debug.Log("Earth amplifies the punch: " + damage);
+            }
             enemy.statusEffects.Add(element); // Add element as status effect to enemy
             enemy.savedDamage = damage; // Store the original damage value for status effects to reference
             enemy.Damaged(damage, element); // Apply damage to enemy

@@ -47,6 +47,6 @@ public class StatusEffectVFX : MonoBehaviour
 
         GameObject vfx = Instantiate(prefab, transform.position + randomOffset, Quaternion.identity);
 
-        Destroy(vfx, 0.7f); // lifetime
+        Destroy(vfx, 0.7f);
     }
 }

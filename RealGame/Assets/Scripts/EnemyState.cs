@@ -24,6 +24,9 @@ public class EnemyState : MonoBehaviour
     //Dark status effect variables
     int darkMultiplier = 1;
 
+    [SerializeField] GameObject lightningPrefab;
+    [SerializeField] GameObject darkVFXPrefab;
+
     public void Damaged(float damage, string element = "none")
     {
         if (statusEffects.Contains("light"))
@@ -104,12 +107,8 @@ public class EnemyState : MonoBehaviour
             break;
         
         case "light":
-            if (statusEffects.Contains("dark"))
-            {
                 darkMultiplier = 1;
-                statusEffects.Remove("dark");
                 Debug.Log("Light reinvigorates the dark: " + darkMultiplier);
-            }
             break;    
 
         case "dark":
@@ -117,6 +116,10 @@ public class EnemyState : MonoBehaviour
             damage *= darkMultiplier;
             damage *= (1 + 0.5f * statusEffects.Count);
             Debug.Log("Dark hit! Base damage increased by " + (0.5f * statusEffects.Count * 100) + "% due to " + statusEffects.Count + " existing status effects.");
+            if (darkMultiplier == 1)
+            {
+                DarkEffect();
+            }
             if (statusEffects.Contains("dark"))
             {
                 darkMultiplier = 0; // Reduce damage by 100% if enemy has already been hit by dark
@@ -253,6 +256,8 @@ public class EnemyState : MonoBehaviour
             {
                 Debug.Log("Shock chaining to: " + enemy.name);
 
+                SpawnLightningVFX(transform.position, enemy.transform.position, lightningPrefab);
+
                 enemy.Damaged(chainDamage, "shock"); // Mark as shock damage for potential further chaining
                 shockedEnemies.Add(enemy);
             }
@@ -274,5 +279,39 @@ public class EnemyState : MonoBehaviour
     void Dark()
     {
         //Debug.Log("Enemy is shadowed!");   
+        //DarkEffect();
+    }
+    void SpawnLightningVFX(Vector3 start, Vector3 end, GameObject prefab)
+    {
+        Vector3 direction = end - start;
+        float distance = direction.magnitude;
+
+        Vector3 midPoint = (start + end) / 2f;
+
+        GameObject vfx = Instantiate(prefab, midPoint, Quaternion.identity);
+
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        vfx.transform.rotation = Quaternion.Euler(0, 0, angle - 90f);
+
+        Vector3 scale = vfx.transform.localScale;
+        scale.x = distance;
+        vfx.transform.localScale = scale;
+
+        Destroy(vfx, 0.3f);
+    }
+    public void DarkEffect()
+    {
+        int count = 8;
+
+        for (int i = 0; i < count; i++)
+        {
+            Vector2 randomOffset = UnityEngine.Random.insideUnitCircle * 0.4f;
+
+            Vector3 spawnPos = transform.position + new Vector3(randomOffset.x, randomOffset.y, 0f);
+
+            GameObject vfx = Instantiate(darkVFXPrefab, spawnPos, Quaternion.identity);
+
+            Destroy(vfx, 0.4f);
+        }
     }
 }

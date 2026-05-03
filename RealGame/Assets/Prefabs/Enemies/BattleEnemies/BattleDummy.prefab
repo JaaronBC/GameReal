@@ -192,6 +192,8 @@ MonoBehaviour:
   currentHP: 40
   savedDamage: 0
   freezeCounter: 0
+  lightningPrefab: {fileID: 7187463588912790871, guid: 16b0e63caff2d4d1a933c4465a7e8d2b, type: 3}
+  darkVFXPrefab: {fileID: 6801474835900210257, guid: 37984c2fbc17840f3b4a6dfd7740a805, type: 3}
 --- !u!114 &6438113737886387119
 MonoBehaviour:
   m_ObjectHideFlags: 0

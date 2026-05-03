@@ -1468,7 +1468,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.0009813309, y: -1988.3058}
+  m_AnchoredPosition: {x: -0.0009813309, y: -1499.2611}
   m_SizeDelta: {x: 1340.1, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &3443230440461600789
@@ -4766,15 +4766,18 @@ PrefabInstance:
         extra damage for each status effect
 
         -Can only be used once on an
-        enemy, will deal no damage if enemy has been hit by dark already'
+        enemy, will deal no damage if enemy has been hit by dark already
+
+        -Light
+        damage lets enemy be able to be hit with dark damage again'
       objectReference: {fileID: 0}
     - target: {fileID: 4313165274232612541, guid: 256f3d059d5c24b089fcb5a506849d5c, type: 3}
       propertyPath: m_fontSize
-      value: 30
+      value: 27
       objectReference: {fileID: 0}
     - target: {fileID: 4313165274232612541, guid: 256f3d059d5c24b089fcb5a506849d5c, type: 3}
       propertyPath: m_fontSizeBase
-      value: 30
+      value: 27
       objectReference: {fileID: 0}
     - target: {fileID: 8089783175232188766, guid: 256f3d059d5c24b089fcb5a506849d5c, type: 3}
       propertyPath: m_Name
@@ -5035,15 +5038,15 @@ PrefabInstance:
     - target: {fileID: 4313165274232612541, guid: 256f3d059d5c24b089fcb5a506849d5c, type: 3}
       propertyPath: m_text
       value: '-Ice damage makes the enemy cold, if the enemy is made cold 3 times
-        there are frostbitten
+        there are frostbitten and damaged instantly
 
-        -Frostbitten enemies take extra damage from
-        all cources
+        -Frostbitten enemies
+        take extra damage from all cources
 
         -Fire melts frostbite and cold
 
-        -Water makes
-        enemies frostbitten instantly
+        -Water
+        makes enemies frostbitten instantly
 
         -Earth shatters frostbite'
       objectReference: {fileID: 0}
@@ -5182,7 +5185,18 @@ PrefabInstance:
       value: '-Applies light all enemies effected
 
         -Light makes enemies take
-        extra damage from all sources'
+        extra damage from all sources
+
+        -Enemies hit by light damage can take
+        dark damage one more time'
+      objectReference: {fileID: 0}
+    - target: {fileID: 4313165274232612541, guid: 256f3d059d5c24b089fcb5a506849d5c, type: 3}
+      propertyPath: m_fontSize
+      value: 33
+      objectReference: {fileID: 0}
+    - target: {fileID: 4313165274232612541, guid: 256f3d059d5c24b089fcb5a506849d5c, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 33
       objectReference: {fileID: 0}
     - target: {fileID: 8089783175232188766, guid: 256f3d059d5c24b089fcb5a506849d5c, type: 3}
       propertyPath: m_Name

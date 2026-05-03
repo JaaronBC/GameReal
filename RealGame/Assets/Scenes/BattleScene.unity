@@ -5268,7 +5268,9 @@ MonoBehaviour:
   enemyGridMaxY: 7
   playerPrefab: {fileID: 7620887840857654650, guid: dfce6b46e3bc347558338a3c8d83ddce, type: 3}
   enemies:
-  - {fileID: 6829489110424819961, guid: ba5c6165708681644bc820f014b13864, type: 3}
+  - {fileID: 6498971463192142380, guid: 410f60832332b9545a1bfdd8b633f9c7, type: 3}
+  - {fileID: 6498971463192142380, guid: 410f60832332b9545a1bfdd8b633f9c7, type: 3}
+  - {fileID: 6498971463192142380, guid: 410f60832332b9545a1bfdd8b633f9c7, type: 3}
   activeEnemies: []
   playerMovement: {fileID: 3285433953536994103, guid: dfce6b46e3bc347558338a3c8d83ddce, type: 3}
   playerCasting: {fileID: 1257174532}

@@ -134,7 +134,7 @@ MonoBehaviour:
   chaseRadius: 0
   returnSceneName: endScene
   battlePrefab: {fileID: 6829489110424819961, guid: ba5c6165708681644bc820f014b13864, type: 3}
-  enemyID: enemy10
+  enemyID: enemyBoss
   isMovingEnemy: 0
 --- !u!50 &1080062708085640048
 Rigidbody2D:

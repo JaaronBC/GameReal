@@ -24,10 +24,6 @@ public class SpellbookController : MonoBehaviour
                 Debug.LogError("Missing prefab for letter: " + c);
             }
         }
-    }
-    void Start()
-    {
-        //Creates letter slots on game start equal to the slot count
         for(int i = 0; i < slotCount; i++)
         {
             Slot slot = Instantiate(slotPrefab, inventoryPanel.transform).GetComponent<Slot>();
@@ -44,6 +40,27 @@ public class SpellbookController : MonoBehaviour
                 }
             }
         }
+    }
+    void Start()
+    {
+        /*Creates letter slots on game start equal to the slot count
+        for(int i = 0; i < slotCount; i++)
+        {
+            Slot slot = Instantiate(slotPrefab, inventoryPanel.transform).GetComponent<Slot>();
+            if (BattleDataHolder.usableLetters[i] != '\0') 
+            {
+                char letter = BattleDataHolder.usableLetters[i];
+                if (letter != null)
+                {
+                    AddLetter(letter);
+                }
+                else
+                {
+                    Debug.LogError("Letter not found: " + letter);
+                }
+            }
+        }
+        */
     }
     
     public bool AddLetter(char letter)

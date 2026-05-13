@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: -3286956586709032157}
   - component: {fileID: 4336142981743849688}
   - component: {fileID: 2839916518416015360}
+  - component: {fileID: 7112408646004523619}
   m_Layer: 0
   m_Name: GameController
   m_TagString: Untagged
@@ -108,3 +109,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d9dce3a7cd3b408492f06650033d9c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WordDatabase
+--- !u!114 &7112408646004523619
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8818195158728404346}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 127dc747c74994808a0c87c36f44afd9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
